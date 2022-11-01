@@ -1,7 +1,6 @@
 import styles from '../styles/Navbar.module.css'
 import Image from 'next/image'
 import mypic from '../assets/imgs/naatik-logo.png'
-import Link from 'next/link';
 
 const Navbar = () => {
     return ( 
