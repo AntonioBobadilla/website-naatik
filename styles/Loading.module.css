@@ -1,0 +1,40 @@
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;500;600;700&display=swap');
+.wrapper {
+    width:100%;
+    height: 85vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.wrapper_img {
+    width: 70%;
+    height: 70%;
+    background-image: url('../assets/imgs/logo_transparente.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.wrapper_img h1 {
+    font-family: 'Comfortaa', cursive;
+}
+
+
+.wrapper_img h2 {
+    font-family: 'Comfortaa', cursive;
+}
+
+.spinner {
+    height: 32px;
+    animation: spin 1s infinite forwards;
+}
+
+@keyframes spin {
+    from {transform:rotate(0deg);}
+    to {transform: rotate(360deg);}
+}
