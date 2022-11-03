@@ -53,7 +53,7 @@ export default function Home() {
     console.log("file: ", file)
     console.log("slides: ",obj )
 
-    const UPLOAD_ENDPOINT = "http://localhost:5000/";
+    /*const UPLOAD_ENDPOINT = "http://localhost:5000/";
 
     const formData = new FormData();
 
@@ -71,11 +71,11 @@ export default function Home() {
 
     if (resp.status === 200) {
       console.log("csv uploaded.")
-      console.log("Probabilities: ", resp.acc)
-      setProbabilities(resp.acc)
+      console.log("Probabilities: ", resp.data.acc)
+      setProbabilities(resp.data.acc)
     } else {
       console.log("ERROR A LA VERGA PUTO ENDPOINT")
-    }
+    }*/
     setRe(re+1); 
   }
 
