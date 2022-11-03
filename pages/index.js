@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useRef, useState}  from 'react';
 import Head from 'next/head'
 import Image from 'next/image'
 
@@ -8,7 +8,9 @@ import Slides from './Slides';
 import First from '../components/first';
 import Second from '../components/second';
 import Third from '../components/Third';
-
+import Fourth from '../components/Fourth';
+import Fifth from '../components/Fifth';
+import Sixth from '../components/Sixth';
 
 export default function Home() {
 
@@ -16,22 +18,38 @@ export default function Home() {
   const [re, setRe] = React.useState(0)
   const [render, setRender] = React.useState('');
   const [nums, setNums ] = React.useState({})
+  const [hyperparams, setHyperparams] = React.useState({})
+  const [currentGroup, setCurrentGroup] = React.useState(0);
 
   const click = () => {
     console.log("cambiando...")
-    console.log("file: ",file)
-    setRe(1);
-
-
-    console.log("from parent")
-    return <Slides />
+    setRe(re+1);
   }
 
+  useEffect(() => {
+    console.log("first render")
+  }, []); 
+
+  // use effect that tracks the state of hyperparams variable 
+  useEffect(() => {
+    if (re == 2){
+      console.log("all data: ")
+      console.log(file)
+      console.log(nums)
+      console.log(hyperparams)
+      setRe(re+1);
+      setTimeout(function(){ // timeout para simular entrenamiento y cambiar de render despues de 4 seg.
+        setRe(re+2);
+    }, 1000);
+    }
+
+
+  }, [hyperparams]); 
+
   const send = async (obj) => {
-    console.log("sendinddddddddd")
+    console.log("Enviando archivos:")
     console.log("file: ", file)
     console.log("slides: ",obj )
-
 
     /*const UPLOAD_ENDPOINT = "http://localhost:5000/";
 
@@ -52,17 +70,28 @@ export default function Home() {
     } else {
       console.log("ERROR A LA VERGA PUTO ENDPOINT")
     }*/
-    setRe(2); 
+    setRe(re+1); 
+  }
+
+  const goToGroup = () => {
+    setRe(re+1)
+    console.log("changing to individual group page...", currentGroup)
   }
 
 //return(re ? <First click={click} setfile={setFile} file={file} /> : <Second setnums={setNums} send={send} />)
 switch (re) {
-  case 0:
+  case 0: // uploading file
    return <First click={click} setfile={setFile} file={file} />
-  case 1:
+  case 1: // setting slides
    return <Second setnums={setNums} send={send} />
-  case 2:
-   return <Third  /> 
+  case 2: // setting hyperparameteres
+   return <Third setHyperparams={setHyperparams}   /> 
+  case 3: // show loading page
+   return <Fourth /> 
+  case 4:
+    return <Fifth goToGroup={goToGroup} setCurrentGroup={setCurrentGroup} />
+  case 5:
+    return <Sixth currentGp={currentGroup} setGp={setCurrentGroup} />
   default:
     return <h1>ola</h1>;
 }

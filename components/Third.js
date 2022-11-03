@@ -2,7 +2,7 @@ import styles from '../styles/Hiperparametros.module.css';
 import React from 'react';
 import ButtonTemplate from '../components/Button';
 
-const Third = () => {
+const Third = ({setHyperparams}) => {
 
     const [epochs, setEpochs] = React.useState(10);
     const [algorithm, setAlgorithm] = React.useState('Adam');
@@ -33,6 +33,10 @@ const Third = () => {
     const handleRatio = (e) => {
         e.preventDefault()
         setRatio(e.target.value)
+    }
+
+    const handleSubmit = () => {
+        setHyperparams({"epochs": epochs, "algorithm": algorithm, "learning-rate":learningRate, "activation": activation, "ratio":ratio })
     }
 
 
@@ -100,7 +104,7 @@ const Third = () => {
 
             </div>
             <div className={styles.button} >
-                <ButtonTemplate text={"siguiente"}  />
+                <ButtonTemplate text={"siguiente"} click={handleSubmit}  />
             </div>
         </div>
     </div>

@@ -32,7 +32,6 @@ const Second = ({setnums, send}) => {
     
     useEffect(() => {
         const { data } = getQueryStringParams(window.location.search);
-        console.log("data from comps: ", data)
       }, []);
     
     const StyledSlider = styled(ReactSlider)`
@@ -67,7 +66,7 @@ const Second = ({setnums, send}) => {
     const Track = (props, state) => <StyledTrack {...props} index={state.index} />;
     
     const updateValues = () => {
-    setnums()
+    setnums({"first-slide": a, "second-slide":b, "third-slide":c})
     send({"first-slide": a, "second-slide":b, "third-slide":c})
     }
 

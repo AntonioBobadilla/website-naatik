@@ -7,7 +7,6 @@ const fileTypes = ["CSV", "csv"];
   const handleChange = (newFile) => {
     const text = document.querySelector('#text');
     text.innerHTML = `<b>Archivo cargado: </b>${newFile.name}`;
-    console.log(newFile)
     setFile(newFile);
   };
   return (

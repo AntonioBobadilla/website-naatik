@@ -4,7 +4,6 @@ import React from 'react';
 import ButtonTemplate from '../components/Button';
 
 const First = ({click, setfile, file}) => {
-    console.log(click)
     return ( 
         <div className={styles.container}>
         <h1>Analizador de abandono de clientes</h1>
