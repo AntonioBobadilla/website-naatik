@@ -21,6 +21,8 @@ export default function Home() {
   const [hyperparams, setHyperparams] = React.useState({})
   const [currentGroup, setCurrentGroup] = React.useState(0);
 
+  const [probabilities, setProbabilities] = React.useState({})
+
   const click = () => {
     console.log("cambiando...")
     setRe(re+1);
@@ -69,6 +71,8 @@ export default function Home() {
 
     if (resp.status === 200) {
       console.log("csv uploaded.")
+      console.log("Probabilities: ", resp.acc)
+      setProbabilities(resp.acc)
     } else {
       console.log("ERROR A LA VERGA PUTO ENDPOINT")
     }
