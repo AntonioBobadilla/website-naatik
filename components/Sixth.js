@@ -5,14 +5,15 @@ const Sixth = ({currentGp, setGp }) => {
 
     const [currentGroup, setCurrentGroup] = useState(currentGp);
     const [currentTab, setCurrentTab] = useState('Diferencias');
+    const [accumulates, setAccumulates] = useState(0);
 
     let dummyData =
         {
             "acc": {
-              "group1": 0.0,
-              "group2": 0.0,
-              "group3": 0.0,
-              "group4": 7.706112859999999
+              "group1": 1.2,
+              "group2": 4.3,
+              "group3": 2.3,
+              "group4": 7.7
             },
             "ui": "a623ec71-fe1e-4c3e-9455-7c612e43252c"
           };
@@ -40,6 +41,15 @@ const Sixth = ({currentGp, setGp }) => {
 
     const results = [];
 
+   const handleCheckbox = (e, key) => {
+        const quantity =  acc[key]
+        if(e.target.checked){
+            setAccumulates(accumulates + quantity)
+        }else{
+            setAccumulates(accumulates - quantity)
+        }
+   }
+
     Object.keys(acc).forEach(function(key, index) {
         results.push(
             <tr>
@@ -48,6 +58,7 @@ const Sixth = ({currentGp, setGp }) => {
                 <td className={styles.td}><input
                         type="checkbox" 
                         value={""}
+                        onChange={(e) => handleCheckbox(e, key)}
                         name="time" 
                         id={""}
                         // checked={item.checked}
@@ -82,7 +93,7 @@ const Sixth = ({currentGp, setGp }) => {
 
                     <tr className={styles.results}>
                         <td className={styles.td}>TOTAL</td>
-                        <td className={styles.td}>$ 5, 000, 200.00</td>
+                        <td className={styles.td}>$ {accumulates}</td>
                     </tr>
                 </table> 
             </>
