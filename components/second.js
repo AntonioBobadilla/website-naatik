@@ -4,17 +4,19 @@ import ReactSlider from "react-slider";
 import styles from '../styles/Slides.module.css';
 import styled from 'styled-components';
 import classNames from 'classnames';
+import ButtonTemplate from '../components/Button';
 
-const Slides = () => {
+const Second = ({setnums, send}) => {
+
 
     const [num1, setNum1] = useState(0);
     const [num2, setNum2] = useState(50);
     const [num3, setNum3] = useState(100);
-
+    
     let a = 0;
     let b = 0;
     let c = 0;
-
+    
     const getQueryStringParams = query => {
         return query
             ? (/^[?#]/.test(query) ? query.slice(1) : query)
@@ -27,18 +29,17 @@ const Slides = () => {
                 )
             : {}
     };
-
+    
     useEffect(() => {
         const { data } = getQueryStringParams(window.location.search);
-        console.log("data from comps: ", data)
       }, []);
-
+    
     const StyledSlider = styled(ReactSlider)`
     width: 100%;
     height: 14px;
-`;
-
-const StyledThumb = styled.div`
+    `;
+    
+    const StyledThumb = styled.div`
     height: 45px;
     line-height: 25px;
     width: 45px;
@@ -51,30 +52,23 @@ const StyledThumb = styled.div`
     display: flex;
     align-items:center;
     justify-content:center;
-`;
-
-const Thumb = (props, state) => <StyledThumb {...props}>{state.valueNow}</StyledThumb>;
-
-const StyledTrack = styled.div`
+    `;
+    
+    const Thumb = (props, state) => <StyledThumb {...props}>{state.valueNow}</StyledThumb>;
+    
+    const StyledTrack = styled.div`
     top: 0;
     bottom: 0;
     background: #3A5057;
     border-radius: 10px;
-`;
-
-const Track = (props, state) => <StyledTrack {...props} index={state.index} />;
-
-const updateValues = () => {
-    setNum1(a);
-    setNum2(b);
-    setNum3(c);
-
-    console.log(a)
-    console.log(b)
-    console.log(c)
-}
-
-
+    `;
+    
+    const Track = (props, state) => <StyledTrack {...props} index={state.index} />;
+    
+    const updateValues = () => {
+    setnums({"first-slide": a, "second-slide":b, "third-slide":c})
+    send({"first-slide": a, "second-slide":b, "third-slide":c})
+    }
 
     return ( 
         <div className={styles.main}>
@@ -116,12 +110,15 @@ const updateValues = () => {
                     <p>{num2}%</p>
                     <p>{num3}%</p>
                 </div>
+                <div className={styles.buttons}>
+                    <ButtonTemplate text={"atrás"} click={updateValues} />
+                    <ButtonTemplate text={"siguiente"} click={updateValues} />
+                </div>
 
-                <button onClick={updateValues}>Siguiente xd</button>
+                {/*<button onClick={updateValues}>Siguiente xd</button>*/}
             </div>
         </div>
-
      );
 }
  
-export default Slides;
+export default Second;

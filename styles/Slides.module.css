@@ -103,3 +103,9 @@
 .gray_item {
     background:#F5F5F5;
 }
+
+.buttons {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
