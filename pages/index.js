@@ -51,12 +51,14 @@ export default function Home() {
     console.log("file: ", file)
     console.log("slides: ",obj )
 
-    /*const UPLOAD_ENDPOINT = "http://localhost:5000/";
+    const UPLOAD_ENDPOINT = "http://localhost:5000/";
 
     const formData = new FormData();
 
     formData.append("data", file);
-    formData.append("slides", obj);
+    formData.append("slides", JSON.stringify(obj));
+
+    console.log(formData)
 
     const resp = await axios.post(UPLOAD_ENDPOINT, formData, {
       headers: {
@@ -69,7 +71,7 @@ export default function Home() {
       console.log("csv uploaded.")
     } else {
       console.log("ERROR A LA VERGA PUTO ENDPOINT")
-    }*/
+    }
     setRe(re+1); 
   }
 
