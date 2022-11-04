@@ -1,5 +1,6 @@
 import styles from '../styles/Group.module.css';
 import React, {useState} from 'react';
+import ButtonTemplate from '../components/Button';
 
 const Sixth = ({currentGp, setGp, acc }) => {
 
@@ -11,6 +12,10 @@ const Sixth = ({currentGp, setGp, acc }) => {
         return
 
     const results = [];
+
+    const downloadCSV = () => {
+        console.log("downloading...")
+    } 
 
     const handleCheckbox = (e, key) => {
         const quantity =  acc[key]
@@ -88,7 +93,7 @@ const Sixth = ({currentGp, setGp, acc }) => {
         return (
             <>
                 <h1> info desglose de grupo {group}</h1>
-                <button>Descargar CSV</button>
+                <ButtonTemplate text={"descargar csv"} click={downloadCSV} />
             </>
         )
     }

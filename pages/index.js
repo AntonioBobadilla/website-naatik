@@ -15,7 +15,7 @@ import Sixth from '../components/Sixth';
 export default function Home() {
 
   const [file, setFile] = React.useState('');
-  const [re, setRe] = React.useState(0)
+  const [re, setRe] = React.useState(5)
   const [render, setRender] = React.useState('');
   const [nums, setNums ] = React.useState({})
   const [hyperparams, setHyperparams] = React.useState({})
