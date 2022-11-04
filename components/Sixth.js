@@ -1,47 +1,18 @@
 import styles from '../styles/Group.module.css';
 import React, {useState} from 'react';
 
-const Sixth = ({currentGp, setGp }) => {
+const Sixth = ({currentGp, setGp, acc }) => {
 
     const [currentGroup, setCurrentGroup] = useState(currentGp);
     const [currentTab, setCurrentTab] = useState('Diferencias');
     const [accumulates, setAccumulates] = useState(0);
 
-    let dummyData =
-        {
-            "acc": {
-              "group1": 1.2,
-              "group2": 4.3,
-              "group3": 2.3,
-              "group4": 7.7
-            },
-            "ui": "a623ec71-fe1e-4c3e-9455-7c612e43252c"
-          };
-
-    let { acc } = dummyData;
-
-   const renameKeys = (obj) => {
-        obj['Nula probabilidad'] = obj['group1'];
-        delete obj['group1'];
-
-        obj['Baja probabilidad'] = obj['group2'];
-        delete obj['group2'];
-
-        obj['Mediana probabilidad'] = obj['group3'];
-        delete obj['group3'];
-
-        obj['Alta probabilidad'] = obj['group4'];
-        delete obj['group4'];
-
-        return obj;
-   }
-
-    acc = renameKeys(acc)
-    console.log(acc)
+    if(!acc)
+        return
 
     const results = [];
 
-   const handleCheckbox = (e, key) => {
+    const handleCheckbox = (e, key) => {
         const quantity =  acc[key]
         if(e.target.checked){
             setAccumulates(accumulates + quantity)
@@ -58,10 +29,10 @@ const Sixth = ({currentGp, setGp }) => {
                 <td className={styles.td}><input
                         type="checkbox" 
                         value={""}
+                        key={key}
                         onChange={(e) => handleCheckbox(e, key)}
                         name="time" 
                         id={""}
-                        // checked={item.checked}
                         /></td>
             </tr>
              )

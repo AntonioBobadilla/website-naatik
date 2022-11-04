@@ -15,11 +15,12 @@ import Sixth from '../components/Sixth';
 export default function Home() {
 
   const [file, setFile] = React.useState('');
-  const [re, setRe] = React.useState(5)
+  const [re, setRe] = React.useState(0)
   const [render, setRender] = React.useState('');
   const [nums, setNums ] = React.useState({})
   const [hyperparams, setHyperparams] = React.useState({})
   const [currentGroup, setCurrentGroup] = React.useState(0);
+  const [acc, setAcc] = React.useState({});
 
   const [probabilities, setProbabilities] = React.useState({})
 
@@ -53,7 +54,7 @@ export default function Home() {
     console.log("file: ", file)
     console.log("slides: ",obj )
 
-    /*const UPLOAD_ENDPOINT = "http://localhost:5000/";
+    const UPLOAD_ENDPOINT = "http://localhost:5000/";
 
     const formData = new FormData();
 
@@ -70,12 +71,24 @@ export default function Home() {
     });
 
     if (resp.status === 200) {
-      console.log("csv uploaded.")
-      console.log("Probabilities: ", resp.data.acc)
       setProbabilities(resp.data.acc)
+      const obj = resp.data.acc
+      obj['Nula probabilidad'] = obj['group1'];
+      delete obj['group1'];
+
+      obj['Baja probabilidad'] = obj['group2'];
+      delete obj['group2'];
+
+      obj['Mediana probabilidad'] = obj['group3'];
+      delete obj['group3'];
+
+      obj['Alta probabilidad'] = obj['group4'];
+      delete obj['group4'];
+
+      setAcc(obj)
     } else {
       console.log("ERROR A LA VERGA PUTO ENDPOINT")
-    }*/
+    }
     setRe(re+1); 
   }
 
@@ -97,7 +110,7 @@ switch (re) {
   case 4:
     return <Fifth goToGroup={goToGroup} setCurrentGroup={setCurrentGroup} />
   case 5:
-    return <Sixth currentGp={currentGroup} setGp={setCurrentGroup} />
+    return <Sixth currentGp={currentGroup} setGp={setCurrentGroup} acc={acc}/>
   default:
     return <h1>ola</h1>;
 }
