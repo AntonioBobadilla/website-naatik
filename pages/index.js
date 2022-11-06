@@ -15,7 +15,7 @@ import Sixth from '../components/Sixth';
 export default function Home() {
 
   const [file, setFile] = React.useState('');
-  const [re, setRe] = React.useState(5)
+  const [re, setRe] = React.useState(0)
   const [render, setRender] = React.useState('');
   const [nums, setNums ] = React.useState({})
   const [hyperparams, setHyperparams] = React.useState({})
@@ -23,6 +23,11 @@ export default function Home() {
   const [acc, setAcc] = React.useState({});
 
   const [probabilities, setProbabilities] = React.useState({})
+
+  const previousRender = (e, numRenders = 1) => {
+    console.log("num renders: ", numRenders)
+    setRe(re-numRenders)
+  }
 
   const click = () => {
     console.log("cambiando...")
@@ -102,15 +107,15 @@ switch (re) {
   case 0: // uploading file
    return <First click={click} setfile={setFile} file={file} />
   case 1: // setting slides
-   return <Second setnums={setNums} send={send} />
+   return <Second setnums={setNums} send={send} goBack={previousRender} />
   case 2: // setting hyperparameteres
-   return <Third setHyperparams={setHyperparams}   /> 
+   return <Third setHyperparams={setHyperparams} goBack={previousRender}   /> 
   case 3: // show loading page
    return <Fourth /> 
   case 4:
-    return <Fifth goToGroup={goToGroup} setCurrentGroup={setCurrentGroup} />
+    return <Fifth goToGroup={goToGroup} setCurrentGroup={setCurrentGroup} goBack={previousRender} />
   case 5:
-    return <Sixth currentGp={currentGroup} setGp={setCurrentGroup} acc={acc}/>
+    return <Sixth currentGp={currentGroup} setGp={setCurrentGroup} acc={acc} goBack={previousRender}/>
   default:
     return <h1>ola</h1>;
 }

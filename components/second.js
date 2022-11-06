@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import classNames from 'classnames';
 import ButtonTemplate from '../components/Button';
 
-const Second = ({setnums, send}) => {
+const Second = ({setnums, send, goBack}) => {
 
 
     const [num1, setNum1] = useState(0);
@@ -111,7 +111,7 @@ const Second = ({setnums, send}) => {
                     <p>{num3}%</p>
                 </div>
                 <div className={styles.buttons}>
-                    <ButtonTemplate text={"atrás"} click={updateValues} />
+                    <ButtonTemplate text={"atrás"} click={goBack} />
                     <ButtonTemplate text={"siguiente"} click={updateValues} />
                 </div>
 

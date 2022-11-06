@@ -2,7 +2,7 @@ import styles from '../styles/Hiperparametros.module.css';
 import React from 'react';
 import ButtonTemplate from '../components/Button';
 
-const Third = ({setHyperparams}) => {
+const Third = ({setHyperparams, goBack}) => {
 
     const [epochs, setEpochs] = React.useState(10);
     const [algorithm, setAlgorithm] = React.useState('Adam');
@@ -103,7 +103,8 @@ const Third = ({setHyperparams}) => {
                 </div>
 
             </div>
-            <div className={styles.button} >
+            <div className={styles.buttons} >
+                <ButtonTemplate text={"Atras"} click={goBack}  />
                 <ButtonTemplate text={"siguiente"} click={handleSubmit}  />
             </div>
         </div>

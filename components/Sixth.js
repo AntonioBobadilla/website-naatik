@@ -2,7 +2,7 @@ import styles from '../styles/Group.module.css';
 import React, {useState} from 'react';
 import ButtonTemplate from '../components/Button';
 
-const Sixth = ({currentGp, setGp, acc }) => {
+const Sixth = ({currentGp, setGp, acc, goBack }) => {
 
     const [currentGroup, setCurrentGroup] = useState(currentGp);
     const [currentTab, setCurrentTab] = useState('Diferencias');
@@ -146,7 +146,15 @@ const Sixth = ({currentGp, setGp, acc }) => {
                 <div className={styles.tab_content}>
                     {showTabInformation()}
                 </div>
+                { 
+                <div className={styles.buttons} >
+                    <ButtonTemplate text={"Atras"} click={goBack} />
+                </div>
+                }
             </div>
+
+
+
         </div>
      );
 }

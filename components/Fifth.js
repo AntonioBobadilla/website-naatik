@@ -2,7 +2,7 @@ import React, {useEffect, useRef, useState}  from 'react';
 import styles from '../styles/Groups.module.css';
 import ButtonTemplate from '../components/Button';
 
-const Fifth = ({goToGroup, setCurrentGroup}) => {
+const Fifth = ({goToGroup, setCurrentGroup, goBack}) => {
 
     const handleClick = (group) => {
         setCurrentGroup(group)
@@ -85,6 +85,10 @@ const Fifth = ({goToGroup, setCurrentGroup}) => {
                         <button onClick={() => handleClick(4)} className={styles.link}>Ver predicciones</button>
                     </div>
                 </div>
+
+            </div>
+            <div className={styles.buttons} >
+                <ButtonTemplate text={"Atras"} click={(e) => goBack(e,2)} />
             </div>
         </div>
 

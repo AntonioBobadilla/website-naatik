@@ -54,3 +54,11 @@
     font-family: 'Comfortaa', cursive;
     font-weight: 700;
 }
+
+.buttons {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
