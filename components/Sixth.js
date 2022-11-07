@@ -2,7 +2,7 @@ import styles from '../styles/Group.module.css';
 import React, {useState} from 'react';
 import ButtonTemplate from '../components/Button';
 
-const Sixth = ({currentGp, setGp, acc, goBack }) => {
+const Sixth = ({currentGp, setGp, acc, ui, goBack }) => {
 
     const [currentGroup, setCurrentGroup] = useState(currentGp);
     const [currentTab, setCurrentTab] = useState('Diferencias');
@@ -13,8 +13,10 @@ const Sixth = ({currentGp, setGp, acc, goBack }) => {
 
     const results = [];
 
-    const downloadCSV = () => {
+    const  downloadCSV = () => {
         console.log("downloading...")
+        console.log(ui)
+        window.open('http://localhost:5000/retrievecsv?ui='+ui, '_blank', 'noopener,noreferrer');
     } 
 
     const handleCheckbox = (e, key) => {

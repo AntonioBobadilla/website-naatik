@@ -21,6 +21,7 @@ export default function Home() {
   const [hyperparams, setHyperparams] = React.useState({})
   const [currentGroup, setCurrentGroup] = React.useState(0);
   const [acc, setAcc] = React.useState({});
+  const [ui, setUi] = React.useState('')
 
   const [probabilities, setProbabilities] = React.useState({})
 
@@ -77,6 +78,7 @@ export default function Home() {
 
     if (resp.status === 200) {
       setProbabilities(resp.data.acc)
+      const ui = resp.data.ui
       const obj = resp.data.acc
       obj['Nula probabilidad'] = obj['group1'];
       delete obj['group1'];
@@ -89,7 +91,7 @@ export default function Home() {
 
       obj['Alta probabilidad'] = obj['group4'];
       delete obj['group4'];
-
+      setUi(ui)
       setAcc(obj)
     } else {
       console.log("ERROR A LA VERGA PUTO ENDPOINT")
@@ -115,7 +117,7 @@ switch (re) {
   case 4:
     return <Fifth goToGroup={goToGroup} setCurrentGroup={setCurrentGroup} goBack={previousRender} />
   case 5:
-    return <Sixth currentGp={currentGroup} setGp={setCurrentGroup} acc={acc} goBack={previousRender}/>
+    return <Sixth currentGp={currentGroup} setGp={setCurrentGroup} acc={acc} ui={ui} goBack={previousRender}/>
   default:
     return <h1>ola</h1>;
 }
