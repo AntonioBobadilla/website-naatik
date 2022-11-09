@@ -1,13 +1,65 @@
 import styles from '../styles/Group.module.css';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import ButtonTemplate from '../components/Button';
+import axios from 'axios';
+import JsPDF from 'jspdf';
+import html2canvas from "html2canvas";
+import Reporte from '../components/Reporte'
 
-const Sixth = ({currentGp, setGp, acc, ui, goBack }) => {
+const Sixth = ({currentGp, setGp, acc, ui, goBack}) => {
 
     const [currentGroup, setCurrentGroup] = useState(currentGp);
     const [currentTab, setCurrentTab] = useState('Diferencias');
     const [accumulates, setAccumulates] = useState(0);
+    const [differencesImages, setDifferencesImages] = useState([])
+    const [start, setStart] = useState(true);
 
+    const addDifferenceText = () => {
+       const text_bill_amount = 'El grupo con churn tiene 23% mayor pago que el grupo sin churn';
+       const text_complaints = 'El grupo con churn tiene 23% mayor quejas que el grupo sin churn';
+       const text_years_stayed = 'El grupo con churn tiene 23% mayor años en el servicio que el grupo sin churn';
+       const text_party_gender = 'El grupo con churn tiene 23% más mujeres pago que el grupo sin churn';
+       const text_pty_profile_sub_type = 'El grupo con churn tiene 23% más gente en Prestige/Residential que el grupo sin churn';
+    
+       const obj = []
+
+       const dummyobj1 = { 'text':text_bill_amount, 'url':differencesImages[0]}
+       const dummyobj2 = { 'text':text_complaints, 'url':differencesImages[1]}
+       const dummyobj3 = { 'text':text_party_gender, 'url':differencesImages[2]}
+       const dummyobj4 = { 'text':text_pty_profile_sub_type, 'url':differencesImages[3]}
+       const dummyobj5 = { 'text':text_years_stayed, 'url':differencesImages[4]}
+
+       obj.push(dummyobj1);
+       obj.push(dummyobj2);
+       obj.push(dummyobj3);
+       obj.push(dummyobj4);
+       obj.push(dummyobj5);
+
+       console.log("new obj: ", obj)
+       setDifferencesImages(obj)
+    }
+
+    useEffect(() => {
+        console.log("cambio en variable start.")
+        addDifferenceText()
+    },[start])
+
+    const fetchDifferences = async () => {
+        await axios.get("http://localhost:5000/getdifferences")
+        .then((res) => {
+            console.log(res.data)
+            setDifferencesImages(res.data)
+            setStart(false);
+            
+        })
+    }
+
+    useEffect(() => {
+        if (start === true)
+            fetchDifferences();
+        }, [start])
+
+  
     if(!acc)
         return
 
@@ -17,6 +69,26 @@ const Sixth = ({currentGp, setGp, acc, ui, goBack }) => {
         console.log("downloading...")
         console.log(ui)
         window.open('http://localhost:5000/retrievecsv?ui='+ui, '_blank', 'noopener,noreferrer');
+    } 
+
+    const  downloadReporte = async () => {
+        console.log("downloading reporte...")
+        /*
+        const report = new JsPDF('portrait','pt','letter');
+        report.html(document.querySelector('#__next')).then(() => {
+            report.save('report.pdf');
+        });*/
+            const pdf = new JsPDF("portrait", "pt", "a4"); 
+            const data = await html2canvas(document.querySelector('#reporte'));
+            const img = data.toDataURL("image/png");  
+            const imgProperties = pdf.getImageProperties(img);
+            const pdfWidth = pdf.internal.pageSize.getWidth();
+            const pdfHeight = (imgProperties.height * pdfWidth) / imgProperties.width;
+            pdf.addImage(img, "PNG", 0, 0, pdfWidth, pdfHeight);
+            pdf.save("shipping_label.pdf");
+
+        //console.log(ui)
+        //window.open('http://localhost:5000/retrievecsv?ui='+ui, '_blank', 'noopener,noreferrer');
     } 
 
     const handleCheckbox = (e, key) => {
@@ -81,7 +153,18 @@ const Sixth = ({currentGp, setGp, acc, ui, goBack }) => {
 
     const infoDiferencias = (group) => {
         return (
-            <h1> info diferencias de grupo {group}</h1>
+            <div className={styles.imageswrapper}>
+                
+                { differencesImages.map((obj, key) => (
+                    <>
+                        {console.log("OBJETO:  ", obj)}
+                        <li key={key} className={styles.text_plot}> {obj.text}</li>
+                        <img src={"http://localhost:5000"+obj.url} alt={"http://localhost:5000"+obj.url} className={styles.plot_img} />
+                    </>
+                ))}
+            </div>
+
+            
         )
     }
 
@@ -100,6 +183,14 @@ const Sixth = ({currentGp, setGp, acc, ui, goBack }) => {
         )
     }
 
+    const infoReporte = (group) => {
+        return (
+            <>
+                <h1> info reporte de grupo {group}</h1>
+                <ButtonTemplate text={"descargar reporte PDF"} click={downloadReporte} />
+            </>
+        )
+    }
 
     const showTabInformation = () => {
 
@@ -111,6 +202,8 @@ const Sixth = ({currentGp, setGp, acc, ui, goBack }) => {
             return infoGraficas(currentGp)
         } else if (currentTab === "Desglose") {
             return infoDesglose(currentGp)
+        } else if (currentTab === "Reporte") {
+            return infoReporte(currentGp)
         }
         }
 
@@ -143,6 +236,9 @@ const Sixth = ({currentGp, setGp, acc, ui, goBack }) => {
                         <li>
                             <button onClick={handleChangeTab} value="Desglose"> Desglose</button>
                         </li>
+                        <li>
+                            <button onClick={handleChangeTab} value="Reporte"> Reporte</button>
+                        </li>
                     </ul>
                 </nav>
                 <div className={styles.tab_content}>
@@ -155,7 +251,9 @@ const Sixth = ({currentGp, setGp, acc, ui, goBack }) => {
                 }
             </div>
 
-
+            <div className={styles.reporte} id="reporte">
+                <Reporte />
+            </div> 
 
         </div>
      );

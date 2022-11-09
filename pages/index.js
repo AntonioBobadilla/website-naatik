@@ -11,11 +11,12 @@ import Third from '../components/Third';
 import Fourth from '../components/Fourth';
 import Fifth from '../components/Fifth';
 import Sixth from '../components/Sixth';
+import Reporte from '../components/Reporte'
 
 export default function Home() {
 
   const [file, setFile] = React.useState('');
-  const [re, setRe] = React.useState(0)
+  const [re, setRe] = React.useState(6)
   const [render, setRender] = React.useState('');
   const [nums, setNums ] = React.useState({})
   const [hyperparams, setHyperparams] = React.useState({})
@@ -30,6 +31,11 @@ export default function Home() {
     setRe(re-numRenders)
   }
 
+  const nextRender = (e, numRenders = 1) => {
+    console.log("num renders: ", numRenders)
+    setRe(re+numRenders)
+  }
+
   const click = () => {
     console.log("cambiando...")
     setRe(re+1);
@@ -37,6 +43,7 @@ export default function Home() {
 
   useEffect(() => {
     console.log("first render")
+    
   }, []); 
 
   // use effect that tracks the state of hyperparams variable 
@@ -117,9 +124,9 @@ switch (re) {
   case 4:
     return <Fifth goToGroup={goToGroup} setCurrentGroup={setCurrentGroup} goBack={previousRender} />
   case 5:
-    return <Sixth currentGp={currentGroup} setGp={setCurrentGroup} acc={acc} ui={ui} goBack={previousRender}/>
+    return <Sixth  currentGp={currentGroup} setGp={setCurrentGroup} acc={acc} ui={ui} goBack={previousRender}/>
   default:
-    return <h1>ola</h1>;
+    return <Reporte />;
 }
 
 }
