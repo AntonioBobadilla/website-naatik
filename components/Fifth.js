@@ -28,7 +28,7 @@ const Fifth = ({goToGroup, setCurrentGroup, goBack}) => {
                         <p>Mediana probabilidad: 72</p>
                         <p>Alta probabilidad: 12</p>
 
-                            <button onClick={() => handleClick(1)} className={styles.link}>Ver predicciones</button>
+                            <button onClick={() => handleClick(1)} className={styles.link}>Ver predicciones {">>"}</button>
                     </div>
                 </div>
                 <div className={styles.group}>
@@ -46,7 +46,7 @@ const Fifth = ({goToGroup, setCurrentGroup, goBack}) => {
 
 
 
-                        <button onClick={() => handleClick(2)} className={styles.link}>Ver predicciones</button>
+                        <button onClick={() => handleClick(2)} className={styles.link}>Ver predicciones {">>"}</button>
                     </div>
                 </div>
                 <div className={styles.group}>
@@ -64,7 +64,7 @@ const Fifth = ({goToGroup, setCurrentGroup, goBack}) => {
 
 
 
-                        <button onClick={() => handleClick(3)} className={styles.link}>Ver predicciones</button>
+                        <button onClick={() => handleClick(3)} className={styles.link}>Ver predicciones {">>"}</button>
                     </div>
                 </div>
                 <div className={styles.group}>
@@ -82,7 +82,7 @@ const Fifth = ({goToGroup, setCurrentGroup, goBack}) => {
 
 
 
-                        <button onClick={() => handleClick(4)} className={styles.link}>Ver predicciones</button>
+                        <button onClick={() => handleClick(4)} className={styles.link}>Ver predicciones {">>"}</button>
                     </div>
                 </div>
 

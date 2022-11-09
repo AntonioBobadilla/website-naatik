@@ -10,8 +10,10 @@
     text-transform: uppercase;
     font-family: 'Comfortaa', cursive;
     font-size: 11px;
+    transition: .2s ease;
 }
 
 .button:hover {
     cursor: pointer;
+    background: #0abeff;
 }

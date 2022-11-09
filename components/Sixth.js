@@ -12,9 +12,11 @@ const Sixth = ({currentGp, setGp, acc, ui, goBack}) => {
     const [currentTab, setCurrentTab] = useState('Diferencias');
     const [accumulates, setAccumulates] = useState(0);
     const [differencesImages, setDifferencesImages] = useState([])
+    const [newDifferencesImages, setNewDifferencesImages] = useState([])
     const [start, setStart] = useState(true);
 
     const addDifferenceText = () => {
+        console.log("SOLO ENTRA UNA VEZ EN FUNC")
        const text_bill_amount = 'El grupo con churn tiene 23% mayor pago que el grupo sin churn';
        const text_complaints = 'El grupo con churn tiene 23% mayor quejas que el grupo sin churn';
        const text_years_stayed = 'El grupo con churn tiene 23% mayor años en el servicio que el grupo sin churn';
@@ -36,18 +38,13 @@ const Sixth = ({currentGp, setGp, acc, ui, goBack}) => {
        obj.push(dummyobj5);
 
        console.log("new obj: ", obj)
-       setDifferencesImages(obj)
+       setNewDifferencesImages(obj)
     }
 
-    useEffect(() => {
-        console.log("cambio en variable start.")
-        addDifferenceText()
-    },[start])
-
     const fetchDifferences = async () => {
+        console.log("SOLO ENTRA UNA VEZ")
         await axios.get("http://localhost:5000/getdifferences")
         .then((res) => {
-            console.log(res.data)
             setDifferencesImages(res.data)
             setStart(false);
             
@@ -55,9 +52,14 @@ const Sixth = ({currentGp, setGp, acc, ui, goBack}) => {
     }
 
     useEffect(() => {
-        if (start === true)
+        if (start === true) {
             fetchDifferences();
+        } else {
+            addDifferenceText()
+        }
         }, [start])
+
+
 
   
     if(!acc)
@@ -117,21 +119,15 @@ const Sixth = ({currentGp, setGp, acc, ui, goBack}) => {
              )
       })
 
-    console.log("gp enviado: ", currentGp)
 
     const handleGroup = (e) => {
         setGp(e.target.value)
-        console.log("group: ",e.target.value)
-        console.log("Pestaña: ", currentTab)
     }
 
-    const handleSelect = (e) => {
-        console.log("selected" ,e.target.value)
-    }
 
     const infoAhorros = (group) => {
         return (
-            <>
+            <div className={styles.savings}>
                 <p> Posibles cuentas canceladas</p>
                 <table className={styles.table} >
                     <tr>
@@ -146,7 +142,7 @@ const Sixth = ({currentGp, setGp, acc, ui, goBack}) => {
                         <td className={styles.td}>$ {accumulates}</td>
                     </tr>
                 </table> 
-            </>
+            </div>
 
         )
     }
@@ -155,9 +151,8 @@ const Sixth = ({currentGp, setGp, acc, ui, goBack}) => {
         return (
             <div className={styles.imageswrapper}>
                 
-                { differencesImages.map((obj, key) => (
+                { newDifferencesImages.map((obj, key) => (
                     <>
-                        {console.log("OBJETO:  ", obj)}
                         <li key={key} className={styles.text_plot}> {obj.text}</li>
                         <img src={"http://localhost:5000"+obj.url} alt={"http://localhost:5000"+obj.url} className={styles.plot_img} />
                     </>
@@ -176,19 +171,19 @@ const Sixth = ({currentGp, setGp, acc, ui, goBack}) => {
 
     const infoDesglose = (group) => {
         return (
-            <>
+            <div className={styles.desglose}>
                 <h1> info desglose de grupo {group}</h1>
                 <ButtonTemplate text={"descargar csv"} click={downloadCSV} />
-            </>
+            </div>
         )
     }
 
     const infoReporte = (group) => {
         return (
-            <>
+            <div className={styles.desglose}>
                 <h1> info reporte de grupo {group}</h1>
                 <ButtonTemplate text={"descargar reporte PDF"} click={downloadReporte} />
-            </>
+            </div>
         )
     }
 

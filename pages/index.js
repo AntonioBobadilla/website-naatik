@@ -16,13 +16,15 @@ import Reporte from '../components/Reporte'
 export default function Home() {
 
   const [file, setFile] = React.useState('');
-  const [re, setRe] = React.useState(6)
+  const [re, setRe] = React.useState(0)
   const [render, setRender] = React.useState('');
   const [nums, setNums ] = React.useState({})
   const [hyperparams, setHyperparams] = React.useState({})
   const [currentGroup, setCurrentGroup] = React.useState(0);
   const [acc, setAcc] = React.useState({});
-  const [ui, setUi] = React.useState('')
+  const [ui, setUi] = React.useState('');
+
+  const [fileError, setFileError] = React.useState(false);
 
   const [probabilities, setProbabilities] = React.useState({})
 
@@ -37,8 +39,14 @@ export default function Home() {
   }
 
   const click = () => {
-    console.log("cambiando...")
-    setRe(re+1);
+    if (file === ''){
+      console.log("sin archivo.")
+      setFileError(true);
+    } else{
+      console.log("cambiando...")
+      setRe(re+1);
+    }
+
   }
 
   useEffect(() => {
@@ -114,7 +122,7 @@ export default function Home() {
 //return(re ? <First click={click} setfile={setFile} file={file} /> : <Second setnums={setNums} send={send} />)
 switch (re) {
   case 0: // uploading file
-   return <First click={click} setfile={setFile} file={file} />
+   return <First fileError={fileError} setFileError={setFileError} click={click} setfile={setFile} file={file} />
   case 1: // setting slides
    return <Second setnums={setNums} send={send} goBack={previousRender} />
   case 2: // setting hyperparameteres

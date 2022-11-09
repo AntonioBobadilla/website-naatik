@@ -53,6 +53,14 @@
     color:#52678E;
     font-family: 'Comfortaa', cursive;
     font-weight: 700;
+    background: none;
+    border:none;
+    transition: .2s ease;
+}
+
+.link:hover {
+    cursor: pointer;
+    color:#3c4b68;
 }
 
 .buttons {
