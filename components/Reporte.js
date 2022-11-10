@@ -5,7 +5,7 @@ import styles from '../styles/Reporte.module.css';
 import AhorrosReporte from '../components/AhorrosReporte';
 import DiferenciasReporte from  '../components/DiferenciasReporte';
 import Graficas from '../components/Graficas';
-
+import ClassificationModel from '../components/ClassificationModel'
 
 const Reporte = ({differencesImages, accumulates, acc, setAccumulates, plots, noDifferences}) => {
     return ( 
@@ -26,6 +26,10 @@ const Reporte = ({differencesImages, accumulates, acc, setAccumulates, plots, no
             <div className={styles.section}>
                 <h5>Gráficas entre clientes con churn y no churn:</h5>
                 <Graficas plots={plots} />
+            </div>
+            <div className={styles.section}>
+                <h5>Modelo de clasificación usado:</h5>
+                <ClassificationModel />
             </div>
         </div>
      );

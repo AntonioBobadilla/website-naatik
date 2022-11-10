@@ -26,7 +26,7 @@ export default function Home() {
   const [acc, setAcc] = React.useState({});
   const [ui, setUi] = React.useState('');
   const [noDifferences, setNoDifferences ] = React.useState(false)
-
+  const [textDifferences, setTextDifferences] = React.useState({})
   const [fileError, setFileError] = React.useState(false);
 
   const [probabilities, setProbabilities] = React.useState({})
@@ -65,6 +65,7 @@ export default function Home() {
   }, [hyperparams]); 
 
   const send = async (obj) => {
+    console.log("slide: ",obj)
 
     const UPLOAD_ENDPOINT = "http://localhost:5000/";
     const formData = new FormData();
@@ -84,6 +85,7 @@ export default function Home() {
       if (resp.data.state === "no churn")
         setNoDifferences(true)
       setProbabilities(resp.data.acc)
+      setTextDifferences(resp.data.differences)
       const ui = resp.data.ui
       const obj = resp.data.acc
       obj['Nula probabilidad'] = obj['group1'];
@@ -121,7 +123,7 @@ switch (re) {
   case 4:
     return <Fifth goToGroup={goToGroup} setCurrentGroup={setCurrentGroup} goBack={previousRender} />
   case 5:
-    return <Sixth noDifferences={noDifferences} currentGp={currentGroup} setGp={setCurrentGroup} acc={acc} ui={ui} goBack={previousRender}/>
+    return <Sixth textDifferences={textDifferences} noDifferences={noDifferences} currentGp={currentGroup} setGp={setCurrentGroup} acc={acc} ui={ui} goBack={previousRender}/>
   default:
     return <Reporte />;
 }

@@ -12,7 +12,7 @@ import Diferencias from  '../components/Diferencias';
 import Graficas from '../components/Graficas';
 
 
-const Sixth = ({currentGp, setGp, acc, ui, goBack, noDifferences}) => {
+const Sixth = ({currentGp, setGp, acc, ui, goBack, noDifferences, textDifferences}) => {
 
     const [currentGroup, setCurrentGroup] = useState(currentGp);
     const [currentTab, setCurrentTab] = useState('Diferencias');
@@ -23,26 +23,23 @@ const Sixth = ({currentGp, setGp, acc, ui, goBack, noDifferences}) => {
     const [start, setStart] = useState(true);
 
     const addDifferenceText = () => {
-        console.log("SOLO ENTRA UNA VEZ EN FUNC")
+        console.log("SOLO ENTRA UNA VEZ EN FUNC", differencesImages)
        const text_bill_amount = 'El grupo con churn tiene 23% mayor pago que el grupo sin churn';
-       const text_complaints = 'El grupo con churn tiene 23% mayor quejas que el grupo sin churn';
+       const text_nationality = 'El grupo con churn tiene 23% mayor quejas que el grupo sin churn';
        const text_years_stayed = 'El grupo con churn tiene 23% mayor años en el servicio que el grupo sin churn';
-       const text_party_gender = 'El grupo con churn tiene 23% más mujeres pago que el grupo sin churn';
-       const text_pty_profile_sub_type = 'El grupo con churn tiene 23% más gente en Prestige/Residential que el grupo sin churn';
+       const text_status = 'El grupo con churn tiene 23% más gente en Prestige/Residential que el grupo sin churn';
     
        const obj = []
 
-       const dummyobj1 = { 'text':text_bill_amount, 'url':differencesImages[0]}
-       const dummyobj2 = { 'text':text_complaints, 'url':differencesImages[1]}
-       const dummyobj3 = { 'text':text_party_gender, 'url':differencesImages[2]}
-       const dummyobj4 = { 'text':text_pty_profile_sub_type, 'url':differencesImages[3]}
-       const dummyobj5 = { 'text':text_years_stayed, 'url':differencesImages[4]}
+       const dummyobj1 = { 'text':textDifferences['BILL_AMOUNT'], 'url':differencesImages[0]}
+       const dummyobj2 = { 'text':textDifferences['PARTY_NATIONALITY'], 'url':differencesImages[1]}
+       const dummyobj3 = { 'text':textDifferences['STATUS'], 'url':differencesImages[2]}
+       const dummyobj4 = { 'text':textDifferences['Years_stayed'], 'url':differencesImages[3]}
 
        obj.push(dummyobj1);
        obj.push(dummyobj2);
        obj.push(dummyobj3);
        obj.push(dummyobj4);
-       obj.push(dummyobj5);
 
        console.log("new obj: ", obj)
        setNewDifferencesImages(obj)
@@ -52,8 +49,8 @@ const Sixth = ({currentGp, setGp, acc, ui, goBack, noDifferences}) => {
         console.log("SOLO ENTRA UNA VEZ")
         await axios.get("http://localhost:5000/getdifferences", { params: { ui: ui} } )
         .then((res) => {
+            console.log("differences images: ", res.data)
             setDifferencesImages(res.data)
-            setStart(false)
 
         })
     }
@@ -69,7 +66,7 @@ const Sixth = ({currentGp, setGp, acc, ui, goBack, noDifferences}) => {
 
     useEffect(() => {
         if (start === true) {
-            if (noDifferences)
+            if (!noDifferences)
                 fetchDifferences();
             fetchGraficas();
         } else {
@@ -93,59 +90,6 @@ const Sixth = ({currentGp, setGp, acc, ui, goBack, noDifferences}) => {
 
     const  downloadReporte = async () => {
         console.log("downloading reporte...")
-        /*
-        const report = new JsPDF('portrait','pt','letter');
-        report.html(document.querySelector('#__next')).then(() => {
-            report.save('report.pdf');
-        });*/
-
-
-            /* MULTI PAGES */
-            /*const datas = document.querySelector('#reporte');
-            html2canvas(datas).then((canvas) => {
-                 //! MAKE YOUR PDF
-                 var pdf = new JsPDF('p', 'pt', 'letter');
-         
-                 for (var i = 0; i <= datas.clientHeight/980; i++) {
-                     //! This is all just html2canvas stuff
-                     var srcImg  = canvas;
-                     var sX      = 0;
-                     var sY      = 980*i; // start 980 pixels down for every new page
-                     var sWidth  = 900;
-                     var sHeight = 980;
-                     var dX      = 0;
-                     var dY      = 0;
-                     var dWidth  = 900;
-                     var dHeight = 980;
-         
-                     window.onePageCanvas = document.createElement("canvas");
-                     onePageCanvas.setAttribute('width', 900);
-                     onePageCanvas.setAttribute('height', 980);
-                     var ctx = onePageCanvas.getContext('2d');
-                     // details on this usage of this function: 
-                     // https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Using_images#Slicing
-                     ctx.drawImage(srcImg,sX,sY,sWidth,sHeight,dX,dY,dWidth,dHeight);
-         
-                     // document.body.appendChild(canvas);
-                     var canvasDataURL = onePageCanvas.toDataURL("image/png", 1.0);
-         
-                     var width         = onePageCanvas.width;
-                     var height        = onePageCanvas.clientHeight;
-         
-                     //! If we're on anything other than the first page,
-                     // add another page
-                     if (i > 0) {
-                         pdf.addPage(612, 791); //8.5" x 11" in pts (in*72)
-                     }
-                     //! now we declare that we're working on that page
-                     pdf.setPage(i+1);
-                     //! now we add content to that page!
-                     pdf.addImage(canvasDataURL, 'PNG', 20, 40, (width*.62), (height*.62));
-         
-                 }
-                 //! after the for loop is finished running, we save the pdf.
-                 pdf.save('Test.pdf');
-           });*/
 
             const datas = document.querySelector('#reporte');
             const pdf = new JsPDF("portrait", "pt", "a4"); 
@@ -194,28 +138,6 @@ const Sixth = ({currentGp, setGp, acc, ui, goBack, noDifferences}) => {
               heightLeft -= pageHeight;
             }
             doc.save( 'reporte.pdf');
-
-            /* MULTI PAGES */
-            /*const datas = document.querySelector('#reporte');
-            const pdf = new JsPDF("portrait", "pt", "a4"); 
-            const data = await html2canvas(datas, {
-                allowTaint:true,
-                useCORS:true
-            });
-            const img = data.toDataURL("image/png");  
-            const imgProperties = pdf.getImageProperties(img);
-            const pdfWidth = pdf.internal.pageSize.getWidth();
-            const pdfHeight = (imgProperties.height * pdfWidth) / imgProperties.width;
-            pdf.addImage(img, "PNG", 0, 0, pdfWidth, pdfHeight);
-            pdf.save("shipping_label.pdf");*/
-
-            /*const report = new JsPDF('portrait','pt','a4');
-            report.html(document.querySelector('#reporte')).then(() => {
-                report.save('report.pdf');
-            });*/
-
-        //console.log(ui)
-        //window.open('http://localhost:5000/retrievecsv?ui='+ui, '_blank', 'noopener,noreferrer');
     } 
 
 
