@@ -13,6 +13,8 @@ import Fifth from '../components/Fifth';
 import Sixth from '../components/Sixth';
 import Reporte from '../components/Reporte'
 
+
+
 export default function Home() {
 
   const [file, setFile] = React.useState('');
@@ -23,27 +25,24 @@ export default function Home() {
   const [currentGroup, setCurrentGroup] = React.useState(0);
   const [acc, setAcc] = React.useState({});
   const [ui, setUi] = React.useState('');
+  const [noDifferences, setNoDifferences ] = React.useState(false)
 
   const [fileError, setFileError] = React.useState(false);
 
   const [probabilities, setProbabilities] = React.useState({})
 
   const previousRender = (e, numRenders = 1) => {
-    console.log("num renders: ", numRenders)
     setRe(re-numRenders)
   }
 
   const nextRender = (e, numRenders = 1) => {
-    console.log("num renders: ", numRenders)
     setRe(re+numRenders)
   }
 
   const click = () => {
     if (file === ''){
-      console.log("sin archivo.")
       setFileError(true);
     } else{
-      console.log("cambiando...")
       setRe(re+1);
     }
 
@@ -51,16 +50,11 @@ export default function Home() {
 
   useEffect(() => {
     console.log("first render")
-    
   }, []); 
 
   // use effect that tracks the state of hyperparams variable 
   useEffect(() => {
     if (re == 2){
-      console.log("all data: ")
-      console.log(file)
-      console.log(nums)
-      console.log(hyperparams)
       setRe(re+1);
       setTimeout(function(){ // timeout para simular entrenamiento y cambiar de render despues de 4 seg.
         setRe(re+2);
@@ -71,18 +65,12 @@ export default function Home() {
   }, [hyperparams]); 
 
   const send = async (obj) => {
-    console.log("Enviando archivos:")
-    console.log("file: ", file)
-    console.log("slides: ",obj )
 
     const UPLOAD_ENDPOINT = "http://localhost:5000/";
-
     const formData = new FormData();
 
     formData.append("data", file);
     formData.append("slides", JSON.stringify(obj));
-
-    console.log(formData)
 
     const resp = await axios.post(UPLOAD_ENDPOINT, formData, {
       headers: {
@@ -92,6 +80,9 @@ export default function Home() {
     });
 
     if (resp.status === 200) {
+      console.log("all data from api: ", resp.data)
+      if (resp.data.state === "no churn")
+        setNoDifferences(true)
       setProbabilities(resp.data.acc)
       const ui = resp.data.ui
       const obj = resp.data.acc
@@ -109,14 +100,12 @@ export default function Home() {
       setUi(ui)
       setAcc(obj)
     } else {
-      console.log("ERROR A LA VERGA PUTO ENDPOINT")
     }
     setRe(re+1); 
   }
 
   const goToGroup = () => {
     setRe(re+1)
-    console.log("changing to individual group page...", currentGroup)
   }
 
 //return(re ? <First click={click} setfile={setFile} file={file} /> : <Second setnums={setNums} send={send} />)
@@ -124,7 +113,7 @@ switch (re) {
   case 0: // uploading file
    return <First fileError={fileError} setFileError={setFileError} click={click} setfile={setFile} file={file} />
   case 1: // setting slides
-   return <Second setnums={setNums} send={send} goBack={previousRender} />
+   return <Second slides={nums} setnums={setNums} send={send} goBack={previousRender} />
   case 2: // setting hyperparameteres
    return <Third setHyperparams={setHyperparams} goBack={previousRender}   /> 
   case 3: // show loading page
@@ -132,7 +121,7 @@ switch (re) {
   case 4:
     return <Fifth goToGroup={goToGroup} setCurrentGroup={setCurrentGroup} goBack={previousRender} />
   case 5:
-    return <Sixth  currentGp={currentGroup} setGp={setCurrentGroup} acc={acc} ui={ui} goBack={previousRender}/>
+    return <Sixth noDifferences={noDifferences} currentGp={currentGroup} setGp={setCurrentGroup} acc={acc} ui={ui} goBack={previousRender}/>
   default:
     return <Reporte />;
 }

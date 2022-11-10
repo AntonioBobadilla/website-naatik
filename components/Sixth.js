@@ -6,12 +6,19 @@ import JsPDF from 'jspdf';
 import html2canvas from "html2canvas";
 import Reporte from '../components/Reporte'
 
-const Sixth = ({currentGp, setGp, acc, ui, goBack}) => {
+// import separated components 
+import Ahorros from '../components/Ahorros';
+import Diferencias from  '../components/Diferencias';
+import Graficas from '../components/Graficas';
+
+
+const Sixth = ({currentGp, setGp, acc, ui, goBack, noDifferences}) => {
 
     const [currentGroup, setCurrentGroup] = useState(currentGp);
     const [currentTab, setCurrentTab] = useState('Diferencias');
     const [accumulates, setAccumulates] = useState(0);
     const [differencesImages, setDifferencesImages] = useState([])
+    const [plots, setPlots] = useState([])
     const [newDifferencesImages, setNewDifferencesImages] = useState([])
     const [start, setStart] = useState(true);
 
@@ -43,17 +50,28 @@ const Sixth = ({currentGp, setGp, acc, ui, goBack}) => {
 
     const fetchDifferences = async () => {
         console.log("SOLO ENTRA UNA VEZ")
-        await axios.get("http://localhost:5000/getdifferences")
+        await axios.get("http://localhost:5000/getdifferences", { params: { ui: ui} } )
         .then((res) => {
             setDifferencesImages(res.data)
-            setStart(false);
-            
+            setStart(false)
+
+        })
+    }
+
+    const fetchGraficas = async () => {
+        await axios.get("http://localhost:5000/getgraphs", { params: { ui: ui} }  )
+        .then((res) => {
+            console.log("plots: ", res.data)
+            setPlots(res.data)
+            setStart(false)
         })
     }
 
     useEffect(() => {
         if (start === true) {
-            fetchDifferences();
+            if (noDifferences)
+                fetchDifferences();
+            fetchGraficas();
         } else {
             addDifferenceText()
         }
@@ -65,7 +83,7 @@ const Sixth = ({currentGp, setGp, acc, ui, goBack}) => {
     if(!acc)
         return
 
-    const results = [];
+
 
     const  downloadCSV = () => {
         console.log("downloading...")
@@ -80,44 +98,128 @@ const Sixth = ({currentGp, setGp, acc, ui, goBack}) => {
         report.html(document.querySelector('#__next')).then(() => {
             report.save('report.pdf');
         });*/
+
+
+            /* MULTI PAGES */
+            /*const datas = document.querySelector('#reporte');
+            html2canvas(datas).then((canvas) => {
+                 //! MAKE YOUR PDF
+                 var pdf = new JsPDF('p', 'pt', 'letter');
+         
+                 for (var i = 0; i <= datas.clientHeight/980; i++) {
+                     //! This is all just html2canvas stuff
+                     var srcImg  = canvas;
+                     var sX      = 0;
+                     var sY      = 980*i; // start 980 pixels down for every new page
+                     var sWidth  = 900;
+                     var sHeight = 980;
+                     var dX      = 0;
+                     var dY      = 0;
+                     var dWidth  = 900;
+                     var dHeight = 980;
+         
+                     window.onePageCanvas = document.createElement("canvas");
+                     onePageCanvas.setAttribute('width', 900);
+                     onePageCanvas.setAttribute('height', 980);
+                     var ctx = onePageCanvas.getContext('2d');
+                     // details on this usage of this function: 
+                     // https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Using_images#Slicing
+                     ctx.drawImage(srcImg,sX,sY,sWidth,sHeight,dX,dY,dWidth,dHeight);
+         
+                     // document.body.appendChild(canvas);
+                     var canvasDataURL = onePageCanvas.toDataURL("image/png", 1.0);
+         
+                     var width         = onePageCanvas.width;
+                     var height        = onePageCanvas.clientHeight;
+         
+                     //! If we're on anything other than the first page,
+                     // add another page
+                     if (i > 0) {
+                         pdf.addPage(612, 791); //8.5" x 11" in pts (in*72)
+                     }
+                     //! now we declare that we're working on that page
+                     pdf.setPage(i+1);
+                     //! now we add content to that page!
+                     pdf.addImage(canvasDataURL, 'PNG', 20, 40, (width*.62), (height*.62));
+         
+                 }
+                 //! after the for loop is finished running, we save the pdf.
+                 pdf.save('Test.pdf');
+           });*/
+
+            const datas = document.querySelector('#reporte');
             const pdf = new JsPDF("portrait", "pt", "a4"); 
-            const data = await html2canvas(document.querySelector('#reporte'));
+            const canvas = await html2canvas(datas, {
+                allowTaint:true,
+                useCORS:true
+            });
+            const img = canvas.toDataURL("image/png");  
+            var imgWidth = 210; 
+            var pageHeight = 295;  
+            var imgHeight = canvas.height * imgWidth / canvas.width;
+            var heightLeft = imgHeight;
+      
+            var doc = new JsPDF('p', 'mm');
+            var position = 0;
+      
+            doc.addImage({
+                imageData: img,
+                format: "PNG",
+                x: 0,
+                y: 0,
+                width: imgWidth,
+                height: imgHeight,
+                alias: undefined,
+                compression: "FAST", //'NONE', 'FAST', 'MEDIUM' and 'SLOW'
+                rotation: 0,
+              })
+            //doc.addImage(img, 'PNG', 0, position, imgWidth, imgHeight, compression="FAST");
+            heightLeft -= pageHeight;
+      
+            while (heightLeft >= 0) {
+              position = heightLeft - imgHeight;
+              doc.addPage();
+              doc.addImage({
+                imageData: img,
+                format: "PNG",
+                x: 0,
+                y: position,
+                width: imgWidth,
+                height: imgHeight,
+                alias: undefined,
+                compression: "FAST", //'NONE', 'FAST', 'MEDIUM' and 'SLOW'
+                rotation: 0,
+              })             
+              doc.addImage(img, 'PNG', 0, position, imgWidth, imgHeight);
+              heightLeft -= pageHeight;
+            }
+            doc.save( 'reporte.pdf');
+
+            /* MULTI PAGES */
+            /*const datas = document.querySelector('#reporte');
+            const pdf = new JsPDF("portrait", "pt", "a4"); 
+            const data = await html2canvas(datas, {
+                allowTaint:true,
+                useCORS:true
+            });
             const img = data.toDataURL("image/png");  
             const imgProperties = pdf.getImageProperties(img);
             const pdfWidth = pdf.internal.pageSize.getWidth();
             const pdfHeight = (imgProperties.height * pdfWidth) / imgProperties.width;
             pdf.addImage(img, "PNG", 0, 0, pdfWidth, pdfHeight);
-            pdf.save("shipping_label.pdf");
+            pdf.save("shipping_label.pdf");*/
+
+            /*const report = new JsPDF('portrait','pt','a4');
+            report.html(document.querySelector('#reporte')).then(() => {
+                report.save('report.pdf');
+            });*/
 
         //console.log(ui)
         //window.open('http://localhost:5000/retrievecsv?ui='+ui, '_blank', 'noopener,noreferrer');
     } 
 
-    const handleCheckbox = (e, key) => {
-        const quantity =  acc[key]
-        if(e.target.checked){
-            setAccumulates(accumulates + quantity)
-        }else{
-            setAccumulates(accumulates - quantity)
-        }
-   }
 
-    Object.keys(acc).forEach(function(key, index) {
-        results.push(
-            <tr>
-                <td className={styles.td}>{key}</td>
-                <td className={styles.td}>$ {acc[key]}</td>
-                <td className={styles.td}><input
-                        type="checkbox" 
-                        value={""}
-                        key={key}
-                        onChange={(e) => handleCheckbox(e, key)}
-                        name="time" 
-                        id={""}
-                        /></td>
-            </tr>
-             )
-      })
+ 
 
 
     const handleGroup = (e) => {
@@ -125,47 +227,17 @@ const Sixth = ({currentGp, setGp, acc, ui, goBack}) => {
     }
 
 
-    const infoAhorros = (group) => {
-        return (
-            <div className={styles.savings}>
-                <p> Posibles cuentas canceladas</p>
-                <table className={styles.table} >
-                    <tr>
-                        <th className={styles.th}>Grupo de probabilidad</th>
-                        <th className={styles.th}>Monto a pagar</th>
-                        <th className={styles.th}>Seleccionar/Deseleccionar</th>
-                    </tr>
-                    {results}
-
-                    <tr className={styles.results}>
-                        <td className={styles.td}>TOTAL</td>
-                        <td className={styles.td}>$ {accumulates}</td>
-                    </tr>
-                </table> 
-            </div>
-
-        )
-    }
+    const infoAhorros = (group) => { return ( <Ahorros accumulates={accumulates} acc={acc} setAccumulates={setAccumulates}/> ) }
 
     const infoDiferencias = (group) => {
         return (
-            <div className={styles.imageswrapper}>
-                
-                { newDifferencesImages.map((obj, key) => (
-                    <>
-                        <li key={key} className={styles.text_plot}> {obj.text}</li>
-                        <img src={"http://localhost:5000"+obj.url} alt={"http://localhost:5000"+obj.url} className={styles.plot_img} />
-                    </>
-                ))}
-            </div>
-
-            
+         <Diferencias noDifferences={noDifferences} differencesImages={newDifferencesImages}/>
         )
     }
 
     const infoGraficas = (group) => {
         return (
-            <h1> info graficas de grupo {group}</h1>
+            <Graficas plots={plots}/>
         )
     }
 
@@ -182,7 +254,7 @@ const Sixth = ({currentGp, setGp, acc, ui, goBack}) => {
         return (
             <div className={styles.desglose}>
                 <h1> info reporte de grupo {group}</h1>
-                <ButtonTemplate text={"descargar reporte PDF"} click={downloadReporte} />
+                <ButtonTemplate text={"Generar reporte PDF"} click={downloadReporte} />
             </div>
         )
     }
@@ -205,6 +277,18 @@ const Sixth = ({currentGp, setGp, acc, ui, goBack}) => {
     const handleChangeTab = (e) => {
         setCurrentTab(e.target.value)
         console.log("cambio: ", )
+    }
+
+    const conditionalRendering = () => {
+        if ( !start ){
+            return (
+                <div className={styles.reporte} id="reporte">
+                    <Reporte differencesImages={newDifferencesImages} accumulates={accumulates} acc={acc} setAccumulates={setAccumulates} plots={plots}  noDifferences={noDifferences}  />
+                </div> 
+            )
+        } else {
+            return (<>ola</>)
+        }
     }
 
 
@@ -246,9 +330,7 @@ const Sixth = ({currentGp, setGp, acc, ui, goBack}) => {
                 }
             </div>
 
-            <div className={styles.reporte} id="reporte">
-                <Reporte />
-            </div> 
+            { conditionalRendering() }
 
         </div>
      );

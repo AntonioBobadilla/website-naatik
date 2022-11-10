@@ -6,16 +6,15 @@ import styled from 'styled-components';
 import classNames from 'classnames';
 import ButtonTemplate from '../components/Button';
 
-const Second = ({setnums, send, goBack}) => {
-
+const Second = ({setnums, send, goBack, slides}) => {
 
     const [num1, setNum1] = useState(0);
     const [num2, setNum2] = useState(50);
     const [num3, setNum3] = useState(100);
-    
+
     let a = 0;
-    let b = 0;
-    let c = 0;
+    let b = 50;
+    let c = 100;
     
     const getQueryStringParams = query => {
         return query
@@ -102,8 +101,8 @@ const Second = ({setnums, send, goBack}) => {
     const Track = (props, state) => <StyledTrack {...props} index={state.index} />;
     
     const updateValues = () => {
-    setnums({"first-slide": a, "second-slide":b, "third-slide":c})
-    send({"first-slide": a, "second-slide":b, "third-slide":c})
+        //setnums({"first-slide": a, "second-slide":b, "third-slide":c})
+        send({"first-slide": a, "second-slide":b, "third-slide":c})
     }
 
     return ( 

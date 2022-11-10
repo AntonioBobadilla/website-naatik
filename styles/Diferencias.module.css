@@ -1,0 +1,13 @@
+ .imageswrapper {
+    width: 70%;
+    margin:0 auto;
+    margin-top: 40px;
+}
+
+ .text_plot {
+    font-size: 20px;
+}
+
+.plot_img {
+    width: 100%;
+}
