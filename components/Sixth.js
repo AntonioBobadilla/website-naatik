@@ -13,7 +13,7 @@ import Graficas from '../components/Graficas';
 
 import ButtonWithIcon from '../components/ButtonWithIcon';
 
-const Sixth = ({currentGp, setGp, acc, ui, goBack, noDifferences, textDifferences, fileName_size, fileRows}) => {
+const Sixth = ({currentGp, setGp, acc, ui, goBack, status, textDifferences, fileName_size, fileRows, loadingFetch, setLoadingFetch}) => {
 
     const [currentGroup, setCurrentGroup] = useState(currentGp);
     const [currentTab, setCurrentTab] = useState('Diferencias');
@@ -24,7 +24,6 @@ const Sixth = ({currentGp, setGp, acc, ui, goBack, noDifferences, textDifference
     const [start, setStart] = useState(true);
 
     const addDifferenceText = () => {
-        console.log("SOLO ENTRA UNA VEZ EN FUNC", differencesImages)
        const text_bill_amount = 'El grupo con churn tiene 23% mayor pago que el grupo sin churn';
        const text_nationality = 'El grupo con churn tiene 23% mayor quejas que el grupo sin churn';
        const text_years_stayed = 'El grupo con churn tiene 23% mayor años en el servicio que el grupo sin churn';
@@ -32,34 +31,32 @@ const Sixth = ({currentGp, setGp, acc, ui, goBack, noDifferences, textDifference
     
        const obj = []
 
-       const dummyobj1 = { 'text':textDifferences['BILL_AMOUNT'], 'url':differencesImages[0]}
-       const dummyobj2 = { 'text':textDifferences['PARTY_NATIONALITY'], 'url':differencesImages[1]}
-       const dummyobj3 = { 'text':textDifferences['STATUS'], 'url':differencesImages[2]}
-       const dummyobj4 = { 'text':textDifferences['Years_stayed'], 'url':differencesImages[3]}
 
-       obj.push(dummyobj1);
-       obj.push(dummyobj2);
-       obj.push(dummyobj3);
-       obj.push(dummyobj4);
+        const dummyobj1 = { 'text':textDifferences['BILL_AMOUNT'], 'url':differencesImages[0]}
+        const dummyobj2 = { 'text':textDifferences['PARTY_NATIONALITY'], 'url':differencesImages[1]}
+        const dummyobj3 = { 'text':textDifferences['STATUS'], 'url':differencesImages[2]}
+        const dummyobj4 = { 'text':textDifferences['Years_stayed'], 'url':differencesImages[3]}
+ 
+        obj.push(dummyobj1);
+        obj.push(dummyobj2);
+        obj.push(dummyobj3);
+        obj.push(dummyobj4);
 
-       console.log("new obj: ", obj)
+      
+
        setNewDifferencesImages(obj)
     }
 
     const fetchDifferences = async () => {
-        console.log("SOLO ENTRA UNA VEZ")
         await axios.get("http://localhost:5000/getdifferences", { params: { ui: ui} } )
         .then((res) => {
-            console.log("differences images: ", res.data)
             setDifferencesImages(res.data)
-
         })
     }
 
     const fetchGraficas = async () => {
         await axios.get("http://localhost:5000/getgraphs", { params: { ui: ui} }  )
         .then((res) => {
-            console.log("plots: ", res.data)
             setPlots(res.data)
             setStart(false)
         })
@@ -67,11 +64,13 @@ const Sixth = ({currentGp, setGp, acc, ui, goBack, noDifferences, textDifference
 
     useEffect(() => {
         if (start === true) {
-            if (!noDifferences)
+            if (status === 'both')
                 fetchDifferences();
             fetchGraficas();
         } else {
-            addDifferenceText()
+            if (status === 'both') {
+                addDifferenceText()
+            }
         }
         }, [start])
 
@@ -84,14 +83,11 @@ const Sixth = ({currentGp, setGp, acc, ui, goBack, noDifferences, textDifference
 
 
     const  downloadCSV = () => {
-        console.log("downloading...")
-        console.log(ui)
         window.open('http://localhost:5000/retrievecsv?ui='+ui, '_blank', 'noopener,noreferrer');
     } 
 
     const  downloadReporte = async () => {
-        console.log("downloading reporte...")
-
+            setLoadingFetch(true)
             const datas = document.querySelector('#reporte');
             const pdf = new JsPDF("portrait", "pt", "a4"); 
             const canvas = await html2canvas(datas, {
@@ -139,6 +135,7 @@ const Sixth = ({currentGp, setGp, acc, ui, goBack, noDifferences, textDifference
               heightLeft -= pageHeight;
             }
             doc.save( 'reporte.pdf');
+            setLoadingFetch(false)
     } 
 
 
@@ -154,7 +151,7 @@ const Sixth = ({currentGp, setGp, acc, ui, goBack, noDifferences, textDifference
 
     const infoDiferencias = (group) => {
         return (
-         <Diferencias noDifferences={noDifferences} differencesImages={newDifferencesImages}/>
+         <Diferencias status={status} differencesImages={newDifferencesImages}/>
         )
     }
 
@@ -203,14 +200,13 @@ const Sixth = ({currentGp, setGp, acc, ui, goBack, noDifferences, textDifference
 
     const handleChangeTab = (e) => {
         setCurrentTab(e.target.value)
-        console.log("cambio: ", )
     }
 
     const conditionalRendering = () => {
         if ( !start ){
             return (
                 <div className={styles.reporte} id="reporte">
-                    <Reporte fileRows={fileRows} differencesImages={newDifferencesImages} accumulates={accumulates} acc={acc} setAccumulates={setAccumulates} plots={plots}  noDifferences={noDifferences} fileName_size={fileName_size}  />
+                    <Reporte fileRows={fileRows} differencesImages={newDifferencesImages} accumulates={accumulates} acc={acc} setAccumulates={setAccumulates} plots={plots}  status={status} fileName_size={fileName_size}  />
                 </div> 
             )
         } else {

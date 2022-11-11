@@ -8,13 +8,13 @@ import ButtonTemplate from '../components/Button';
 
 const Second = ({setnums, send, goBack, slides}) => {
 
-    const [num1, setNum1] = useState(0);
+    const [num1, setNum1] = useState(1);
     const [num2, setNum2] = useState(50);
-    const [num3, setNum3] = useState(100);
+    const [num3, setNum3] = useState(99);
 
-    let a = 0;
+    let a = 1;
     let b = 50;
-    let c = 100;
+    let c = 99;
     
     const getQueryStringParams = query => {
         return query

@@ -34,17 +34,21 @@ const Ahorros = ( {accumulates, acc, setAccumulates, fontSize}) => {
         <div className={styles.savings}>
         <p> Posibles cuentas canceladas</p>
         <table className={styles.table} >
-            <tr>
-                <th className={styles.th}>Grupo de probabilidad</th>
-                <th className={styles.th}>Monto a pagar</th>
-                <th className={styles.th}>Seleccionar/Deseleccionar</th>
-            </tr>
-            {results}
+            <thead>
+                <tr>
+                    <th className={styles.th}>Grupo de probabilidad</th>
+                    <th className={styles.th}>Monto a pagar</th>
+                    <th className={styles.th}>Seleccionar/Deseleccionar</th>
+                </tr>
+            </thead>
+            <tbody>
+                {results}
 
-            <tr className={styles.results}>
-                <td className={styles.td}>TOTAL</td>
-                <td className={styles.td}>$ {accumulates.toLocaleString()}</td>
-            </tr>
+                <tr className={styles.results}>
+                    <td className={styles.td}>TOTAL</td>
+                    <td className={styles.td}>$ {accumulates.toLocaleString()}</td>
+                </tr>
+            </tbody>
         </table> 
     </div>
      );

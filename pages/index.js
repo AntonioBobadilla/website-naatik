@@ -12,7 +12,7 @@ import Fourth from '../components/Fourth';
 import Fifth from '../components/Fifth';
 import Sixth from '../components/Sixth';
 import Reporte from '../components/Reporte'
-
+import LoadingPage from '../components/LoadingPage'
 
 
 export default function Home() {
@@ -30,6 +30,9 @@ export default function Home() {
   const [fileError, setFileError] = React.useState(false);
   const [fileName_size, setFileName_size] = React.useState({});
   const [fileRows, setFileRows] = React.useState([])
+  const [status, setStatus] = React.useState('')
+
+  const [loadingFetch, setLoadingFetch] = React.useState(false)
 
   const [probabilities, setProbabilities] = React.useState({})
 
@@ -50,9 +53,6 @@ export default function Home() {
 
   }
 
-  useEffect(() => {
-    console.log("first render")
-  }, []); 
 
   // use effect that tracks the state of hyperparams variable 
   useEffect(() => {
@@ -64,14 +64,20 @@ export default function Home() {
     }
 
 
-  }, [hyperparams]); 
+  }, [hyperparams]);
+  
+  
+  useEffect(() => {
+    if (loadingFetch)
+      console.log("fetching....")
+    else
+      console.log("finish fetching...")
+  },[loadingFetch])
 
   const send = async (obj) => {
-    console.log("slide: ",obj)
-
+    setLoadingFetch(true)
     const UPLOAD_ENDPOINT = "http://localhost:5000/";
     const formData = new FormData();
-
     formData.append("data", file);
 
     formData.append("slides", JSON.stringify(obj));
@@ -84,9 +90,7 @@ export default function Home() {
     });
 
     if (resp.status === 200) {
-      console.log("all data from api: ", resp.data)
-      if (resp.data.state === "no churn")
-        setNoDifferences(true)
+      setStatus(resp.data.state)
       setProbabilities(resp.data.acc)
       setTextDifferences(resp.data.differences)
       setFileRows(resp.data.fileRows)
@@ -105,6 +109,7 @@ export default function Home() {
       delete obj['group4'];
       setUi(ui)
       setAcc(obj)
+      setLoadingFetch(false)
     } else {
     }
     //setRe(re+1); 
@@ -116,24 +121,29 @@ export default function Home() {
   }
 
 //return(re ? <First click={click} setfile={setFile} file={file} /> : <Second setnums={setNums} send={send} />)
-switch (re) {
+if (loadingFetch) {
+  return <LoadingPage />
+} else { 
+  switch (re) {
 
-  case 0: // uploading file
-  return <First fileError={fileError} setFileError={setFileError} click={click} setfile={setFile} setFileName_size={setFileName_size} file={file} />
- case 1: // setting slides
-  return <Second slides={nums} setnums={setNums} send={send} goBack={previousRender} />
- case 2: // setting hyperparameteres
-  return <Third setHyperparams={setHyperparams} goBack={previousRender}   /> 
- case 3: // show loading page
-  return <Fourth /> 
- case 4:
-   return <Fifth goToGroup={goToGroup} setCurrentGroup={setCurrentGroup} goBack={previousRender} />
- case 5:
-   return <Sixth textDifferences={textDifferences} noDifferences={noDifferences} currentGp={currentGroup} setGp={setCurrentGroup} acc={acc} ui={ui} goBack={previousRender} fileName_size={fileName_size} fileRows={fileRows}/>
- default:
-   return <Reporte />;
+    case 0: // uploading file
+    return <First fileError={fileError} setFileError={setFileError} click={click} setfile={setFile} setFileName_size={setFileName_size} file={file} />
+  case 1: // setting slides
+    return <Second slides={nums} setnums={setNums} send={send} goBack={previousRender}  />
+  case 2: // setting hyperparameteres
+    return <Third setHyperparams={setHyperparams} goBack={previousRender}   /> 
+  case 3: // show loading page
+    return <Fourth /> 
+  case 4:
+    return <Fifth goToGroup={goToGroup} setCurrentGroup={setCurrentGroup} goBack={previousRender} />
+  case 5:
+    return <Sixth textDifferences={textDifferences} status={status} currentGp={currentGroup} setGp={setCurrentGroup} acc={acc} ui={ui} goBack={previousRender} fileName_size={fileName_size} fileRows={fileRows} loadingFetch={loadingFetch} setLoadingFetch={setLoadingFetch}/>
+  default:
+    return <Reporte />;
 
-  
+    
+  }
+
 }
 
 }

@@ -1,27 +1,31 @@
 import styles from '../styles/Diferencias.module.css'
 
-const Diferencias = ({differencesImages, noDifferences}) => {
+const Diferencias = ({differencesImages, status}) => {
+
+    console.log("STAUTSS: ",status)
     
-    console.log("data imgs: ",differencesImages)
     const trueCondition = () => (
         
         differencesImages.map((obj, key) => (
-            <>
-                <li key={key} className={styles.text_plot}> {obj.text}</li>
+            <div key={key}>
+                <li  className={styles.text_plot}> {obj.text}</li>
                 <img src={"http://localhost:5000"+obj.url} alt={"http://localhost:5000"+obj.url} className={styles.plot_img} />
-            </>
+            </div>
         ))
     )
 
     const falseCondition = () => {
-        console.log("aaaaa")
-        return ( <h1>No hay churn.</h1>)
+        return ( 
+            <div className={styles.center_wrapper}>
+                <p>Dados los slides proporcionados, no hay churn.</p>
+            </div>
+        )
     }
     return ( 
 
         <div className={styles.imageswrapper}>
 
-            { (noDifferences ? falseCondition() : trueCondition()) }
+            { ( (status === 'both') ? trueCondition() : falseCondition()) }
                 
         </div>
      );

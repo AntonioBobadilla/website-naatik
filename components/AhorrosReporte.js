@@ -26,7 +26,7 @@ const AhorrosReporte = ( {accumulates, acc, setAccumulates, fontSize}) => {
 
     Object.keys(acc).forEach(function(key, index) {
         results.push(
-            <tr>
+            <tr key={key}>
                 <td className={styles.td}>{key}</td>
                 <td className={styles.td}>$ {acc[key].toLocaleString()}</td>
             </tr>

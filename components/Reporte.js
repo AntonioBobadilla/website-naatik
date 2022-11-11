@@ -8,7 +8,7 @@ import Graficas from '../components/Graficas';
 import ClassificationModel from '../components/ClassificationModel'
 import InformacionCSV from '../components/InformacionCSV';
 
-const Reporte = ({differencesImages, accumulates, acc, setAccumulates, plots, noDifferences, fileName_size, fileRows}) => {
+const Reporte = ({differencesImages, accumulates, acc, setAccumulates, plots, noDifferences, fileName_size, fileRows, status}) => {
     return ( 
         <div className={styles.reporte}>
             <Navbar />
@@ -23,7 +23,7 @@ const Reporte = ({differencesImages, accumulates, acc, setAccumulates, plots, no
             <div className={styles.section}>
                 <h5>Diferencias entre clientes con churn y no churn:</h5>
                 <p className={styles.abstract_text}>A continuación se muestran las diferencias entre los clientes con churn y no churn con algunas variables que tienen una alta importancia en el modelo de clasificación.</p>
-                <DiferenciasReporte noDifferences={noDifferences} differencesImages={differencesImages}/>
+                <DiferenciasReporte status={status} noDifferences={noDifferences} differencesImages={differencesImages}/>
             </div>
             <div className={styles.section}>
                 <h5>Posibles cuentas canceladas:</h5>
