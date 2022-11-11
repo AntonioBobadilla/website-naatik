@@ -1,8 +1,8 @@
 import styles from '../styles/DiferenciasReporte.module.css'
 
 const DiferenciasReporte = ({differencesImages, noDifferences}) => {
-    console.log("no diff: ",noDifferences)
-    const trueCondition = () => {
+    console.log("data imgs: ",differencesImages)
+    const trueCondition = () => (
         
         differencesImages.map((obj, key) => (
             <>
@@ -10,7 +10,7 @@ const DiferenciasReporte = ({differencesImages, noDifferences}) => {
                 <img src={"http://localhost:5000"+obj.url} alt={"http://localhost:5000"+obj.url} className={styles.plot_img} />
             </>
         ))
-    }
+    )
 
     const falseCondition = () => {
         console.log("aaaaa")
@@ -20,7 +20,7 @@ const DiferenciasReporte = ({differencesImages, noDifferences}) => {
 
         <div className={styles.imageswrapper}>
 
-            { (noDifferences ? trueCondition() : falseCondition()) }
+            { (noDifferences ? falseCondition() : trueCondition()) }
                 
         </div>
      );

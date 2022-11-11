@@ -3,7 +3,7 @@ import DragAndDrop from '../components/dragdrop'
 import React from 'react';
 import ButtonTemplate from '../components/Button';
 
-const First = ({click, setfile, file, fileError, setFileError}) => {
+const First = ({click, setfile, file, fileError, setFileError, setFileName_size}) => {
 
     const checkFileError = () => {
         if (fileError) {
@@ -23,7 +23,7 @@ const First = ({click, setfile, file, fileError, setFileError}) => {
         <h1>Analizador de abandono de clientes</h1>
         <div className={styles.file_container} >
           <p>Selecciona el archivo a analizar</p>
-          <DragAndDrop file={file} setFile={setfile}/>
+          <DragAndDrop file={file} setFile={setfile} setFileName_size={setFileName_size}/>
         </div>
         { checkFileError() }
         <div className={styles.error} id="errorFile">

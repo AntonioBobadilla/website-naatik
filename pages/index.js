@@ -28,6 +28,8 @@ export default function Home() {
   const [noDifferences, setNoDifferences ] = React.useState(false)
   const [textDifferences, setTextDifferences] = React.useState({})
   const [fileError, setFileError] = React.useState(false);
+  const [fileName_size, setFileName_size] = React.useState({});
+  const [fileRows, setFileRows] = React.useState([])
 
   const [probabilities, setProbabilities] = React.useState({})
 
@@ -71,6 +73,7 @@ export default function Home() {
     const formData = new FormData();
 
     formData.append("data", file);
+
     formData.append("slides", JSON.stringify(obj));
 
     const resp = await axios.post(UPLOAD_ENDPOINT, formData, {
@@ -86,6 +89,7 @@ export default function Home() {
         setNoDifferences(true)
       setProbabilities(resp.data.acc)
       setTextDifferences(resp.data.differences)
+      setFileRows(resp.data.fileRows)
       const ui = resp.data.ui
       const obj = resp.data.acc
       obj['Nula probabilidad'] = obj['group1'];
@@ -113,7 +117,7 @@ export default function Home() {
 //return(re ? <First click={click} setfile={setFile} file={file} /> : <Second setnums={setNums} send={send} />)
 switch (re) {
   case 0: // uploading file
-   return <First fileError={fileError} setFileError={setFileError} click={click} setfile={setFile} file={file} />
+   return <First fileError={fileError} setFileError={setFileError} click={click} setfile={setFile} setFileName_size={setFileName_size} file={file} />
   case 1: // setting slides
    return <Second slides={nums} setnums={setNums} send={send} goBack={previousRender} />
   case 2: // setting hyperparameteres
@@ -123,7 +127,7 @@ switch (re) {
   case 4:
     return <Fifth goToGroup={goToGroup} setCurrentGroup={setCurrentGroup} goBack={previousRender} />
   case 5:
-    return <Sixth textDifferences={textDifferences} noDifferences={noDifferences} currentGp={currentGroup} setGp={setCurrentGroup} acc={acc} ui={ui} goBack={previousRender}/>
+    return <Sixth textDifferences={textDifferences} noDifferences={noDifferences} currentGp={currentGroup} setGp={setCurrentGroup} acc={acc} ui={ui} goBack={previousRender} fileName_size={fileName_size} fileRows={fileRows}/>
   default:
     return <Reporte />;
 }

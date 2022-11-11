@@ -1,3 +1,64 @@
 .text {
     font-size: 17px;
 }
+
+.cm_wrapper {
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top:50px;
+    margin-bottom:50px;
+}
+
+.confussion_matrix {
+    width: 400px;
+    height: auto;
+    border:1 px solid black;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.true_negatives, .true_positives, .false_negatives, .false_positives {
+    width: 200px;
+    height: 130px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.true_positives, .true_negatives {
+    background:#9cb380;
+}
+
+.false_positives, .false_negatives {
+    background:#d6300a;
+}
+
+
+.true_positives {
+    padding:1px;
+}
+
+.false_positives {
+    padding:1px;
+}
+
+.true_negatives {
+    padding:1px;
+}
+
+.false_negatives {
+    padding:1px;
+}
+
+.text_cm {
+    font-size: 12px;
+    color:white;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin:0;
+    margin-top:10px;
+}

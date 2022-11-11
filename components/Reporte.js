@@ -6,14 +6,19 @@ import AhorrosReporte from '../components/AhorrosReporte';
 import DiferenciasReporte from  '../components/DiferenciasReporte';
 import Graficas from '../components/Graficas';
 import ClassificationModel from '../components/ClassificationModel'
+import InformacionCSV from '../components/InformacionCSV';
 
-const Reporte = ({differencesImages, accumulates, acc, setAccumulates, plots, noDifferences}) => {
+const Reporte = ({differencesImages, accumulates, acc, setAccumulates, plots, noDifferences, fileName_size, fileRows}) => {
     return ( 
         <div className={styles.reporte}>
             <Navbar />
             <div className={styles.container_titles}>
                 <h4 className={styles.title}>Reporte PDF</h4>
                 <h4 className={styles.title}>08/11/22</h4>
+            </div>
+            <div className={styles.section}>
+                <h5>Información general del archivo de entrada:</h5>
+                <InformacionCSV fileRows={fileRows} fileName_size={fileName_size} />
             </div>
             <div className={styles.section}>
                 <h5>Diferencias entre clientes con churn y no churn:</h5>

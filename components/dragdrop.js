@@ -2,7 +2,7 @@ import React from 'react';
 import { FileUploader } from 'react-drag-drop-files';
 import styles from '../styles/components/dragdrop.module.css';
 
-const DragAndDrop = ({ file, setFile }) => {
+const DragAndDrop = ({ file, setFile , setFileName_size}) => {
 const fileTypes = ["CSV", "csv"]
 
     const handleChange = (newFile) => {
@@ -11,6 +11,7 @@ const fileTypes = ["CSV", "csv"]
     text.innerHTML = `<b>Archivo cargado: </b>${newFile.name}`;
     wrapper.style.outlineColor = '#00AEEF';
     setFile(newFile);
+    setFileName_size({"name":newFile.name, "size": newFile.size})
   };
   return (
     <div className={styles.wrapper}>

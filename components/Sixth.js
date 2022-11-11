@@ -12,7 +12,7 @@ import Diferencias from  '../components/Diferencias';
 import Graficas from '../components/Graficas';
 
 
-const Sixth = ({currentGp, setGp, acc, ui, goBack, noDifferences, textDifferences}) => {
+const Sixth = ({currentGp, setGp, acc, ui, goBack, noDifferences, textDifferences, fileName_size, fileRows}) => {
 
     const [currentGroup, setCurrentGroup] = useState(currentGp);
     const [currentTab, setCurrentTab] = useState('Diferencias');
@@ -205,7 +205,7 @@ const Sixth = ({currentGp, setGp, acc, ui, goBack, noDifferences, textDifference
         if ( !start ){
             return (
                 <div className={styles.reporte} id="reporte">
-                    <Reporte differencesImages={newDifferencesImages} accumulates={accumulates} acc={acc} setAccumulates={setAccumulates} plots={plots}  noDifferences={noDifferences}  />
+                    <Reporte fileRows={fileRows} differencesImages={newDifferencesImages} accumulates={accumulates} acc={acc} setAccumulates={setAccumulates} plots={plots}  noDifferences={noDifferences} fileName_size={fileName_size}  />
                 </div> 
             )
         } else {
