@@ -1,4 +1,6 @@
 import styles from '../styles/InformacionCSV.module.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {faFile, faSdCard} from "@fortawesome/free-solid-svg-icons"
 
 const InformacionCSV = ({fileName_size, fileRows}) => {
 
@@ -9,8 +11,15 @@ const InformacionCSV = ({fileName_size, fileRows}) => {
     return ( 
 
         <>
-            <p className={styles.text}><b>Tamaño del archivo:</b> {calc} MB</p>
-            <p className={styles.text}><b>Nombre del archivo:</b> {fileName_size.name}</p>
+        <div className={styles.wrapper_boxes}>
+            <div className={styles.csv_box} >
+                <p className={styles.text}> <FontAwesomeIcon className={styles.icon_csvfile} icon={faFile} /> <b>Nombre del archivo:</b> {fileName_size.name}</p>
+            </div>
+            <div className={styles.csv_box} >
+                <p className={styles.text}> <FontAwesomeIcon className={styles.icon_csvfile} icon={faSdCard} />  <b>Tamaño del archivo:</b> {calc} MB</p>            
+            </div>          
+        </div>
+
 
             <p className={styles.text}><b>Columnas encontradas:</b></p>
 

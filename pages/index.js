@@ -107,7 +107,8 @@ export default function Home() {
       setAcc(obj)
     } else {
     }
-    setRe(re+1); 
+    //setRe(re+1); 
+    setRe(re+4);  // DELETE ON PRODUCTION  
   }
 
   const goToGroup = () => {
@@ -116,20 +117,23 @@ export default function Home() {
 
 //return(re ? <First click={click} setfile={setFile} file={file} /> : <Second setnums={setNums} send={send} />)
 switch (re) {
+
   case 0: // uploading file
-   return <First fileError={fileError} setFileError={setFileError} click={click} setfile={setFile} setFileName_size={setFileName_size} file={file} />
-  case 1: // setting slides
-   return <Second slides={nums} setnums={setNums} send={send} goBack={previousRender} />
-  case 2: // setting hyperparameteres
-   return <Third setHyperparams={setHyperparams} goBack={previousRender}   /> 
-  case 3: // show loading page
-   return <Fourth /> 
-  case 4:
-    return <Fifth goToGroup={goToGroup} setCurrentGroup={setCurrentGroup} goBack={previousRender} />
-  case 5:
-    return <Sixth textDifferences={textDifferences} noDifferences={noDifferences} currentGp={currentGroup} setGp={setCurrentGroup} acc={acc} ui={ui} goBack={previousRender} fileName_size={fileName_size} fileRows={fileRows}/>
-  default:
-    return <Reporte />;
+  return <First fileError={fileError} setFileError={setFileError} click={click} setfile={setFile} setFileName_size={setFileName_size} file={file} />
+ case 1: // setting slides
+  return <Second slides={nums} setnums={setNums} send={send} goBack={previousRender} />
+ case 2: // setting hyperparameteres
+  return <Third setHyperparams={setHyperparams} goBack={previousRender}   /> 
+ case 3: // show loading page
+  return <Fourth /> 
+ case 4:
+   return <Fifth goToGroup={goToGroup} setCurrentGroup={setCurrentGroup} goBack={previousRender} />
+ case 5:
+   return <Sixth textDifferences={textDifferences} noDifferences={noDifferences} currentGp={currentGroup} setGp={setCurrentGroup} acc={acc} ui={ui} goBack={previousRender} fileName_size={fileName_size} fileRows={fileRows}/>
+ default:
+   return <Reporte />;
+
+  
 }
 
 }

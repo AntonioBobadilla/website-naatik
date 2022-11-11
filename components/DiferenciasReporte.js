@@ -5,10 +5,10 @@ const DiferenciasReporte = ({differencesImages, noDifferences}) => {
     const trueCondition = () => (
         
         differencesImages.map((obj, key) => (
-            <>
-                <li key={key} className={styles.text_plot}> {obj.text}</li>
+            <div className={styles.plot_difference}>
+                <p key={key} className={styles.text_plot}> {obj.text}</p>
                 <img src={"http://localhost:5000"+obj.url} alt={"http://localhost:5000"+obj.url} className={styles.plot_img} />
-            </>
+            </div>
         ))
     )
 

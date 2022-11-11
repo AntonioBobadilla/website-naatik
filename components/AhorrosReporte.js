@@ -4,6 +4,18 @@ const AhorrosReporte = ( {accumulates, acc, setAccumulates, fontSize}) => {
 
     const results = []
     
+
+    const sumCells = () => {
+
+        const proba0 = acc['Alta probabilidad'];
+        const proba1 = acc['Baja probabilidad'];
+        const proba2 = acc['Mediana probabilidad'];
+        const proba3 = acc['Nula probabilidad'];
+
+        const sum = (proba0+proba1+proba2+proba3).toFixed(2)
+        console.log(sum.toLocaleString())
+        return (sum.toLocaleString())
+    }
     const handleCheckbox = (e, key) => {
         const quantity =  acc[key]
         if(e.target.checked){
@@ -17,7 +29,7 @@ const AhorrosReporte = ( {accumulates, acc, setAccumulates, fontSize}) => {
         results.push(
             <tr>
                 <td className={styles.td}>{key}</td>
-                <td className={styles.td}>$ {acc[key]}</td>
+                <td className={styles.td}>$ {acc[key].toLocaleString()}</td>
             </tr>
              )
       })
@@ -34,7 +46,7 @@ const AhorrosReporte = ( {accumulates, acc, setAccumulates, fontSize}) => {
 
             <tr className={styles.results}>
                 <td className={styles.td}>TOTAL</td>
-                <td className={styles.td}>$ {accumulates}</td>
+                <td className={styles.td}>$ {sumCells().toLocaleString()}</td>
             </tr>
         </table> 
     </div>

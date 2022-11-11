@@ -18,6 +18,11 @@
     margin-bottom: 10px;
 } 
 
+.abstract_text {
+    font-size: 15px;
+    color:#4e5773;
+}
+
 .section {
     height: auto;
     margin:40px;

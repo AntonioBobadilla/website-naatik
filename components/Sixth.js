@@ -11,6 +11,7 @@ import Ahorros from '../components/Ahorros';
 import Diferencias from  '../components/Diferencias';
 import Graficas from '../components/Graficas';
 
+import ButtonWithIcon from '../components/ButtonWithIcon';
 
 const Sixth = ({currentGp, setGp, acc, ui, goBack, noDifferences, textDifferences, fileName_size, fileRows}) => {
 
@@ -131,7 +132,7 @@ const Sixth = ({currentGp, setGp, acc, ui, goBack, noDifferences, textDifference
                 width: imgWidth,
                 height: imgHeight,
                 alias: undefined,
-                compression: "FAST", //'NONE', 'FAST', 'MEDIUM' and 'SLOW'
+                compression: "MEDIUM", //'NONE', 'FAST', 'MEDIUM' and 'SLOW'
                 rotation: 0,
               })             
               doc.addImage(img, 'PNG', 0, position, imgWidth, imgHeight);
@@ -166,8 +167,7 @@ const Sixth = ({currentGp, setGp, acc, ui, goBack, noDifferences, textDifference
     const infoDesglose = (group) => {
         return (
             <div className={styles.desglose}>
-                <h1> info desglose de grupo {group}</h1>
-                <ButtonTemplate text={"descargar csv"} click={downloadCSV} />
+                <ButtonWithIcon text={"Exportar desglose CSV"} click={downloadCSV} />
             </div>
         )
     }
@@ -175,8 +175,13 @@ const Sixth = ({currentGp, setGp, acc, ui, goBack, noDifferences, textDifference
     const infoReporte = (group) => {
         return (
             <div className={styles.desglose}>
-                <h1> info reporte de grupo {group}</h1>
-                <ButtonTemplate text={"Generar reporte PDF"} click={downloadReporte} />
+                {
+                     <ButtonWithIcon text={"Generar reporte PDF"} click={downloadReporte} />
+                }
+               
+                {
+                    //<ButtonTemplate text={"Generar reporte PDF"} click={downloadReporte} />
+                }
             </div>
         )
     }
