@@ -6,16 +6,15 @@ import styled from 'styled-components';
 import classNames from 'classnames';
 import ButtonTemplate from '../components/Button';
 
-const Second = ({setnums, send, goBack}) => {
+const Second = ({setnums, send, goBack, slides}) => {
 
-
-    const [num1, setNum1] = useState(0);
+    const [num1, setNum1] = useState(1);
     const [num2, setNum2] = useState(50);
-    const [num3, setNum3] = useState(100);
-    
-    let a = 0;
-    let b = 0;
-    let c = 0;
+    const [num3, setNum3] = useState(99);
+
+    let a = 1;
+    let b = 50;
+    let c = 99;
     
     const getQueryStringParams = query => {
         return query
@@ -39,12 +38,41 @@ const Second = ({setnums, send, goBack}) => {
     height: 14px;
     `;
     
-    const StyledThumb = styled.div`
+    const StyledThumb1 = styled.div`
     height: 45px;
     line-height: 25px;
     width: 45px;
     text-align: center;
-    background-color: #00AEEF;
+    background-color: #28A745;
+    color: #fff;
+    border-radius: 50%;
+    cursor: grab;
+    top:-15px;
+    display: flex;
+    align-items:center;
+    justify-content:center;
+    `;
+    const StyledThumb2 = styled.div`
+    height: 45px;
+    line-height: 25px;
+    width: 45px;
+    text-align: center;
+    background-color: #FFC107;
+    color: #fff;
+    border-radius: 50%;
+    cursor: grab;
+    top:-15px;
+    display: flex;
+    align-items:center;
+    justify-content:center;
+    `;
+
+    const StyledThumb3 = styled.div`
+    height: 45px;
+    line-height: 25px;
+    width: 45px;
+    text-align: center;
+    background-color: #FD7E14;
     color: #fff;
     border-radius: 50%;
     cursor: grab;
@@ -54,7 +82,14 @@ const Second = ({setnums, send, goBack}) => {
     justify-content:center;
     `;
     
-    const Thumb = (props, state) => <StyledThumb {...props}>{state.valueNow}</StyledThumb>;
+    const Thumb = (props, state) => {
+       if (props.key === 'thumb-0')
+        return ( <StyledThumb1 {...props}>{state.valueNow}</StyledThumb1> );
+       else if (props.key === 'thumb-1')
+        return ( <StyledThumb2 {...props}>{state.valueNow}</StyledThumb2> );
+       else
+        return ( <StyledThumb3 {...props}>{state.valueNow}</StyledThumb3> );
+    }
     
     const StyledTrack = styled.div`
     top: 0;
@@ -66,8 +101,8 @@ const Second = ({setnums, send, goBack}) => {
     const Track = (props, state) => <StyledTrack {...props} index={state.index} />;
     
     const updateValues = () => {
-    setnums({"first-slide": a, "second-slide":b, "third-slide":c})
-    send({"first-slide": a, "second-slide":b, "third-slide":c})
+        //setnums({"first-slide": a, "second-slide":b, "third-slide":c})
+        send({"first-slide": a, "second-slide":b, "third-slide":c})
     }
 
     return ( 
@@ -114,8 +149,6 @@ const Second = ({setnums, send, goBack}) => {
                     <ButtonTemplate text={"atrás"} click={goBack} />
                     <ButtonTemplate text={"siguiente"} click={updateValues} />
                 </div>
-
-                {/*<button onClick={updateValues}>Siguiente xd</button>*/}
             </div>
         </div>
      );

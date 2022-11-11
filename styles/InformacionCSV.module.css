@@ -1,0 +1,45 @@
+.text {
+    font-size: 16px;
+}
+
+.wrapper_boxes {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+.csv_box {
+    width: 400px;
+    border:1px solid rgb(151, 151, 151);
+    border-radius: 9px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+.icon_csvfile {
+    margin-right: 10px;
+    color:#59709b;
+}
+
+.rows_csv {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.li {
+    list-style-position: inside;
+    font-size: 16px;
+    margin: 10px;
+    list-style-type: none;
+    border:2px solid #00AEEF;
+    padding-right: 16px;
+    padding-left: 16px;
+    padding-top: 7px;
+    padding-bottom: 5px;
+    border-radius: 13px;
+}

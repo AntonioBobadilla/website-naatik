@@ -1,105 +1,187 @@
 import styles from '../styles/Group.module.css';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import ButtonTemplate from '../components/Button';
+import axios from 'axios';
+import JsPDF from 'jspdf';
+import html2canvas from "html2canvas";
+import Reporte from '../components/Reporte'
 
-const Sixth = ({currentGp, setGp, acc, ui, goBack }) => {
+// import separated components 
+import Ahorros from '../components/Ahorros';
+import Diferencias from  '../components/Diferencias';
+import Graficas from '../components/Graficas';
+
+import ButtonWithIcon from '../components/ButtonWithIcon';
+
+const Sixth = ({currentGp, setGp, acc, ui, goBack, status, textDifferences, fileName_size, fileRows, loadingFetch, setLoadingFetch}) => {
 
     const [currentGroup, setCurrentGroup] = useState(currentGp);
     const [currentTab, setCurrentTab] = useState('Diferencias');
     const [accumulates, setAccumulates] = useState(0);
+    const [differencesImages, setDifferencesImages] = useState([])
+    const [plots, setPlots] = useState([])
+    const [newDifferencesImages, setNewDifferencesImages] = useState([])
+    const [start, setStart] = useState(true);
 
+    const addDifferenceText = () => {
+       const text_bill_amount = 'El grupo con churn tiene 23% mayor pago que el grupo sin churn';
+       const text_nationality = 'El grupo con churn tiene 23% mayor quejas que el grupo sin churn';
+       const text_years_stayed = 'El grupo con churn tiene 23% mayor años en el servicio que el grupo sin churn';
+       const text_status = 'El grupo con churn tiene 23% más gente en Prestige/Residential que el grupo sin churn';
+    
+       const obj = []
+
+
+        const dummyobj1 = { 'text':textDifferences['BILL_AMOUNT'], 'url':differencesImages[0]}
+        const dummyobj2 = { 'text':textDifferences['PARTY_NATIONALITY'], 'url':differencesImages[1]}
+        const dummyobj3 = { 'text':textDifferences['STATUS'], 'url':differencesImages[2]}
+        const dummyobj4 = { 'text':textDifferences['Years_stayed'], 'url':differencesImages[3]}
+ 
+        obj.push(dummyobj1);
+        obj.push(dummyobj2);
+        obj.push(dummyobj3);
+        obj.push(dummyobj4);
+
+      
+
+       setNewDifferencesImages(obj)
+    }
+
+    const fetchDifferences = async () => {
+        await axios.get("http://localhost:5000/getdifferences", { params: { ui: ui} } )
+        .then((res) => {
+            setDifferencesImages(res.data)
+        })
+    }
+
+    const fetchGraficas = async () => {
+        await axios.get("http://localhost:5000/getgraphs", { params: { ui: ui} }  )
+        .then((res) => {
+            setPlots(res.data)
+            setStart(false)
+        })
+    }
+
+    useEffect(() => {
+        if (start === true) {
+            if (status === 'both')
+                fetchDifferences();
+            fetchGraficas();
+        } else {
+            if (status === 'both') {
+                addDifferenceText()
+            }
+        }
+        }, [start])
+
+
+
+  
     if(!acc)
         return
 
-    const results = [];
+
 
     const  downloadCSV = () => {
-        console.log("downloading...")
-        console.log(ui)
         window.open('http://localhost:5000/retrievecsv?ui='+ui, '_blank', 'noopener,noreferrer');
     } 
 
-    const handleCheckbox = (e, key) => {
-        const quantity =  acc[key]
-        if(e.target.checked){
-            setAccumulates(accumulates + quantity)
-        }else{
-            setAccumulates(accumulates - quantity)
-        }
-   }
+    const  downloadReporte = async () => {
+            setLoadingFetch(true)
+            const datas = document.querySelector('#reporte');
+            const pdf = new JsPDF("portrait", "pt", "a4"); 
+            const canvas = await html2canvas(datas, {
+                allowTaint:true,
+                useCORS:true
+            });
+            const img = canvas.toDataURL("image/png");  
+            var imgWidth = 210; 
+            var pageHeight = 295;  
+            var imgHeight = canvas.height * imgWidth / canvas.width;
+            var heightLeft = imgHeight;
+      
+            var doc = new JsPDF('p', 'mm');
+            var position = 0;
+      
+            doc.addImage({
+                imageData: img,
+                format: "PNG",
+                x: 0,
+                y: 0,
+                width: imgWidth,
+                height: imgHeight,
+                alias: undefined,
+                compression: "FAST", //'NONE', 'FAST', 'MEDIUM' and 'SLOW'
+                rotation: 0,
+              })
+            //doc.addImage(img, 'PNG', 0, position, imgWidth, imgHeight, compression="FAST");
+            heightLeft -= pageHeight;
+      
+            while (heightLeft >= 0) {
+              position = heightLeft - imgHeight;
+              doc.addPage();
+              doc.addImage({
+                imageData: img,
+                format: "PNG",
+                x: 0,
+                y: position,
+                width: imgWidth,
+                height: imgHeight,
+                alias: undefined,
+                compression: "MEDIUM", //'NONE', 'FAST', 'MEDIUM' and 'SLOW'
+                rotation: 0,
+              })             
+              doc.addImage(img, 'PNG', 0, position, imgWidth, imgHeight);
+              heightLeft -= pageHeight;
+            }
+            doc.save( 'reporte.pdf');
+            setLoadingFetch(false)
+    } 
 
-    Object.keys(acc).forEach(function(key, index) {
-        results.push(
-            <tr>
-                <td className={styles.td}>{key}</td>
-                <td className={styles.td}>$ {acc[key]}</td>
-                <td className={styles.td}><input
-                        type="checkbox" 
-                        value={""}
-                        key={key}
-                        onChange={(e) => handleCheckbox(e, key)}
-                        name="time" 
-                        id={""}
-                        /></td>
-            </tr>
-             )
-      })
 
-    console.log("gp enviado: ", currentGp)
+ 
+
 
     const handleGroup = (e) => {
         setGp(e.target.value)
-        console.log("group: ",e.target.value)
-        console.log("Pestaña: ", currentTab)
     }
 
-    const handleSelect = (e) => {
-        console.log("selected" ,e.target.value)
-    }
 
-    const infoAhorros = (group) => {
-        return (
-            <>
-                <p> Posibles cuentas canceladas</p>
-                <table className={styles.table} >
-                    <tr>
-                        <th className={styles.th}>Grupo de probabilidad</th>
-                        <th className={styles.th}>Monto a pagar</th>
-                        <th className={styles.th}>Seleccionar/Deseleccionar</th>
-                    </tr>
-                    {results}
-
-                    <tr className={styles.results}>
-                        <td className={styles.td}>TOTAL</td>
-                        <td className={styles.td}>$ {accumulates}</td>
-                    </tr>
-                </table> 
-            </>
-
-        )
-    }
+    const infoAhorros = (group) => { return ( <Ahorros accumulates={accumulates} acc={acc} setAccumulates={setAccumulates}/> ) }
 
     const infoDiferencias = (group) => {
         return (
-            <h1> info diferencias de grupo {group}</h1>
+         <Diferencias status={status} differencesImages={newDifferencesImages}/>
         )
     }
 
     const infoGraficas = (group) => {
         return (
-            <h1> info graficas de grupo {group}</h1>
+            <Graficas plots={plots}/>
         )
     }
 
     const infoDesglose = (group) => {
         return (
-            <>
-                <h1> info desglose de grupo {group}</h1>
-                <ButtonTemplate text={"descargar csv"} click={downloadCSV} />
-            </>
+            <div className={styles.desglose}>
+                <ButtonWithIcon text={"Exportar desglose CSV"} click={downloadCSV} />
+            </div>
         )
     }
 
+    const infoReporte = (group) => {
+        return (
+            <div className={styles.desglose}>
+                {
+                     <ButtonWithIcon text={"Generar reporte PDF"} click={downloadReporte} />
+                }
+               
+                {
+                    //<ButtonTemplate text={"Generar reporte PDF"} click={downloadReporte} />
+                }
+            </div>
+        )
+    }
 
     const showTabInformation = () => {
 
@@ -111,12 +193,25 @@ const Sixth = ({currentGp, setGp, acc, ui, goBack }) => {
             return infoGraficas(currentGp)
         } else if (currentTab === "Desglose") {
             return infoDesglose(currentGp)
+        } else if (currentTab === "Reporte") {
+            return infoReporte(currentGp)
         }
         }
 
     const handleChangeTab = (e) => {
         setCurrentTab(e.target.value)
-        console.log("cambio: ", )
+    }
+
+    const conditionalRendering = () => {
+        if ( !start ){
+            return (
+                <div className={styles.reporte} id="reporte">
+                    <Reporte fileRows={fileRows} differencesImages={newDifferencesImages} accumulates={accumulates} acc={acc} setAccumulates={setAccumulates} plots={plots}  status={status} fileName_size={fileName_size}  />
+                </div> 
+            )
+        } else {
+            return (<>ola</>)
+        }
     }
 
 
@@ -143,6 +238,9 @@ const Sixth = ({currentGp, setGp, acc, ui, goBack }) => {
                         <li>
                             <button onClick={handleChangeTab} value="Desglose"> Desglose</button>
                         </li>
+                        <li>
+                            <button onClick={handleChangeTab} value="Reporte"> Reporte</button>
+                        </li>
                     </ul>
                 </nav>
                 <div className={styles.tab_content}>
@@ -155,7 +253,7 @@ const Sixth = ({currentGp, setGp, acc, ui, goBack }) => {
                 }
             </div>
 
-
+            { conditionalRendering() }
 
         </div>
      );

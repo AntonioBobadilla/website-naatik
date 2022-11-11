@@ -21,6 +21,13 @@
   background:#f8f8f8;
   outline-style: dotted;
   outline-color:#cfcfcf;
+  transition: .2s ease;
+}
+
+
+
+.innerWrapper:hover {
+  outline-color:#848484;
 }
 
 

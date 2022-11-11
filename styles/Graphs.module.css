@@ -1,0 +1,19 @@
+.wrapper {
+    width: 100%;
+    height: auto;
+    margin-top: 50px;
+    margin:30px auto;
+    text-align: center;
+}
+
+.plot {
+    width: 50%;
+    margin:0 auto;
+    text-align: center;
+    border-top: 1px solid black;
+}
+
+.img {
+    width: 500px;
+    height: auto;
+}

@@ -11,6 +11,9 @@ import Third from '../components/Third';
 import Fourth from '../components/Fourth';
 import Fifth from '../components/Fifth';
 import Sixth from '../components/Sixth';
+import Reporte from '../components/Reporte'
+import LoadingPage from '../components/LoadingPage'
+
 
 export default function Home() {
 
@@ -21,31 +24,39 @@ export default function Home() {
   const [hyperparams, setHyperparams] = React.useState({})
   const [currentGroup, setCurrentGroup] = React.useState(0);
   const [acc, setAcc] = React.useState({});
-  const [ui, setUi] = React.useState('')
+  const [ui, setUi] = React.useState('');
+  const [noDifferences, setNoDifferences ] = React.useState(false)
+  const [textDifferences, setTextDifferences] = React.useState({})
+  const [fileError, setFileError] = React.useState(false);
+  const [fileName_size, setFileName_size] = React.useState({});
+  const [fileRows, setFileRows] = React.useState([])
+  const [status, setStatus] = React.useState('')
+
+  const [loadingFetch, setLoadingFetch] = React.useState(false)
 
   const [probabilities, setProbabilities] = React.useState({})
 
   const previousRender = (e, numRenders = 1) => {
-    console.log("num renders: ", numRenders)
     setRe(re-numRenders)
   }
 
-  const click = () => {
-    console.log("cambiando...")
-    setRe(re+1);
+  const nextRender = (e, numRenders = 1) => {
+    setRe(re+numRenders)
   }
 
-  useEffect(() => {
-    console.log("first render")
-  }, []); 
+  const click = () => {
+    if (file === ''){
+      setFileError(true);
+    } else{
+      setRe(re+1);
+    }
+
+  }
+
 
   // use effect that tracks the state of hyperparams variable 
   useEffect(() => {
     if (re == 2){
-      console.log("all data: ")
-      console.log(file)
-      console.log(nums)
-      console.log(hyperparams)
       setRe(re+1);
       setTimeout(function(){ // timeout para simular entrenamiento y cambiar de render despues de 4 seg.
         setRe(re+2);
@@ -53,21 +64,23 @@ export default function Home() {
     }
 
 
-  }, [hyperparams]); 
+  }, [hyperparams]);
+  
+  
+  useEffect(() => {
+    if (loadingFetch)
+      console.log("fetching....")
+    else
+      console.log("finish fetching...")
+  },[loadingFetch])
 
   const send = async (obj) => {
-    console.log("Enviando archivos:")
-    console.log("file: ", file)
-    console.log("slides: ",obj )
-
+    setLoadingFetch(true)
     const UPLOAD_ENDPOINT = "http://localhost:5000/";
-
     const formData = new FormData();
-
     formData.append("data", file);
-    formData.append("slides", JSON.stringify(obj));
 
-    console.log(formData)
+    formData.append("slides", JSON.stringify(obj));
 
     const resp = await axios.post(UPLOAD_ENDPOINT, formData, {
       headers: {
@@ -77,7 +90,10 @@ export default function Home() {
     });
 
     if (resp.status === 200) {
+      setStatus(resp.data.state)
       setProbabilities(resp.data.acc)
+      setTextDifferences(resp.data.differences)
+      setFileRows(resp.data.fileRows)
       const ui = resp.data.ui
       const obj = resp.data.acc
       obj['Nula probabilidad'] = obj['group1'];
@@ -93,33 +109,41 @@ export default function Home() {
       delete obj['group4'];
       setUi(ui)
       setAcc(obj)
+      setLoadingFetch(false)
     } else {
-      console.log("ERROR A LA VERGA PUTO ENDPOINT")
     }
-    setRe(re+1); 
+    //setRe(re+1); 
+    setRe(re+4);  // DELETE ON PRODUCTION  
   }
 
   const goToGroup = () => {
     setRe(re+1)
-    console.log("changing to individual group page...", currentGroup)
   }
 
 //return(re ? <First click={click} setfile={setFile} file={file} /> : <Second setnums={setNums} send={send} />)
-switch (re) {
-  case 0: // uploading file
-   return <First click={click} setfile={setFile} file={file} />
+if (loadingFetch) {
+  return <LoadingPage />
+} else { 
+  switch (re) {
+
+    case 0: // uploading file
+    return <First fileError={fileError} setFileError={setFileError} click={click} setfile={setFile} setFileName_size={setFileName_size} file={file} />
   case 1: // setting slides
-   return <Second setnums={setNums} send={send} goBack={previousRender} />
+    return <Second slides={nums} setnums={setNums} send={send} goBack={previousRender}  />
   case 2: // setting hyperparameteres
-   return <Third setHyperparams={setHyperparams} goBack={previousRender}   /> 
+    return <Third setHyperparams={setHyperparams} goBack={previousRender}   /> 
   case 3: // show loading page
-   return <Fourth /> 
+    return <Fourth /> 
   case 4:
     return <Fifth goToGroup={goToGroup} setCurrentGroup={setCurrentGroup} goBack={previousRender} />
   case 5:
-    return <Sixth currentGp={currentGroup} setGp={setCurrentGroup} acc={acc} ui={ui} goBack={previousRender}/>
+    return <Sixth textDifferences={textDifferences} status={status} currentGp={currentGroup} setGp={setCurrentGroup} acc={acc} ui={ui} goBack={previousRender} fileName_size={fileName_size} fileRows={fileRows} loadingFetch={loadingFetch} setLoadingFetch={setLoadingFetch}/>
   default:
-    return <h1>ola</h1>;
+    return <Reporte />;
+
+    
+  }
+
 }
 
 }
