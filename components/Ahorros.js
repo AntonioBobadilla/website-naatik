@@ -17,7 +17,7 @@ const Ahorros = ( {accumulates, acc, setAccumulates, fontSize}) => {
         results.push(
             <tr>
                 <td className={styles.td}>{key}</td>
-                <td className={styles.td}>$ {acc[key]}</td>
+                <td className={styles.td}>$ {acc[key].toLocaleString()}</td>
                 <td className={styles.td}><input
                         type="checkbox" 
                         value={""}
@@ -43,7 +43,7 @@ const Ahorros = ( {accumulates, acc, setAccumulates, fontSize}) => {
 
             <tr className={styles.results}>
                 <td className={styles.td}>TOTAL</td>
-                <td className={styles.td}>$ {accumulates}</td>
+                <td className={styles.td}>$ {accumulates.toLocaleString()}</td>
             </tr>
         </table> 
     </div>
