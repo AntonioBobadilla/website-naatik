@@ -4,6 +4,11 @@ import {faCircleCheck} from "@fortawesome/free-solid-svg-icons"
 
 
 const ClassificationModel = () => {
+
+    const one = 323638;
+    const two = 15291;
+    const three = 0;
+    const four = 3252; 
     return ( 
         <>
         <div className={styles.model_performance_wrapper} >
@@ -29,19 +34,19 @@ const ClassificationModel = () => {
             <div className={styles.confussion_matrix}> 
                 <div className={styles.true_positives}>
                     <p className={styles.text_cm}>Verdaderos positivos:</p>
-                    <p className={styles.text_cm}>323638</p> 
+                    <p className={styles.text_cm}>{one.toLocaleString()}</p> 
                 </div>
                 <div className={styles.false_positives}>
                     <p className={styles.text_cm}>Falsos positivos:</p>
-                    <p className={styles.text_cm}>15291</p> 
+                    <p className={styles.text_cm}>{two.toLocaleString()}</p> 
                 </div>
                 <div className={styles.false_negatives}>
                     <p className={styles.text_cm}>Falsos negativos:</p>
-                    <p className={styles.text_cm}>0</p> 
+                    <p className={styles.text_cm}>{three.toLocaleString()}</p> 
                 </div>
                 <div className={styles.true_negatives}>
                     <p className={styles.text_cm}>Verdaderos negativos:</p>
-                    <p className={styles.text_cm}>3252</p> 
+                    <p className={styles.text_cm}>{four.toLocaleString()}</p> 
                 </div>
             </div>
         </div>

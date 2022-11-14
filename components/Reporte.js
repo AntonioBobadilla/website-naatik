@@ -27,7 +27,7 @@ const Reporte = ({differencesImages, accumulates, acc, setAccumulates, plots, no
             </div>
             <div className={styles.section}>
                 <h5>Posibles cuentas canceladas:</h5>
-                <p className={styles.abstract_text}> A continuación se muestra una tabla que contiene la suma de la variable BILL_AMOUNT de cada uno de los diferentes grupos de churn: Nula, Baja, Mediana y Alta probabilidad junto con su suma total.</p>
+                <p className={styles.abstract_text}> A continuación se muestra una tabla que contiene la suma de la variable BILL_AMOUNT multiplicada por la probabilidad de churn de cada uno de los diferentes grupos: Nula, Baja, Mediana y Alta probabilidad junto con su suma total.</p>
                 <AhorrosReporte fontSize={12} accumulates={accumulates} acc={acc} setAccumulates={setAccumulates}/>
             </div>
             <div className={styles.section}>

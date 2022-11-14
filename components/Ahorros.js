@@ -37,7 +37,7 @@ const Ahorros = ( {accumulates, acc, setAccumulates, fontSize}) => {
             <thead>
                 <tr>
                     <th className={styles.th}>Grupo de probabilidad</th>
-                    <th className={styles.th}>Monto a pagar</th>
+                    <th className={styles.th}>Monto a pagar basado en probabilidad de churn</th>
                     <th className={styles.th}>Seleccionar/Deseleccionar</th>
                 </tr>
             </thead>

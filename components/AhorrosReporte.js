@@ -39,7 +39,7 @@ const AhorrosReporte = ( {accumulates, acc, setAccumulates, fontSize}) => {
         <table className={styles.table} >
             <tr>
                 <th className={styles.th}>Grupo de probabilidad</th>
-                <th className={styles.th}>Monto a pagar</th>
+                <th className={styles.th}>Monto a pagar basado en probabilidad de churn</th>
             </tr>
             {results}
 
