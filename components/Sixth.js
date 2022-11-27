@@ -13,7 +13,18 @@ import Graficas from '../components/Graficas';
 
 import ButtonWithIcon from '../components/ButtonWithIcon';
 
-const Sixth = ({currentGp, setGp, acc, ui, goBack, status, textDifferences, fileName_size, fileRows, loadingFetch, setLoadingFetch}) => {
+const Sixth = ({groups,  currentGp,ui, setGp, goBack, fileName_size, fileRows, loadingFetch, setLoadingFetch}) => {
+
+    console.log("current group: ", currentGp)
+
+    const acc = groups[currentGp].acc;
+    const status = groups[currentGp].state;
+    const textDifferences = groups[currentGp].differences;
+
+    console.log("acc: ", acc)
+    console.log("ui: ", ui)
+    console.log("status: ", status)
+    console.log("textDifferences: ", textDifferences)
 
     const [currentGroup, setCurrentGroup] = useState(currentGp);
     const [currentTab, setCurrentTab] = useState('Diferencias');

@@ -31,6 +31,7 @@ export default function Home() {
   const [fileName_size, setFileName_size] = React.useState({});
   const [fileRows, setFileRows] = React.useState([])
   const [status, setStatus] = React.useState('')
+  const [groups, setGroups] = React.useState([])
 
   const [loadingFetch, setLoadingFetch] = React.useState(false)
 
@@ -90,11 +91,16 @@ export default function Home() {
     });
 
     if (resp.status === 200) {
-      setStatus(resp.data.state)
+      console.log("clust: ", resp.data.info)
+      setGroups(resp.data.info)
+      const ui = resp.data.ui
+      setUi(ui)
+      /*setStatus(resp.data.state)
       setProbabilities(resp.data.acc)
       setTextDifferences(resp.data.differences)
-      setFileRows(resp.data.fileRows)
-      const ui = resp.data.ui
+      setFileRows(resp.data.fileRows) // pasar esto a componente sixth
+
+
       const obj = resp.data.acc
       obj['Nula probabilidad'] = obj['group1'];
       delete obj['group1'];
@@ -107,13 +113,15 @@ export default function Home() {
 
       obj['Alta probabilidad'] = obj['group4'];
       delete obj['group4'];
-      setUi(ui)
-      setAcc(obj)
+
+      setAcc(obj)*/
+
+
       setLoadingFetch(false)
     } else {
     }
-    //setRe(re+1); 
-    setRe(re+4);  // DELETE ON PRODUCTION  
+    setRe(re+1); 
+    //setRe(re+4);  // DELETE ON PRODUCTION  
   }
 
   const goToGroup = () => {
@@ -135,9 +143,9 @@ if (loadingFetch) {
   case 3: // show loading page
     return <Fourth /> 
   case 4:
-    return <Fifth goToGroup={goToGroup} setCurrentGroup={setCurrentGroup} goBack={previousRender} />
+    return <Fifth goToGroup={goToGroup} setCurrentGroup={setCurrentGroup} goBack={previousRender} groups={groups} />
   case 5:
-    return <Sixth textDifferences={textDifferences} status={status} currentGp={currentGroup} setGp={setCurrentGroup} acc={acc} ui={ui} goBack={previousRender} fileName_size={fileName_size} fileRows={fileRows} loadingFetch={loadingFetch} setLoadingFetch={setLoadingFetch}/>
+    return <Sixth groups={groups} ui={ui} currentGp={currentGroup} setGp={setCurrentGroup} goBack={previousRender} fileName_size={fileName_size} fileRows={fileRows} loadingFetch={loadingFetch} setLoadingFetch={setLoadingFetch} />
   default:
     return <Reporte />;
 
