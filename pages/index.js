@@ -84,7 +84,7 @@ export default function Home() {
     formData.append("data", file);
 
     formData.append("slides", JSON.stringify(obj));
-    formData.append("target", targetText);
+    formData.append("target", JSON.stringify(targetText));
 
     const resp = await axios.post(UPLOAD_ENDPOINT, formData, {
       headers: {

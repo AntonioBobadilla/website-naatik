@@ -60,14 +60,14 @@ const Sixth = ({groups,  currentGp,ui, setGp, goBack, fileName_size, fileRows, l
     }
 
     const fetchDifferences = async () => {
-        await axios.get("http://localhost:5000/getdifferences", { params: { ui: ui} } )
+        await axios.get("http://localhost:5000/getdifferences", { params: { ui: ui, i:currentGp} } )
         .then((res) => {
             setDifferencesImages(res.data)
         })
     }
 
     const fetchGraficas = async () => {
-        await axios.get("http://localhost:5000/getgraphs", { params: { ui: ui} }  )
+        await axios.get("http://localhost:5000/getgraphs", { params: { ui: ui, i:currentGp} }  )
         .then((res) => {
             setPlots(res.data)
             setStart(false)
