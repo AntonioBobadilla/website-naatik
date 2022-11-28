@@ -15,17 +15,6 @@ import ButtonWithIcon from '../components/ButtonWithIcon';
 
 const Sixth = ({groups,  currentGp,ui, setGp, goBack, fileName_size, fileRows, loadingFetch, setLoadingFetch}) => {
 
-    console.log("current group: ", currentGp)
-
-    const acc = groups[currentGp].acc;
-    const status = groups[currentGp].state;
-    const textDifferences = groups[currentGp].differences;
-
-    console.log("acc: ", acc)
-    console.log("ui: ", ui)
-    console.log("status: ", status)
-    console.log("textDifferences: ", textDifferences)
-
     const [currentGroup, setCurrentGroup] = useState(currentGp);
     const [currentTab, setCurrentTab] = useState('Diferencias');
     const [accumulates, setAccumulates] = useState(0);
@@ -33,6 +22,18 @@ const Sixth = ({groups,  currentGp,ui, setGp, goBack, fileName_size, fileRows, l
     const [plots, setPlots] = useState([])
     const [newDifferencesImages, setNewDifferencesImages] = useState([])
     const [start, setStart] = useState(true);
+
+
+    const [acc, setAcc] = useState(groups[currentGroup].acc)
+    const [status, setStatus] = useState(groups[currentGroup].state)
+    const [textDifferences, setTextDifferences] = useState(groups[currentGroup].differences)
+
+    /*console.log("acc: ", acc)
+    console.log("ui: ", ui)
+    console.log("status: ", status)
+    console.log("textDifferences: ", textDifferences)*/
+    console.log("group: "+currentGroup)
+    console.log(groups[currentGroup])
 
     const addDifferenceText = () => {
        const text_bill_amount = 'El grupo con churn tiene 23% mayor pago que el grupo sin churn';
@@ -154,7 +155,7 @@ const Sixth = ({groups,  currentGp,ui, setGp, goBack, fileName_size, fileRows, l
 
 
     const handleGroup = (e) => {
-        setGp(e.target.value)
+        setCurrentGroup(e.target.value)
     }
 
 
@@ -229,9 +230,9 @@ const Sixth = ({groups,  currentGp,ui, setGp, goBack, fileName_size, fileRows, l
     return ( 
         <div className={styles.wrapper}>
              <select name='birth-date'id='birth-date'className={styles.select} onChange={handleGroup}>
-                <option value="1">Grupo 1</option>
-                <option value="2">Grupo 2</option>
-                <option value="3">Grupo 3</option>
+                <option value="0">Grupo 1</option>
+                <option value="1">Grupo 2</option>
+                <option value="2">Grupo 3</option>
             </select>
 
             <div className={styles.content}>

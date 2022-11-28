@@ -2,8 +2,11 @@ import styles from '../styles/Home.module.css'
 import DragAndDrop from '../components/dragdrop'
 import React from 'react';
 import ButtonTemplate from '../components/Button';
+import InputText from '../components/InputText';
 
-const First = ({click, setfile, file, fileError, setFileError, setFileName_size}) => {
+
+
+const First = ({click, setfile, file, fileError, setFileError, setFileName_size,setTargetText}) => {
 
     const checkFileError = () => {
         if (fileError) {
@@ -29,6 +32,7 @@ const First = ({click, setfile, file, fileError, setFileError, setFileName_size}
         <div className={styles.error} id="errorFile">
             <p>Selecciona un archivo para continuar.</p>
         </div>
+        <InputText setTargetText={setTargetText} />
         <ButtonTemplate text={"siguiente"} click={click} />
       </div>
      );

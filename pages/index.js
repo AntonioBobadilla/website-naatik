@@ -36,6 +36,7 @@ export default function Home() {
   const [loadingFetch, setLoadingFetch] = React.useState(false)
 
   const [probabilities, setProbabilities] = React.useState({})
+  const [targetText, setTargetText] = React.useState('')
 
   const previousRender = (e, numRenders = 1) => {
     setRe(re-numRenders)
@@ -76,12 +77,14 @@ export default function Home() {
   },[loadingFetch])
 
   const send = async (obj) => {
+    console.log("target: ", targetText)
     setLoadingFetch(true)
     const UPLOAD_ENDPOINT = "http://localhost:5000/";
     const formData = new FormData();
     formData.append("data", file);
 
     formData.append("slides", JSON.stringify(obj));
+    formData.append("target", targetText);
 
     const resp = await axios.post(UPLOAD_ENDPOINT, formData, {
       headers: {
@@ -95,10 +98,11 @@ export default function Home() {
       setGroups(resp.data.info)
       const ui = resp.data.ui
       setUi(ui)
+      setFileRows(resp.data.fileRows) // pasar esto a componente sixth
       /*setStatus(resp.data.state)
       setProbabilities(resp.data.acc)
       setTextDifferences(resp.data.differences)
-      setFileRows(resp.data.fileRows) // pasar esto a componente sixth
+
 
 
       const obj = resp.data.acc
@@ -135,7 +139,7 @@ if (loadingFetch) {
   switch (re) {
 
     case 0: // uploading file
-    return <First fileError={fileError} setFileError={setFileError} click={click} setfile={setFile} setFileName_size={setFileName_size} file={file} />
+    return <First setTargetText={setTargetText} fileError={fileError} setFileError={setFileError} click={click} setfile={setFile} setFileName_size={setFileName_size} file={file} />
   case 1: // setting slides
     return <Second slides={nums} setnums={setNums} send={send} goBack={previousRender}  />
   case 2: // setting hyperparameteres
