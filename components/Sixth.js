@@ -10,6 +10,7 @@ import Reporte from '../components/Reporte'
 import Ahorros from '../components/Ahorros';
 import Diferencias from  '../components/Diferencias';
 import Graficas from '../components/Graficas';
+import Perfilacion from '../components/Perfilacion';
 
 import ButtonWithIcon from '../components/ButtonWithIcon';
 
@@ -173,6 +174,12 @@ const Sixth = ({groups,  currentGp,ui, setGp, goBack, fileName_size, fileRows, l
         )
     }
 
+    const infoPerfilacion = (group) => {
+        return (
+            <Perfilacion/>
+        )
+    }
+
     const infoDesglose = (group) => {
         return (
             <div className={styles.desglose}>
@@ -207,6 +214,8 @@ const Sixth = ({groups,  currentGp,ui, setGp, goBack, fileName_size, fileRows, l
             return infoDesglose(currentGp)
         } else if (currentTab === "Reporte") {
             return infoReporte(currentGp)
+        } else if (currentTab === "Perfilacion") {
+            return infoPerfilacion(currentGp)
         }
         }
 
@@ -252,6 +261,9 @@ const Sixth = ({groups,  currentGp,ui, setGp, goBack, fileName_size, fileRows, l
                         </li>
                         <li>
                             <button onClick={handleChangeTab} value="Reporte"> Reporte</button>
+                        </li>
+                        <li>
+                            <button onClick={handleChangeTab} value="Perfilacion"> Perfilación</button>
                         </li>
                     </ul>
                 </nav>
