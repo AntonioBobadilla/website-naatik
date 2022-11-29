@@ -16,6 +16,7 @@ import ButtonWithIcon from '../components/ButtonWithIcon';
 
 const Sixth = ({groups,  currentGp,ui, setGp, goBack, fileName_size, fileRows, loadingFetch, setLoadingFetch}) => {
 
+    
     const [currentGroup, setCurrentGroup] = useState(currentGp);
     const [currentTab, setCurrentTab] = useState('Diferencias');
     const [accumulates, setAccumulates] = useState(0);
@@ -33,38 +34,50 @@ const Sixth = ({groups,  currentGp,ui, setGp, goBack, fileName_size, fileRows, l
     console.log("ui: ", ui)
     console.log("status: ", status)
     console.log("textDifferences: ", textDifferences)*/
-    console.log("group: "+currentGroup)
-    console.log(groups[currentGroup])
+
 
     const addDifferenceText = () => {
+
+        console.log("imagenes: ", differencesImages)
+
        const text_bill_amount = 'El grupo con churn tiene 23% mayor pago que el grupo sin churn';
        const text_nationality = 'El grupo con churn tiene 23% mayor quejas que el grupo sin churn';
        const text_years_stayed = 'El grupo con churn tiene 23% mayor años en el servicio que el grupo sin churn';
        const text_status = 'El grupo con churn tiene 23% más gente en Prestige/Residential que el grupo sin churn';
     
-       const obj = []
+       const objArray = []
 
+       for (let i = 0; i<3; i++ ){
 
-        const dummyobj1 = { 'text':textDifferences['BILL_AMOUNT'], 'url':differencesImages[0]}
-        const dummyobj2 = { 'text':textDifferences['PARTY_NATIONALITY'], 'url':differencesImages[1]}
-        const dummyobj3 = { 'text':textDifferences['STATUS'], 'url':differencesImages[2]}
-        const dummyobj4 = { 'text':textDifferences['Years_stayed'], 'url':differencesImages[3]}
- 
-        obj.push(dummyobj1);
-        obj.push(dummyobj2);
-        obj.push(dummyobj3);
-        obj.push(dummyobj4);
+            const obj = []
 
-      
+            const dummyobj1 = { 'text':textDifferences['BILL_AMOUNT'], 'url':differencesImages[i].imgs[0]}
+            const dummyobj2 = { 'text':textDifferences['PARTY_NATIONALITY'], 'url':differencesImages[0].imgs[1]}
+            const dummyobj3 = { 'text':textDifferences['STATUS'], 'url':differencesImages[0].imgs[2]}
+            const dummyobj4 = { 'text':textDifferences['Years_stayed'], 'url':differencesImages[0].imgs[3]}
+    
+            obj.push(dummyobj1);
+            obj.push(dummyobj2);
+            obj.push(dummyobj3);
+            obj.push(dummyobj4);
 
-       setNewDifferencesImages(obj)
+            objArray.push(obj)
+       }
+    
+       setNewDifferencesImages(objArray)
     }
 
     const fetchDifferences = async () => {
-        await axios.get("http://localhost:5000/getdifferences", { params: { ui: ui, i:currentGp} } )
-        .then((res) => {
-            setDifferencesImages(res.data)
-        })
+        let obj = []
+        for (let i = 1; i<2; i++ ){
+            let data = await axios.get("http://localhost:5000/getdifferences", { params: { ui: ui, i:i} } )
+            let dummyArr = {"imgs":data.data}
+            //setDifferencesImages([...differencesImages, dummyArr])
+            obj = [...obj, dummyArr]
+        }
+        console.log("OBJJJJ_:", obj )
+        setDifferencesImages(obj)
+        return obj
     }
 
     const fetchGraficas = async () => {
@@ -75,17 +88,46 @@ const Sixth = ({groups,  currentGp,ui, setGp, goBack, fileName_size, fileRows, l
         })
     }
 
-    useEffect(() => {
-        if (start === true) {
-            if (status === 'both')
-                fetchDifferences();
-            fetchGraficas();
-        } else {
-            if (status === 'both') {
-                addDifferenceText()
+    useEffect( () => {
+
+        const getDifferencesTextImages = async () => {
+        if (status === 'both'){
+            let differencesImagesLocal = []
+            for (let i = 1; i<4; i++ ){
+                let data = await axios.get("http://localhost:5000/getdifferences", { params: { ui: ui, i:i} } )
+                let dummyArr = {"imgs":data.data}
+                //setDifferencesImages([...differencesImages, dummyArr])
+                differencesImagesLocal = [...differencesImagesLocal, dummyArr]
             }
+            console.log("OBJJJJ_:", differencesImagesLocal )
+            setDifferencesImages(differencesImagesLocal)
+         
+            const objArray = []
+     
+            for (let i = 0; i<3; i++ ){
+     
+                 const obj = []
+     
+                 const dummyobj1 = { 'text':groups[i].differences['BILL_AMOUNT'], 'url':differencesImagesLocal[i].imgs[0]}
+                 const dummyobj2 = { 'text':groups[i].differences['PARTY_NATIONALITY'], 'url':differencesImagesLocal[i].imgs[1]}
+                 const dummyobj3 = { 'text':groups[i].differences['STATUS'], 'url':differencesImagesLocal[i].imgs[2]}
+                 const dummyobj4 = { 'text':groups[i].differences['Years_stayed'], 'url':differencesImagesLocal[i].imgs[3]}
+         
+                 obj.push(dummyobj1);
+                 obj.push(dummyobj2);
+                 obj.push(dummyobj3);
+                 obj.push(dummyobj4);
+     
+                 objArray.push(obj)
+            }
+         
+            setNewDifferencesImages(objArray)
         }
-        }, [start])
+        fetchGraficas();
+        }
+
+        getDifferencesTextImages()
+        }, [])
 
 
 
@@ -164,7 +206,7 @@ const Sixth = ({groups,  currentGp,ui, setGp, goBack, fileName_size, fileRows, l
 
     const infoDiferencias = (group) => {
         return (
-         <Diferencias status={status} differencesImages={newDifferencesImages}/>
+         <Diferencias i={currentGroup} status={status} differencesImages={newDifferencesImages}/>
         )
     }
 

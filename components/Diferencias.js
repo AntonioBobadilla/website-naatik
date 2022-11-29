@@ -1,12 +1,12 @@
 import styles from '../styles/Diferencias.module.css'
 
-const Diferencias = ({differencesImages, status}) => {
-
-    console.log("STAUTSS: ",status)
-    
+const Diferencias = ({differencesImages, status, i}) => {
+    console.log(differencesImages)
+    console.log("cu gru: ", i)  
     const trueCondition = () => (
         
-        differencesImages.map((obj, key) => (
+
+        differencesImages[i].map((obj, key) => (
             <div key={key}>
                 <li  className={styles.text_plot}> {obj.text}</li>
                 <img src={"http://localhost:5000"+obj.url} alt={"http://localhost:5000"+obj.url} className={styles.plot_img} />

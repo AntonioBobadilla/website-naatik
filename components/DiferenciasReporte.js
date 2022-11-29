@@ -1,4 +1,5 @@
 import styles from '../styles/DiferenciasReporte.module.css'
+import React, {useState, useEffect} from 'react';
 
 const DiferenciasReporte = ({differencesImages, status}) => {
 

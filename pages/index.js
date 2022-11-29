@@ -125,6 +125,10 @@ export default function Home() {
     } else {
     }
     setRe(re+1); 
+
+    setTimeout(() => {
+      setRe(re+2); 
+    }, 1000)
     //setRe(re+4);  // DELETE ON PRODUCTION  
   }
 
@@ -136,7 +140,7 @@ export default function Home() {
 if (loadingFetch) {
   return <LoadingPage />
 } else { 
-  switch (re) {
+  /*switch (re) {
 
     case 0: // uploading file
     return <First setTargetText={setTargetText} fileError={fileError} setFileError={setFileError} click={click} setfile={setFile} setFileName_size={setFileName_size} file={file} />
@@ -144,11 +148,29 @@ if (loadingFetch) {
     return <Second slides={nums} setnums={setNums} send={send} goBack={previousRender}  />
   case 2: // setting hyperparameteres
     return <Third setHyperparams={setHyperparams} goBack={previousRender}   /> 
-  case 3: // show loading page
+  case 3: // show training page
     return <Fourth /> 
   case 4:
     return <Fifth goToGroup={goToGroup} setCurrentGroup={setCurrentGroup} goBack={previousRender} groups={groups} />
   case 5:
+    return <Sixth groups={groups} ui={ui} currentGp={currentGroup} setGp={setCurrentGroup} goBack={previousRender} fileName_size={fileName_size} fileRows={fileRows} loadingFetch={loadingFetch} setLoadingFetch={setLoadingFetch} />
+  default:
+    return <Reporte />;
+
+    
+  }*/
+
+  switch (re) {
+
+    case 0: // uploading file
+    return <First setTargetText={setTargetText} fileError={fileError} setFileError={setFileError} click={click} setfile={setFile} setFileName_size={setFileName_size} file={file} />
+  case 1: // setting slides
+    return <Second slides={nums} setnums={setNums} send={send} goBack={previousRender}  />
+  case 2: // show training page
+    return <Fourth /> 
+  case 3: 
+    return <Fifth goToGroup={goToGroup} setCurrentGroup={setCurrentGroup} goBack={previousRender} groups={groups} />
+  case 4:
     return <Sixth groups={groups} ui={ui} currentGp={currentGroup} setGp={setCurrentGroup} goBack={previousRender} fileName_size={fileName_size} fileRows={fileRows} loadingFetch={loadingFetch} setLoadingFetch={setLoadingFetch} />
   default:
     return <Reporte />;
