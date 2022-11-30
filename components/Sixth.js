@@ -10,11 +10,13 @@ import Reporte from '../components/Reporte'
 import Ahorros from '../components/Ahorros';
 import Diferencias from  '../components/Diferencias';
 import Graficas from '../components/Graficas';
+import Perfilacion from '../components/Perfilacion';
 
 import ButtonWithIcon from '../components/ButtonWithIcon';
 
-const Sixth = ({currentGp, setGp, acc, ui, goBack, status, textDifferences, fileName_size, fileRows, loadingFetch, setLoadingFetch}) => {
+const Sixth = ({groups,  currentGp,ui, setGp, goBack, fileName_size, fileRows, loadingFetch, setLoadingFetch}) => {
 
+    
     const [currentGroup, setCurrentGroup] = useState(currentGp);
     const [currentTab, setCurrentTab] = useState('Diferencias');
     const [accumulates, setAccumulates] = useState(0);
@@ -23,56 +25,109 @@ const Sixth = ({currentGp, setGp, acc, ui, goBack, status, textDifferences, file
     const [newDifferencesImages, setNewDifferencesImages] = useState([])
     const [start, setStart] = useState(true);
 
+
+    const [acc, setAcc] = useState(groups[currentGroup].acc)
+    const [status, setStatus] = useState(groups[currentGroup].state)
+    const [textDifferences, setTextDifferences] = useState(groups[currentGroup].differences)
+
+    /*console.log("acc: ", acc)
+    console.log("ui: ", ui)
+    console.log("status: ", status)
+    console.log("textDifferences: ", textDifferences)*/
+
+
     const addDifferenceText = () => {
+
+        console.log("imagenes: ", differencesImages)
+
        const text_bill_amount = 'El grupo con churn tiene 23% mayor pago que el grupo sin churn';
        const text_nationality = 'El grupo con churn tiene 23% mayor quejas que el grupo sin churn';
        const text_years_stayed = 'El grupo con churn tiene 23% mayor años en el servicio que el grupo sin churn';
        const text_status = 'El grupo con churn tiene 23% más gente en Prestige/Residential que el grupo sin churn';
     
-       const obj = []
+       const objArray = []
 
+       for (let i = 0; i<3; i++ ){
 
-        const dummyobj1 = { 'text':textDifferences['BILL_AMOUNT'], 'url':differencesImages[0]}
-        const dummyobj2 = { 'text':textDifferences['PARTY_NATIONALITY'], 'url':differencesImages[1]}
-        const dummyobj3 = { 'text':textDifferences['STATUS'], 'url':differencesImages[2]}
-        const dummyobj4 = { 'text':textDifferences['Years_stayed'], 'url':differencesImages[3]}
- 
-        obj.push(dummyobj1);
-        obj.push(dummyobj2);
-        obj.push(dummyobj3);
-        obj.push(dummyobj4);
+            const obj = []
 
-      
+            const dummyobj1 = { 'text':textDifferences['BILL_AMOUNT'], 'url':differencesImages[i].imgs[0]}
+            const dummyobj2 = { 'text':textDifferences['PARTY_NATIONALITY'], 'url':differencesImages[0].imgs[1]}
+            const dummyobj3 = { 'text':textDifferences['STATUS'], 'url':differencesImages[0].imgs[2]}
+            const dummyobj4 = { 'text':textDifferences['Years_stayed'], 'url':differencesImages[0].imgs[3]}
+    
+            obj.push(dummyobj1);
+            obj.push(dummyobj2);
+            obj.push(dummyobj3);
+            obj.push(dummyobj4);
 
-       setNewDifferencesImages(obj)
+            objArray.push(obj)
+       }
+    
+       setNewDifferencesImages(objArray)
     }
 
     const fetchDifferences = async () => {
-        await axios.get("http://localhost:5000/getdifferences", { params: { ui: ui} } )
-        .then((res) => {
-            setDifferencesImages(res.data)
-        })
+        let obj = []
+        for (let i = 1; i<2; i++ ){
+            let data = await axios.get("http://localhost:5000/getdifferences", { params: { ui: ui, i:i} } )
+            let dummyArr = {"imgs":data.data}
+            //setDifferencesImages([...differencesImages, dummyArr])
+            obj = [...obj, dummyArr]
+        }
+        console.log("OBJJJJ_:", obj )
+        setDifferencesImages(obj)
+        return obj
     }
 
     const fetchGraficas = async () => {
-        await axios.get("http://localhost:5000/getgraphs", { params: { ui: ui} }  )
+        await axios.get("http://localhost:5000/getgraphs", { params: { ui: ui, i:currentGp} }  )
         .then((res) => {
             setPlots(res.data)
             setStart(false)
         })
     }
 
-    useEffect(() => {
-        if (start === true) {
-            if (status === 'both')
-                fetchDifferences();
-            fetchGraficas();
-        } else {
-            if (status === 'both') {
-                addDifferenceText()
+    useEffect( () => {
+        console.log("funca")
+        const getDifferencesTextImages = async () => {
+        if (status === 'both'){
+            let differencesImagesLocal = []
+            for (let i = 1; i<4; i++ ){
+                let data = await axios.get("http://localhost:5000/getdifferences", { params: { ui: ui, i:i} } )
+                let dummyArr = {"imgs":data.data}
+                //setDifferencesImages([...differencesImages, dummyArr])
+                differencesImagesLocal = [...differencesImagesLocal, dummyArr]
             }
+            console.log("OBJJJJ_:", differencesImagesLocal )
+            setDifferencesImages(differencesImagesLocal)
+         
+            const objArray = []
+     
+            for (let i = 0; i<3; i++ ){
+     
+                 const obj = []
+     
+                 const dummyobj1 = { 'text':groups[i].differences['BILL_AMOUNT'], 'url':differencesImagesLocal[i].imgs[0]}
+                 const dummyobj2 = { 'text':groups[i].differences['PARTY_NATIONALITY'], 'url':differencesImagesLocal[i].imgs[1]}
+                 const dummyobj3 = { 'text':groups[i].differences['STATUS'], 'url':differencesImagesLocal[i].imgs[2]}
+                 const dummyobj4 = { 'text':groups[i].differences['Years_stayed'], 'url':differencesImagesLocal[i].imgs[3]}
+         
+                 obj.push(dummyobj1);
+                 obj.push(dummyobj2);
+                 obj.push(dummyobj3);
+                 obj.push(dummyobj4);
+     
+                 objArray.push(obj)
+            }
+         
+            setNewDifferencesImages(objArray)
         }
-        }, [start])
+        fetchGraficas();
+        }
+
+        getDifferencesTextImages()
+        }, [])
 
 
 
@@ -143,7 +198,7 @@ const Sixth = ({currentGp, setGp, acc, ui, goBack, status, textDifferences, file
 
 
     const handleGroup = (e) => {
-        setGp(e.target.value)
+        setCurrentGroup(e.target.value)
     }
 
 
@@ -151,13 +206,19 @@ const Sixth = ({currentGp, setGp, acc, ui, goBack, status, textDifferences, file
 
     const infoDiferencias = (group) => {
         return (
-         <Diferencias status={status} differencesImages={newDifferencesImages}/>
+         <Diferencias i={currentGroup} status={status} differencesImages={newDifferencesImages}/>
         )
     }
 
     const infoGraficas = (group) => {
         return (
             <Graficas plots={plots}/>
+        )
+    }
+
+    const infoPerfilacion = (group) => {
+        return (
+            <Perfilacion/>
         )
     }
 
@@ -195,6 +256,8 @@ const Sixth = ({currentGp, setGp, acc, ui, goBack, status, textDifferences, file
             return infoDesglose(currentGp)
         } else if (currentTab === "Reporte") {
             return infoReporte(currentGp)
+        } else if (currentTab === "Perfilacion") {
+            return infoPerfilacion(currentGp)
         }
         }
 
@@ -218,9 +281,9 @@ const Sixth = ({currentGp, setGp, acc, ui, goBack, status, textDifferences, file
     return ( 
         <div className={styles.wrapper}>
              <select name='birth-date'id='birth-date'className={styles.select} onChange={handleGroup}>
-                <option value="1">Grupo 1</option>
-                <option value="2">Grupo 2</option>
-                <option value="3">Grupo 3</option>
+                <option value="0">Grupo 1</option>
+                <option value="1">Grupo 2</option>
+                <option value="2">Grupo 3</option>
             </select>
 
             <div className={styles.content}>
@@ -240,6 +303,9 @@ const Sixth = ({currentGp, setGp, acc, ui, goBack, status, textDifferences, file
                         </li>
                         <li>
                             <button onClick={handleChangeTab} value="Reporte"> Reporte</button>
+                        </li>
+                        <li>
+                            <button onClick={handleChangeTab} value="Perfilacion"> Perfilación</button>
                         </li>
                     </ul>
                 </nav>

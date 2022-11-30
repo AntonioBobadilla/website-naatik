@@ -31,10 +31,12 @@ export default function Home() {
   const [fileName_size, setFileName_size] = React.useState({});
   const [fileRows, setFileRows] = React.useState([])
   const [status, setStatus] = React.useState('')
+  const [groups, setGroups] = React.useState([])
 
   const [loadingFetch, setLoadingFetch] = React.useState(false)
 
   const [probabilities, setProbabilities] = React.useState({})
+  const [targetText, setTargetText] = React.useState('')
 
   const previousRender = (e, numRenders = 1) => {
     setRe(re-numRenders)
@@ -75,12 +77,14 @@ export default function Home() {
   },[loadingFetch])
 
   const send = async (obj) => {
+    console.log("target: ", targetText)
     setLoadingFetch(true)
     const UPLOAD_ENDPOINT = "http://localhost:5000/";
     const formData = new FormData();
     formData.append("data", file);
 
     formData.append("slides", JSON.stringify(obj));
+    formData.append("target", JSON.stringify(targetText));
 
     const resp = await axios.post(UPLOAD_ENDPOINT, formData, {
       headers: {
@@ -90,11 +94,17 @@ export default function Home() {
     });
 
     if (resp.status === 200) {
-      setStatus(resp.data.state)
+      console.log("clust: ", resp.data.info)
+      setGroups(resp.data.info)
+      const ui = resp.data.ui
+      setUi(ui)
+      setFileRows(resp.data.fileRows) // pasar esto a componente sixth
+      /*setStatus(resp.data.state)
       setProbabilities(resp.data.acc)
       setTextDifferences(resp.data.differences)
-      setFileRows(resp.data.fileRows)
-      const ui = resp.data.ui
+
+
+
       const obj = resp.data.acc
       obj['Nula probabilidad'] = obj['group1'];
       delete obj['group1'];
@@ -107,13 +117,19 @@ export default function Home() {
 
       obj['Alta probabilidad'] = obj['group4'];
       delete obj['group4'];
-      setUi(ui)
-      setAcc(obj)
+
+      setAcc(obj)*/
+
+
       setLoadingFetch(false)
     } else {
     }
-    //setRe(re+1); 
-    setRe(re+4);  // DELETE ON PRODUCTION  
+    setRe(re+1); 
+
+    setTimeout(() => {
+      setRe(re+2); 
+    }, 1000)
+    //setRe(re+4);  // DELETE ON PRODUCTION  
   }
 
   const goToGroup = () => {
@@ -124,20 +140,38 @@ export default function Home() {
 if (loadingFetch) {
   return <LoadingPage />
 } else { 
-  switch (re) {
+  /*switch (re) {
 
     case 0: // uploading file
-    return <First fileError={fileError} setFileError={setFileError} click={click} setfile={setFile} setFileName_size={setFileName_size} file={file} />
+    return <First setTargetText={setTargetText} fileError={fileError} setFileError={setFileError} click={click} setfile={setFile} setFileName_size={setFileName_size} file={file} />
   case 1: // setting slides
     return <Second slides={nums} setnums={setNums} send={send} goBack={previousRender}  />
   case 2: // setting hyperparameteres
     return <Third setHyperparams={setHyperparams} goBack={previousRender}   /> 
-  case 3: // show loading page
+  case 3: // show training page
     return <Fourth /> 
   case 4:
-    return <Fifth goToGroup={goToGroup} setCurrentGroup={setCurrentGroup} goBack={previousRender} />
+    return <Fifth goToGroup={goToGroup} setCurrentGroup={setCurrentGroup} goBack={previousRender} groups={groups} />
   case 5:
-    return <Sixth textDifferences={textDifferences} status={status} currentGp={currentGroup} setGp={setCurrentGroup} acc={acc} ui={ui} goBack={previousRender} fileName_size={fileName_size} fileRows={fileRows} loadingFetch={loadingFetch} setLoadingFetch={setLoadingFetch}/>
+    return <Sixth groups={groups} ui={ui} currentGp={currentGroup} setGp={setCurrentGroup} goBack={previousRender} fileName_size={fileName_size} fileRows={fileRows} loadingFetch={loadingFetch} setLoadingFetch={setLoadingFetch} />
+  default:
+    return <Reporte />;
+
+    
+  }*/
+
+  switch (re) {
+
+    case 0: // uploading file
+    return <First setTargetText={setTargetText} fileError={fileError} setFileError={setFileError} click={click} setfile={setFile} setFileName_size={setFileName_size} file={file} />
+  case 1: // setting slides
+    return <Second slides={nums} setnums={setNums} send={send} goBack={previousRender}  />
+  case 2: // show training page
+    return <Fourth /> 
+  case 3: 
+    return <Fifth goToGroup={goToGroup} setCurrentGroup={setCurrentGroup} goBack={previousRender} groups={groups} />
+  case 4:
+    return <Sixth groups={groups} ui={ui} currentGp={currentGroup} setGp={setCurrentGroup} goBack={previousRender} fileName_size={fileName_size} fileRows={fileRows} loadingFetch={loadingFetch} setLoadingFetch={setLoadingFetch} />
   default:
     return <Reporte />;
 

@@ -6,15 +6,70 @@ import styled from 'styled-components';
 import classNames from 'classnames';
 import ButtonTemplate from '../components/Button';
 
+const StyledSlider = styled(ReactSlider)`
+width: 100%;
+height: 14px;
+`;
+
+const StyledThumb1 = styled.div`
+height: 45px;
+line-height: 25px;
+width: 45px;
+text-align: center;
+background-color: #28A745;
+color: #fff;
+border-radius: 50%;
+cursor: grab;
+top:-15px;
+display: flex;
+align-items:center;
+justify-content:center;
+`;
+const StyledThumb2 = styled.div`
+height: 45px;
+line-height: 25px;
+width: 45px;
+text-align: center;
+background-color: #FFC107;
+color: #fff;
+border-radius: 50%;
+cursor: grab;
+top:-15px;
+display: flex;
+align-items:center;
+justify-content:center;
+`;
+
+const StyledThumb3 = styled.div`
+height: 45px;
+line-height: 25px;
+width: 45px;
+text-align: center;
+background-color: #FD7E14;
+color: #fff;
+border-radius: 50%;
+cursor: grab;
+top:-15px;
+display: flex;
+align-items:center;
+justify-content:center;
+`;
+
+const StyledTrack = styled.div`
+top: 0;
+bottom: 0;
+background: #3A5057;
+border-radius: 10px;
+`;
+
 const Second = ({setnums, send, goBack, slides}) => {
 
     const [num1, setNum1] = useState(1);
     const [num2, setNum2] = useState(50);
     const [num3, setNum3] = useState(99);
 
-    let a = 1;
-    let b = 50;
-    let c = 99;
+    const [sliders, setSliders] = useState([1, 50, 99])
+
     
     const getQueryStringParams = query => {
         return query
@@ -33,54 +88,7 @@ const Second = ({setnums, send, goBack, slides}) => {
         const { data } = getQueryStringParams(window.location.search);
       }, []);
     
-    const StyledSlider = styled(ReactSlider)`
-    width: 100%;
-    height: 14px;
-    `;
-    
-    const StyledThumb1 = styled.div`
-    height: 45px;
-    line-height: 25px;
-    width: 45px;
-    text-align: center;
-    background-color: #28A745;
-    color: #fff;
-    border-radius: 50%;
-    cursor: grab;
-    top:-15px;
-    display: flex;
-    align-items:center;
-    justify-content:center;
-    `;
-    const StyledThumb2 = styled.div`
-    height: 45px;
-    line-height: 25px;
-    width: 45px;
-    text-align: center;
-    background-color: #FFC107;
-    color: #fff;
-    border-radius: 50%;
-    cursor: grab;
-    top:-15px;
-    display: flex;
-    align-items:center;
-    justify-content:center;
-    `;
 
-    const StyledThumb3 = styled.div`
-    height: 45px;
-    line-height: 25px;
-    width: 45px;
-    text-align: center;
-    background-color: #FD7E14;
-    color: #fff;
-    border-radius: 50%;
-    cursor: grab;
-    top:-15px;
-    display: flex;
-    align-items:center;
-    justify-content:center;
-    `;
     
     const Thumb = (props, state) => {
        if (props.key === 'thumb-0')
@@ -91,18 +99,13 @@ const Second = ({setnums, send, goBack, slides}) => {
         return ( <StyledThumb3 {...props}>{state.valueNow}</StyledThumb3> );
     }
     
-    const StyledTrack = styled.div`
-    top: 0;
-    bottom: 0;
-    background: #3A5057;
-    border-radius: 10px;
-    `;
+
     
     const Track = (props, state) => <StyledTrack {...props} index={state.index} />;
     
     const updateValues = () => {
         //setnums({"first-slide": a, "second-slide":b, "third-slide":c})
-        send({"first-slide": a, "second-slide":b, "third-slide":c})
+        send({"first-slide": sliders[0], "second-slide": sliders[1], "third-slide": sliders[2]})
     }
 
     return ( 
@@ -116,30 +119,27 @@ const Second = ({setnums, send, goBack, slides}) => {
 
                     <div className={classNames(styles.hide_item, styles.white_item)}>
                         <p>Sin churn</p>
-                        <p>0-25</p>
+                        <p>0-{sliders[0]}</p>
                     </div>
                     <div className={classNames(styles.hide_item, styles.gray_item)}>
                         <p>Probabilidad baja</p>
-                        <p>25-50</p>
+                        <p>{sliders[0]}-{sliders[1]}</p>
                     </div>
                     <div  className={classNames(styles.hide_item, styles.white_item)}>
                         <p>Probabilidad media</p>
-                        <p>50-75</p>
+                        <p>{sliders[1]}-{sliders[2]}</p>
                     </div>
                     <div className={classNames(styles.hide_item, styles.gray_item)}>
                         <p>Probabilidad alta</p>
-                        <p>75-100</p>
+                        <p>{sliders[2]}-100</p>
                     </div>
                 </div>
-                <StyledSlider defaultValue={[num1,num2,num3]} renderTrack={Track} renderThumb={Thumb} onChange={([num1,num2,num3], index) => {
-                    if (index == 0) {
-                        a = num1;
-                    } else if(index == 1){ 
-                        b = num2;
-                    }else { 
-                        c = num3;
-                    }
-                }} />
+                <StyledSlider defaultValue={sliders} minDistance={1} min={1} max={99} renderTrack={Track} renderThumb={Thumb} onChange={currentSliders => {
+                    setSliders([...currentSliders])
+                }}         
+                onAfterChange={currentSliders => {
+                    setSliders([...currentSliders]);
+                 }}/>
                 <div className={styles.numbers}>
                     <p>{num1}%</p>
                     <p>{num2}%</p>

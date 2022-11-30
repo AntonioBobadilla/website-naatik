@@ -1,7 +1,7 @@
 import styles from '../styles/Graphs.module.css';
 
 const Graficas = ({plots}) => {
-
+    console.log("GRAFICAS: ", plots)
     return ( 
         <div className={styles.wrapper}>
             <h1>Info Gráficas</h1>
