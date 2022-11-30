@@ -30,56 +30,6 @@ const Sixth = ({groups,  currentGp,ui, setGp, goBack, fileName_size, fileRows, l
     const [status, setStatus] = useState(groups[currentGroup].state)
     const [textDifferences, setTextDifferences] = useState(groups[currentGroup].differences)
 
-    /*console.log("acc: ", acc)
-    console.log("ui: ", ui)
-    console.log("status: ", status)
-    console.log("textDifferences: ", textDifferences)*/
-
-
-    const addDifferenceText = () => {
-
-        console.log("imagenes: ", differencesImages)
-
-       const text_bill_amount = 'El grupo con churn tiene 23% mayor pago que el grupo sin churn';
-       const text_nationality = 'El grupo con churn tiene 23% mayor quejas que el grupo sin churn';
-       const text_years_stayed = 'El grupo con churn tiene 23% mayor años en el servicio que el grupo sin churn';
-       const text_status = 'El grupo con churn tiene 23% más gente en Prestige/Residential que el grupo sin churn';
-    
-       const objArray = []
-
-       for (let i = 0; i<3; i++ ){
-
-            const obj = []
-
-            const dummyobj1 = { 'text':textDifferences['BILL_AMOUNT'], 'url':differencesImages[i].imgs[0]}
-            const dummyobj2 = { 'text':textDifferences['PARTY_NATIONALITY'], 'url':differencesImages[0].imgs[1]}
-            const dummyobj3 = { 'text':textDifferences['STATUS'], 'url':differencesImages[0].imgs[2]}
-            const dummyobj4 = { 'text':textDifferences['Years_stayed'], 'url':differencesImages[0].imgs[3]}
-    
-            obj.push(dummyobj1);
-            obj.push(dummyobj2);
-            obj.push(dummyobj3);
-            obj.push(dummyobj4);
-
-            objArray.push(obj)
-       }
-    
-       setNewDifferencesImages(objArray)
-    }
-
-    const fetchDifferences = async () => {
-        let obj = []
-        for (let i = 1; i<2; i++ ){
-            let data = await axios.get("http://localhost:5000/getdifferences", { params: { ui: ui, i:i} } )
-            let dummyArr = {"imgs":data.data}
-            //setDifferencesImages([...differencesImages, dummyArr])
-            obj = [...obj, dummyArr]
-        }
-        console.log("OBJJJJ_:", obj )
-        setDifferencesImages(obj)
-        return obj
-    }
-
     const fetchGraficas = async () => {
         await axios.get("http://localhost:5000/getgraphs", { params: { ui: ui, i:currentGp} }  )
         .then((res) => {
@@ -96,10 +46,9 @@ const Sixth = ({groups,  currentGp,ui, setGp, goBack, fileName_size, fileRows, l
             for (let i = 1; i<4; i++ ){
                 let data = await axios.get("http://localhost:5000/getdifferences", { params: { ui: ui, i:i} } )
                 let dummyArr = {"imgs":data.data}
-                //setDifferencesImages([...differencesImages, dummyArr])
                 differencesImagesLocal = [...differencesImagesLocal, dummyArr]
             }
-            console.log("OBJJJJ_:", differencesImagesLocal )
+            console.log("differenceslocal", differencesImagesLocal)
             setDifferencesImages(differencesImagesLocal)
          
             const objArray = []
@@ -107,7 +56,13 @@ const Sixth = ({groups,  currentGp,ui, setGp, goBack, fileName_size, fileRows, l
             for (let i = 0; i<3; i++ ){
      
                  const obj = []
+
+                 fileRows.map((col) => {
+                    console.log(i, differencesImagesLocal[i].imgs[col])
+                    obj.push({  'text':groups[i].differences[col], 'url':differencesImagesLocal[i].imgs[col] })
+                 })
      
+                 /*
                  const dummyobj1 = { 'text':groups[i].differences['BILL_AMOUNT'], 'url':differencesImagesLocal[i].imgs[0]}
                  const dummyobj2 = { 'text':groups[i].differences['PARTY_NATIONALITY'], 'url':differencesImagesLocal[i].imgs[1]}
                  const dummyobj3 = { 'text':groups[i].differences['STATUS'], 'url':differencesImagesLocal[i].imgs[2]}
@@ -117,8 +72,10 @@ const Sixth = ({groups,  currentGp,ui, setGp, goBack, fileName_size, fileRows, l
                  obj.push(dummyobj2);
                  obj.push(dummyobj3);
                  obj.push(dummyobj4);
+                 */
      
                  objArray.push(obj)
+                 
             }
          
             setNewDifferencesImages(objArray)
