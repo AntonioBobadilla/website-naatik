@@ -8,7 +8,7 @@ import Graficas from '../components/Graficas';
 import ClassificationModel from '../components/ClassificationModel'
 import InformacionCSV from '../components/InformacionCSV';
 
-const Reporte = ({differencesImages, accumulates, acc, setAccumulates, plots, noDifferences, fileName_size, fileRows, status}) => {
+const Reporte = ({differencesImages, accumulates, acc, setAccumulates, plots, noDifferences, fileName_size, fileRows, status, i}) => {
     return ( 
         <div className={styles.reporte}>
             <Navbar />
@@ -23,12 +23,7 @@ const Reporte = ({differencesImages, accumulates, acc, setAccumulates, plots, no
             <div className={styles.section}>
                 <h5>Diferencias entre clientes con churn y no churn:</h5>
                 <p className={styles.abstract_text}>A continuación se muestran las diferencias entre los clientes con churn y no churn con algunas variables que tienen una alta importancia en el modelo de clasificación.</p>
-                <DiferenciasReporte status={status} noDifferences={noDifferences} differencesImages={differencesImages}/>
-            </div>
-            <div className={styles.section}>
-                <h5>Posibles cuentas canceladas:</h5>
-                <p className={styles.abstract_text}> A continuación se muestra una tabla que contiene la suma de la variable BILL_AMOUNT multiplicada por la probabilidad de churn de cada uno de los diferentes grupos: Nula, Baja, Mediana y Alta probabilidad junto con su suma total.</p>
-                <AhorrosReporte fontSize={12} accumulates={accumulates} acc={acc} setAccumulates={setAccumulates}/>
+                <DiferenciasReporte i={i} status={status} noDifferences={noDifferences} differencesImages={differencesImages}/>
             </div>
             <div className={styles.section}>
                 <h5>Gráficas entre clientes con churn y no churn:</h5>

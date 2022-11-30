@@ -269,7 +269,7 @@ const Sixth = ({groups,  currentGp,ui, setGp, goBack, fileName_size, fileRows, l
         if ( !start ){
             return (
                 <div className={styles.reporte} id="reporte">
-                    <Reporte fileRows={fileRows} differencesImages={newDifferencesImages} accumulates={accumulates} acc={acc} setAccumulates={setAccumulates} plots={plots}  status={status} fileName_size={fileName_size}  />
+                    <Reporte fileRows={fileRows} i={currentGroup} differencesImages={newDifferencesImages} accumulates={accumulates} acc={acc} setAccumulates={setAccumulates} plots={plots}  status={status} fileName_size={fileName_size}  />
                 </div> 
             )
         } else {
@@ -291,9 +291,6 @@ const Sixth = ({groups,  currentGp,ui, setGp, goBack, fileName_size, fileRows, l
                     <ul>
                         <li>
                             <button onClick={handleChangeTab} value="Diferencias"> Diferencias</button>
-                        </li>
-                        <li>
-                            <button onClick={handleChangeTab} value="Ahorros"> Ahorros</button>
                         </li>
                         <li>
                             <button onClick={handleChangeTab} value="Gráficas"> Gráficas</button>

@@ -1,18 +1,33 @@
 import styles from '../styles/DiferenciasReporte.module.css'
 import React, {useState, useEffect} from 'react';
 
-const DiferenciasReporte = ({differencesImages, status}) => {
+const DiferenciasReporte = ({differencesImages, status, i}) => {
 
-    console.log("status: ", status)
-    const trueCondition = () => (
+    const trueCondition = () => {
         
-        differencesImages.map((obj, key) => (
-            <div key={key} className={styles.plot_difference}>
-                <p  className={styles.text_plot}> {obj.text}</p>
-                <img src={"http://localhost:5000"+obj.url} alt={"http://localhost:5000"+obj.url} className={styles.plot_img} />
+        if(differencesImages.length === 0)
+            return<></>
+        else return(
+            <div>
+                {differencesImages.map((item,index) => {
+                    return (
+                        <>
+                            <h4 key={index}>Grupo # {index+1}</h4>
+                            {differencesImages[index].map((obj, key) => {
+                                return (
+                                <div key={key}>
+                                    <li  className={styles.text_plot}> {obj.text}</li>
+                                    <img src={"http://localhost:5000"+obj.url} alt={"http://localhost:5000"+obj.url} className={styles.plot_img} />
+                                </div>
+                            );
+                            })
+                            }
+                        </>
+
+                    )
+                })}
             </div>
-        ))
-    )
+        )}
 
     const falseCondition = () => {
         return ( 
