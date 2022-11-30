@@ -68,7 +68,7 @@ const Second = ({setnums, send, goBack, slides}) => {
     const [num2, setNum2] = useState(50);
     const [num3, setNum3] = useState(99);
 
-    const [sliders, setSliders] = useState([1, 50, 90])
+    const [sliders, setSliders] = useState([1, 50, 99])
 
     
     const getQueryStringParams = query => {

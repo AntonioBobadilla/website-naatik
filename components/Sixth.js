@@ -89,7 +89,7 @@ const Sixth = ({groups,  currentGp,ui, setGp, goBack, fileName_size, fileRows, l
     }
 
     useEffect( () => {
-
+        console.log("funca")
         const getDifferencesTextImages = async () => {
         if (status === 'both'){
             let differencesImagesLocal = []

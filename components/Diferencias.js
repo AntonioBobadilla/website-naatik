@@ -3,16 +3,19 @@ import styles from '../styles/Diferencias.module.css'
 const Diferencias = ({differencesImages, status, i}) => {
     console.log(differencesImages)
     console.log("cu gru: ", i)  
-    const trueCondition = () => (
+    const trueCondition = () => {
         
-
+        if(differencesImages.length === 0)
+            return<></>
+        else return(
         differencesImages[i].map((obj, key) => (
             <div key={key}>
                 <li  className={styles.text_plot}> {obj.text}</li>
                 <img src={"http://localhost:5000"+obj.url} alt={"http://localhost:5000"+obj.url} className={styles.plot_img} />
             </div>
+        )
         ))
-    )
+        }
 
     const falseCondition = () => {
         return ( 
