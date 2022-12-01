@@ -23,7 +23,7 @@ const Sixth = ({groups,  currentGp,ui, setGp, goBack, fileName_size, fileRows, l
     const [plots, setPlots] = useState([])
     const [newDifferencesImages, setNewDifferencesImages] = useState([])
     const [start, setStart] = useState(true);
-
+    const [clusters, setClusters] = useState([]);
     const [status, setStatus] = useState(groups[currentGroup].state)
     const [textDifferences, setTextDifferences] = useState(groups[currentGroup].differences)
 
@@ -31,6 +31,15 @@ const Sixth = ({groups,  currentGp,ui, setGp, goBack, fileName_size, fileRows, l
         await axios.get("http://localhost:5000/getgraphs", { params: { ui: ui, i:currentGp} }  )
         .then((res) => {
             setPlots(res.data)
+            setStart(false)
+        })
+    }
+
+    const fetchClusters = async () => {
+        await axios.get("http://localhost:5000/getclusters", { params: { ui: ui} }  )
+        .then((res) => {
+            console.log("CLUSTERS:  ", res.data)
+            setClusters(res.data)
             setStart(false)
         })
     }
@@ -67,6 +76,7 @@ const Sixth = ({groups,  currentGp,ui, setGp, goBack, fileName_size, fileRows, l
             setNewDifferencesImages(objArray)
         }
         fetchGraficas();
+        fetchClusters()
         }
 
         getDifferencesTextImages()
@@ -159,7 +169,7 @@ const Sixth = ({groups,  currentGp,ui, setGp, goBack, fileName_size, fileRows, l
 
     const infoPerfilacion = (group) => {
         return (
-            <Perfilacion/>
+            <Perfilacion clusters={clusters}/>
         )
     }
 
