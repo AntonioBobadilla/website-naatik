@@ -36,6 +36,9 @@ export default function Home() {
   const [groups, setGroups] = React.useState([])
   const [modelName, setModelName] = React.useState('')
 
+  // selected custom model to predict
+  const [customModel, setCustomModel] = React.useState('')
+
   const [action, setAction] = React.useState('')
 
   const [loadingFetch, setLoadingFetch] = React.useState(false)
@@ -93,6 +96,10 @@ export default function Home() {
     formData.append("slides", JSON.stringify(obj));
     formData.append("target", JSON.stringify(targetText));
     formData.append("model_name", JSON.stringify(modelName));
+    formData.append("action", JSON.stringify(action));
+
+    if (customModel !== "") 
+      formData.append("custom_model", JSON.stringify(customModel))
 
     const resp = await axios.post(UPLOAD_ENDPOINT, formData, {
       headers: {
@@ -130,6 +137,12 @@ export default function Home() {
         goToGroup()
     }
   },[modelName])
+
+  useEffect(() => {
+    if (customModel !== "") {
+        console.log("cambio en custom model: ", customModel)
+    }
+  },[customModel])
 
 //return(re ? <First click={click} setfile={setFile} file={file} /> : <Second setnums={setNums} send={send} />)
 if (loadingFetch) {
@@ -171,7 +184,7 @@ if (loadingFetch) {
   else if (re === 1 && action === 'predict')
     return <FirstPredict fileError={fileError} setFileError={setFileError} click={click} setfile={setFile} setFileName_size={setFileName_size} file={file} />
   else if (re === 2 && action === 'predict')
-    return <SelectModel goToGroup={goToGroup} /> 
+    return <SelectModel goToGroup={goToGroup} setCustomModel={setCustomModel} /> 
   else if (re === 3 && action === 'predict')
     return <Second slides={nums} setnums={setNums} send={send} goBack={previousRender}  />
   else if (re === 4 && action === 'predict')

@@ -8,7 +8,7 @@ import Graficas from '../components/Graficas';
 import ClassificationModel from '../components/ClassificationModel'
 import InformacionCSV from '../components/InformacionCSV';
 
-const Reporte = ({differencesImages, accumulates, acc, setAccumulates, plots, noDifferences, fileName_size, fileRows, status, i}) => {
+const Reporte = ({differencesImages, plots, noDifferences, fileName_size, fileRows, status, i}) => {
     return ( 
         <div className={styles.reporte}>
             <Navbar />

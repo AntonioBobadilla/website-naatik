@@ -19,14 +19,11 @@ const Sixth = ({groups,  currentGp,ui, setGp, goBack, fileName_size, fileRows, l
     
     const [currentGroup, setCurrentGroup] = useState(currentGp);
     const [currentTab, setCurrentTab] = useState('Diferencias');
-    const [accumulates, setAccumulates] = useState(0);
     const [differencesImages, setDifferencesImages] = useState([])
     const [plots, setPlots] = useState([])
     const [newDifferencesImages, setNewDifferencesImages] = useState([])
     const [start, setStart] = useState(true);
 
-
-    const [acc, setAcc] = useState(groups[currentGroup].acc)
     const [status, setStatus] = useState(groups[currentGroup].state)
     const [textDifferences, setTextDifferences] = useState(groups[currentGroup].differences)
 
@@ -56,24 +53,13 @@ const Sixth = ({groups,  currentGp,ui, setGp, goBack, fileName_size, fileRows, l
             for (let i = 0; i<3; i++ ){
      
                  const obj = []
-
                  fileRows.map((col) => {
                     console.log(i, differencesImagesLocal[i].imgs[col])
-                    obj.push({  'text':groups[i].differences[col], 'url':differencesImagesLocal[i].imgs[col] })
+                    console.log(col.split(' ').join(''))
+                    obj.push({  'text':groups[i].differences[col], 'url':differencesImagesLocal[i].imgs[col.split(' ').join('')] })
                  })
      
-                 /*
-                 const dummyobj1 = { 'text':groups[i].differences['BILL_AMOUNT'], 'url':differencesImagesLocal[i].imgs[0]}
-                 const dummyobj2 = { 'text':groups[i].differences['PARTY_NATIONALITY'], 'url':differencesImagesLocal[i].imgs[1]}
-                 const dummyobj3 = { 'text':groups[i].differences['STATUS'], 'url':differencesImagesLocal[i].imgs[2]}
-                 const dummyobj4 = { 'text':groups[i].differences['Years_stayed'], 'url':differencesImagesLocal[i].imgs[3]}
-         
-                 obj.push(dummyobj1);
-                 obj.push(dummyobj2);
-                 obj.push(dummyobj3);
-                 obj.push(dummyobj4);
-                 */
-     
+
                  objArray.push(obj)
                  
             }
@@ -88,9 +74,7 @@ const Sixth = ({groups,  currentGp,ui, setGp, goBack, fileName_size, fileRows, l
 
 
 
-  
-    if(!acc)
-        return
+
 
 
 
@@ -112,7 +96,8 @@ const Sixth = ({groups,  currentGp,ui, setGp, goBack, fileName_size, fileRows, l
             var imgHeight = canvas.height * imgWidth / canvas.width;
             var heightLeft = imgHeight;
       
-            var doc = new JsPDF('p', 'mm');
+            //var doc = new JsPDF('p', 'mm');
+            var doc = new JsPDF("p", "mm", 'a4');
             var position = 0;
       
             doc.addImage({
@@ -140,14 +125,16 @@ const Sixth = ({groups,  currentGp,ui, setGp, goBack, fileName_size, fileRows, l
                 width: imgWidth,
                 height: imgHeight,
                 alias: undefined,
-                compression: "MEDIUM", //'NONE', 'FAST', 'MEDIUM' and 'SLOW'
+                compression: "FAST", //'NONE', 'FAST', 'MEDIUM' and 'SLOW'
                 rotation: 0,
               })             
               doc.addImage(img, 'PNG', 0, position, imgWidth, imgHeight);
               heightLeft -= pageHeight;
             }
             doc.save( 'reporte.pdf');
+            //void(0);
             setLoadingFetch(false)
+            
     } 
 
 
@@ -157,9 +144,6 @@ const Sixth = ({groups,  currentGp,ui, setGp, goBack, fileName_size, fileRows, l
     const handleGroup = (e) => {
         setCurrentGroup(e.target.value)
     }
-
-
-    const infoAhorros = (group) => { return ( <Ahorros accumulates={accumulates} acc={acc} setAccumulates={setAccumulates}/> ) }
 
     const infoDiferencias = (group) => {
         return (
@@ -203,9 +187,8 @@ const Sixth = ({groups,  currentGp,ui, setGp, goBack, fileName_size, fileRows, l
 
     const showTabInformation = () => {
 
-        if (currentTab === "Ahorros"){
-            return infoAhorros(currentGp)
-        } else if (currentTab === "Diferencias") {
+
+        if (currentTab === "Diferencias") {
             return infoDiferencias(currentGp)
         } else if (currentTab === "Gráficas"){
             return infoGraficas(currentGp)
@@ -226,7 +209,7 @@ const Sixth = ({groups,  currentGp,ui, setGp, goBack, fileName_size, fileRows, l
         if ( !start ){
             return (
                 <div className={styles.reporte} id="reporte">
-                    <Reporte fileRows={fileRows} i={currentGroup} differencesImages={newDifferencesImages} accumulates={accumulates} acc={acc} setAccumulates={setAccumulates} plots={plots}  status={status} fileName_size={fileName_size}  />
+                    <Reporte fileRows={fileRows} i={currentGroup} differencesImages={newDifferencesImages}   plots={plots}  status={status} fileName_size={fileName_size}  />
                 </div> 
             )
         } else {
