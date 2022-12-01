@@ -2,13 +2,12 @@ import React, {useEffect, useRef, useState}  from 'react';
 import styles from '../styles/Groups.module.css';
 import ButtonTemplate from '../components/Button';
 
-const Fifth = ({goToGroup, setCurrentGroup, goBack, groups}) => {
+const Fifth = ({goToGroup, setCurrentGroup, goBack, groups, clustering}) => {
 
     console.log("groups from fifth component: ", groups)
 
     const handleClick = (group) => {
         setCurrentGroup(group)
-        console.log("click on group ", group)
         goToGroup()
     }
 
@@ -16,7 +15,12 @@ const Fifth = ({goToGroup, setCurrentGroup, goBack, groups}) => {
 
         <div className={styles.wrapper}>
             <h1>grupos</h1>
+            <div className={styles.general_clusting}> 
+                <h3>Clusterización general: </h3>
+                <img src={"http://localhost:5000"+clustering['main_cluster_img']} className={styles.general_clusting_img} />
+            </div>
             <div className={styles.groups}>
+                <h3 className={styles.groups_title} >Grupos correspondientes:</h3>
                 {
                     groups.map((group) => (
                         <div className={styles.group}>

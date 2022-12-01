@@ -17,6 +17,7 @@ import FirstPage from '../components/FirstPage'
 import SaveModel from '../components/SaveModel'
 import SelectModel from '../components/SelectModel'
 import FirstPredict from '../components/FirstPredict'
+
 export default function Home() {
 
   const [file, setFile] = React.useState('');
@@ -35,6 +36,7 @@ export default function Home() {
   const [status, setStatus] = React.useState('')
   const [groups, setGroups] = React.useState([])
   const [modelName, setModelName] = React.useState('')
+  const [clustering, setClustering] = React.useState({})
 
   // selected custom model to predict
   const [customModel, setCustomModel] = React.useState('')
@@ -86,8 +88,7 @@ export default function Home() {
   },[loadingFetch])
 
   const send = async (obj) => {
-    console.log("sending data...")
-    console.log("target: ", targetText)
+
     setLoadingFetch(true)
     const UPLOAD_ENDPOINT = "http://localhost:5000/";
     const formData = new FormData();
@@ -110,13 +111,13 @@ export default function Home() {
 
     if (resp.status === 200) {
       setRe(re+1);
-      console.log("clust: ", resp.data.info)
       setGroups(resp.data.info)
       const ui = resp.data.ui
       setUi(ui)
       setFileRows(resp.data.fileRows) // pasar esto a componente sixth
       setLoadingFetch(false)
-      console.log("changing page: ", re)
+      setClustering(resp.data.clustering)
+      console.log("ALL INFO: ", resp.data)
     }
      
     //setRe(re+4);  // DELETE ON PRODUCTION  
@@ -177,7 +178,7 @@ if (loadingFetch) {
   else if (re === 3 && action === 'train')
     return <Second slides={nums} setnums={setNums} send={send} goBack={previousRender}  />
   else if (re === 4 && action === 'train')
-    return <Fifth goToGroup={goToGroup} setCurrentGroup={setCurrentGroup} goBack={previousRender} groups={groups} />
+    return <Fifth goToGroup={goToGroup} setCurrentGroup={setCurrentGroup} goBack={previousRender} groups={groups} clustering={clustering}/>
   else if (re === 5 && action === 'train')
     return <Sixth  groups={groups} ui={ui} currentGp={currentGroup} setGp={setCurrentGroup} goBack={previousRender} fileName_size={fileName_size} fileRows={fileRows} loadingFetch={loadingFetch} setLoadingFetch={setLoadingFetch} />
   // conditions for predict
@@ -188,7 +189,7 @@ if (loadingFetch) {
   else if (re === 3 && action === 'predict')
     return <Second slides={nums} setnums={setNums} send={send} goBack={previousRender}  />
   else if (re === 4 && action === 'predict')
-    return <Fifth goToGroup={goToGroup} setCurrentGroup={setCurrentGroup} goBack={previousRender} groups={groups} />
+    return <Fifth goToGroup={goToGroup} setCurrentGroup={setCurrentGroup} goBack={previousRender} groups={groups} clustering={clustering} />
   else if (re === 5 && action === 'predict')
     return <Sixth groups={groups} ui={ui} currentGp={currentGroup} setGp={setCurrentGroup} goBack={previousRender} fileName_size={fileName_size} fileRows={fileRows} loadingFetch={loadingFetch} setLoadingFetch={setLoadingFetch} />
 

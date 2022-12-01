@@ -169,7 +169,7 @@ const Sixth = ({groups,  currentGp,ui, setGp, goBack, fileName_size, fileRows, l
 
     const infoPerfilacion = (group) => {
         return (
-            <Perfilacion clusters={clusters}/>
+            <Perfilacion clusting={groups[currentGroup].clusting} />
         )
     }
 
