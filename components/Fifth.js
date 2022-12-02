@@ -4,10 +4,9 @@ import ButtonTemplate from '../components/Button';
 
 const Fifth = ({goToGroup, setCurrentGroup, goBack, groups, clustering}) => {
 
-    console.log("groups from fifth component: ", groups)
+    console.log("AAAAA: ", clustering)
 
     const handleClick = (group) => {
-        console.log("REDIRECT TO GROUP: ", group)
         setCurrentGroup(group-1)
         goToGroup()
     }
@@ -39,8 +38,12 @@ const Fifth = ({goToGroup, setCurrentGroup, goBack, groups, clustering}) => {
                             </div>
                      </div>
                     ) )
+                    
                 }
-                
+            </div>
+            <div className={styles.general_clusting}> 
+                <h3>Distribución general: </h3>
+                <img src={"http://localhost:5000"+clustering['main_cluster_distribution']} className={styles.general_clusting_img} />
             </div>
             <div className={styles.buttons} >
                 <ButtonTemplate text={"Atras"} click={(e) => goBack(e,2)} />

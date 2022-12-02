@@ -1,5 +1,8 @@
 
 import styles from '../styles/Perfilacion.module.css';
+import Image from 'next/image'
+import noProfiles from '../assets/imgs/no_profiles.png'
+
 
 const Perfilacion = ({clusting}) => {
 
@@ -24,9 +27,14 @@ const Perfilacion = ({clusting}) => {
 
 
     const falseCondition = () => (
-        <>
-             <p className={styles.no_perfilation}>No hay perfilación para este grupo, ya que no hay clientes con churn.</p>
-        </>
+            <div className={styles.empty}>
+                <Image
+                    src={noProfiles}
+                    alt="no profiles img"
+                    width={250}
+                />
+                <p className={styles.no_perfilation}>No hay perfilación para este grupo, ya que no hay clientes con churn.</p>
+            </div>
     )
 
 

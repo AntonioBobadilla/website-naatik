@@ -9,7 +9,7 @@ import ClassificationModel from '../components/ClassificationModel'
 import InformacionCSV from '../components/InformacionCSV';
 import Perfilacion from '../components/PerfilacionReporte';
 
-const Reporte = ({differencesImages, plots, noDifferences, fileName_size, fileRows, status, i, Allclusts, generalInfoChurnData}) => {
+const Reporte = ({differencesImages, plots, noDifferences, fileName_size, fileRows, status, i, Allclusts, generalInfoChurnData, confussionMatrix, modelAccuracy}) => {
     return ( 
         <div className={styles.reporte}>
             <Navbar />
@@ -39,7 +39,7 @@ const Reporte = ({differencesImages, plots, noDifferences, fileName_size, fileRo
             <div className={styles.section}>
                 <h5>Modelo de clasificación usado:</h5>
                 <p className={styles.abstract_text}>A continuación se muestra el modelo de clasificación usado para detectar el churn, así como su rendimiento, sus hiperparámetros y la matriz de confusión.</p>
-                <ClassificationModel />
+                <ClassificationModel modelAccuracy={modelAccuracy} confussionMatrix={confussionMatrix} />
             </div>
         </div>
      );

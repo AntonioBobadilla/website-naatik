@@ -39,6 +39,8 @@ export default function Home() {
   const [clustering, setClustering] = React.useState({})
   const [Allclusts, setAllClusts] = React.useState([])
   const [generalInfoChurnData, setGeneralInfoChurnData] = React.useState({})
+  const [confussionMatrix, setConfussionMatrix] = React.useState([])
+  const [modelAccuracy, setModelAccuracy] = React.useState(0)
 
   // selected custom model to predict
   const [customModel, setCustomModel] = React.useState('')
@@ -121,6 +123,8 @@ export default function Home() {
       setClustering(resp.data.clustering)
       setAllClusts(resp.data.all_clusts)
       setGeneralInfoChurnData( resp.data.general_info_churn_data)
+      setConfussionMatrix(resp.data.confussion_matrix)
+      setModelAccuracy(resp.data.model_accuracy)
       console.log("ALL INFO: ", resp.data)
     }
      
@@ -187,7 +191,7 @@ if (loadingFetch) {
   else if (re === 4 && action === 'train')
     return <Fifth goToGroup={goToGroup} setCurrentGroup={setCurrentGroup} goBack={previousRender} groups={groups} clustering={clustering}/>
   else if (re === 5 && action === 'train')
-    return <Sixth generalInfoChurnData={generalInfoChurnData} Allclusts={Allclusts}  groups={groups} ui={ui} currentGp={currentGroup} setGp={setCurrentGroup} goBack={previousRender} clustering={clustering} fileName_size={fileName_size} fileRows={fileRows} loadingFetch={loadingFetch} setLoadingFetch={setLoadingFetch} />
+    return <Sixth modelAccuracy={modelAccuracy} confussionMatrix={confussionMatrix} generalInfoChurnData={generalInfoChurnData} Allclusts={Allclusts}  groups={groups} ui={ui} currentGp={currentGroup} setGp={setCurrentGroup} goBack={previousRender} clustering={clustering} fileName_size={fileName_size} fileRows={fileRows} loadingFetch={loadingFetch} setLoadingFetch={setLoadingFetch} />
   // conditions for predict
   else if (re === 1 && action === 'predict')
     return <FirstPredict fileError={fileError} setFileError={setFileError} click={click} setfile={setFile} setFileName_size={setFileName_size} file={file} />
@@ -198,7 +202,7 @@ if (loadingFetch) {
   else if (re === 4 && action === 'predict')
     return <Fifth goToGroup={goToGroup} setCurrentGroup={setCurrentGroup} goBack={previousRender} groups={groups} clustering={clustering} />
   else if (re === 5 && action === 'predict')
-    return <Sixth generalInfoChurnData={generalInfoChurnData} Allclusts={Allclusts} groups={groups} ui={ui} currentGp={currentGroup} setGp={setCurrentGroup} goBack={previousRender} clustering={clustering} fileName_size={fileName_size} fileRows={fileRows} loadingFetch={loadingFetch} setLoadingFetch={setLoadingFetch} />
+    return <Sixth modelAccuracy={modelAccuracy} confussionMatrix={confussionMatrix} generalInfoChurnData={generalInfoChurnData} Allclusts={Allclusts} groups={groups} ui={ui} currentGp={currentGroup} setGp={setCurrentGroup} goBack={previousRender} clustering={clustering} fileName_size={fileName_size} fileRows={fileRows} loadingFetch={loadingFetch} setLoadingFetch={setLoadingFetch} />
 
   /*switch (re) {
     case 0: // uploading file

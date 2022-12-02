@@ -17,7 +17,7 @@ import ButtonWithIcon from '../components/ButtonWithIcon';
 // import toast object and toast container from react-nextjs-toast
 import {toast, ToastContainer} from 'react-nextjs-toast'
 
-const Sixth = ({groups,  currentGp,ui, setGp, goBack, fileName_size, fileRows, loadingFetch, setLoadingFetch, clustering, Allclusts, generalInfoChurnData}) => {
+const Sixth = ({groups,  currentGp,ui, setGp, goBack, fileName_size, fileRows, loadingFetch, setLoadingFetch, clustering, Allclusts, generalInfoChurnData, confussionMatrix, modelAccuracy}) => {
 
     
     const [currentGroup, setCurrentGroup] = useState(currentGp);
@@ -245,7 +245,7 @@ useEffect(() => {
         if ( !start ){
             return (
                 <div className={styles.reporte} id="reporte">
-                    <Reporte generalInfoChurnData={generalInfoChurnData} Allclusts={Allclusts} fileRows={fileRows} i={currentGroup} differencesImages={newDifferencesImages}   plots={plots}  status={status} fileName_size={fileName_size}  />
+                    <Reporte modelAccuracy={modelAccuracy} confussionMatrix={confussionMatrix} generalInfoChurnData={generalInfoChurnData} Allclusts={Allclusts} fileRows={fileRows} i={currentGroup} differencesImages={newDifferencesImages}   plots={plots}  status={status} fileName_size={fileName_size}  />
                 </div> 
             )
         } else {
