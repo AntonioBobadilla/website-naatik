@@ -3,18 +3,20 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faCircleCheck} from "@fortawesome/free-solid-svg-icons"
 
 
-const ClassificationModel = () => {
+const ClassificationModel = ({confussionMatrix, modelAccuracy}) => {
 
-    const one = 323638;
-    const two = 15291;
-    const three = 0;
-    const four = 3252; 
+    console.log("accuracy: ", modelAccuracy)
+
+    const one = confussionMatrix[0][0];
+    const two = confussionMatrix[0][1];
+    const three = confussionMatrix[1][0];
+    const four = confussionMatrix[1][1]; 
     return ( 
         <>
         <div className={styles.model_performance_wrapper} >
             <div className={styles.model_performance} >
                 <h5 className={styles.title_performance}>Rendimiento del modelo</h5>
-                <h2 className={styles.model_accuracy}>94%</h2>
+                <h2 className={styles.model_accuracy}>{modelAccuracy}</h2>
 
                 <h6 className={styles.subtitle_model}>Hiperparámetros: </h6>
 

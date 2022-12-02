@@ -9,7 +9,6 @@ const Fourth = () => {
             
             <FontAwesomeIcon icon={faSpinner} className={styles.spinner} />
             <h1>Entrenando modelo</h1>
-            <h2>1/10 ÉPOCAS</h2>
         </div>
     </div>
      );

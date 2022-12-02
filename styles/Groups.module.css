@@ -70,3 +70,21 @@
     margin-top: 20px;
     margin-bottom: 20px;
 }
+
+.general_clusting {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.general_clusting_img  {
+    width: 900px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.groups_title {
+    margin-top: 50px;
+    margin-bottom: 50px;
+}

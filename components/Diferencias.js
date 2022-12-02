@@ -1,12 +1,18 @@
 import styles from '../styles/Diferencias.module.css'
+import Image from 'next/image'
+import noData from '../assets/imgs/no_data.png'
 
 const Diferencias = ({differencesImages, status, i}) => {
-    console.log(differencesImages)
-    console.log("cu gru: ", i)  
+
+
     const trueCondition = () => {
         
-        if(differencesImages.length === 0)
-            return<></>
+        if(differencesImages.length === 0 || differencesImages[i] === null)
+            return ( 
+                <div className={styles.center_wrapper}>
+                    <p  className={styles.text_wrapper}>Dados los slides proporcionados del grupo, no hay churn.</p>
+                </div>
+            )
         else return(
         differencesImages[i].map((obj, key) => (
             <div key={key}>
@@ -20,7 +26,12 @@ const Diferencias = ({differencesImages, status, i}) => {
     const falseCondition = () => {
         return ( 
             <div className={styles.center_wrapper}>
-                <p>Dados los slides proporcionados, no hay churn.</p>
+                <Image
+                    src={noData}
+                    alt="no data img"
+                    width={250}
+                />
+                <p  className={styles.text_wrapper}>Dados los slides proporcionados del grupo, no hay churn.</p>
             </div>
         )
     }

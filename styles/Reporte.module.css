@@ -1,10 +1,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;500;600;700&display=swap');
 
 .reporte {
-    width: 100%;
+    width: 297mm;
+    height: 100%;
     font-family: 'Comfortaa', cursive;
-    font-size: 24px;
+    font-size: 22px;
     margin-top: 300px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    overflow-x: hidden;
 }
 
 .container_titles {

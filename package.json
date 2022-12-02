@@ -25,6 +25,7 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-drag-drop-files": "^2.3.7",
+    "react-nextjs-toast": "^1.2.5",
     "react-range": "^1.8.14",
     "react-slider": "^2.0.4",
     "styled-components": "^5.3.6"

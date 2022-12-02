@@ -1,0 +1,64 @@
+.home {
+    width: 100%;
+    height: 75vh;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 70px;
+}
+
+.title {
+    font-weight: 400;
+    margin-bottom: 80px;
+}
+
+.boxes {
+    width: 70%;
+    height: 60%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.button {
+    background:#edf0f3;
+    width: 420px;
+    height: 400px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    transition:0.35s ease;
+    padding:25px;
+    border-radius: 3px;
+    box-shadow: rgba(83, 83, 83, 0.15) 1.35px 1.35px 1.6px;
+}
+
+.button:hover {
+    cursor: pointer;
+    background:#e8e5e5;
+    transform: translateY(-15px);
+}
+
+.tool_title {
+    color:#555a62;
+    font-weight: 700;
+    font-size: 17px;
+    pointer-events: none;
+}
+
+.tool_info {
+    padding: 15px;
+    pointer-events: none;
+}
+
+.tool_description {
+    color:#788191;
+    font-size: 13px;
+    font-weight: 300;
+    pointer-events: none;
+}
+
+.icon {
+    pointer-events: none;
+}
