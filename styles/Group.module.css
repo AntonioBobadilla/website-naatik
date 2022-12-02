@@ -84,9 +84,11 @@
 }
 
 .reporte {
-    width: 100%;
+    width: 297mm;
+    height: auto;
 }
 
+.html2canvas-container { width: 3000px !important; height: auto !important; }
 
 .desglose {
     width: 100%;

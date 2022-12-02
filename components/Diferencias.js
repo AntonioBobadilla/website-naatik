@@ -1,12 +1,16 @@
 import styles from '../styles/Diferencias.module.css'
 
 const Diferencias = ({differencesImages, status, i}) => {
-    console.log(differencesImages)
-    console.log("cu gru: ", i)  
+
+
     const trueCondition = () => {
         
-        if(differencesImages.length === 0)
-            return<></>
+        if(differencesImages.length === 0 || differencesImages[i] === null)
+            return ( 
+                <div className={styles.center_wrapper}>
+                    <p>Dados los slides proporcionados del grupo, no hay churn.</p>
+                </div>
+            )
         else return(
         differencesImages[i].map((obj, key) => (
             <div key={key}>
@@ -20,7 +24,7 @@ const Diferencias = ({differencesImages, status, i}) => {
     const falseCondition = () => {
         return ( 
             <div className={styles.center_wrapper}>
-                <p>Dados los slides proporcionados, no hay churn.</p>
+                <p>Dados los slides proporcionados del grupo, no hay churn.</p>
             </div>
         )
     }

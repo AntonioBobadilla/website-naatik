@@ -7,8 +7,9 @@ import DiferenciasReporte from  '../components/DiferenciasReporte';
 import Graficas from '../components/Graficas';
 import ClassificationModel from '../components/ClassificationModel'
 import InformacionCSV from '../components/InformacionCSV';
+import Perfilacion from '../components/PerfilacionReporte';
 
-const Reporte = ({differencesImages, plots, noDifferences, fileName_size, fileRows, status, i}) => {
+const Reporte = ({differencesImages, plots, noDifferences, fileName_size, fileRows, status, i, Allclusts, generalInfoChurnData}) => {
     return ( 
         <div className={styles.reporte}>
             <Navbar />
@@ -18,8 +19,13 @@ const Reporte = ({differencesImages, plots, noDifferences, fileName_size, fileRo
             </div>
             <div className={styles.section}>
                 <h5>Información general del archivo de entrada:</h5>
-                <InformacionCSV fileRows={fileRows} fileName_size={fileName_size} />
+                <InformacionCSV generalInfoChurnData={generalInfoChurnData} fileRows={fileRows} fileName_size={fileName_size} />
             </div>
+            <div className={styles.section}>
+                <h5>Perfilación de clientes con churn:</h5>
+                <p className={styles.abstract_text}> A continuación se muestran la perfilación de los diferentes tipos de clientes que hacen churn.</p>
+                <Perfilacion Allclusts={Allclusts} />
+            </div>     
             <div className={styles.section}>
                 <h5>Diferencias entre clientes con churn y no churn:</h5>
                 <p className={styles.abstract_text}>A continuación se muestran las diferencias entre los clientes con churn y no churn con algunas variables que tienen una alta importancia en el modelo de clasificación.</p>
@@ -29,7 +35,7 @@ const Reporte = ({differencesImages, plots, noDifferences, fileName_size, fileRo
                 <h5>Gráficas entre clientes con churn y no churn:</h5>
                 <p className={styles.abstract_text}> A continuación se muestran gráficas que resumen los datos entre los clientes con churn y no churn.</p>
                 <Graficas plots={plots} />
-            </div>
+            </div>       
             <div className={styles.section}>
                 <h5>Modelo de clasificación usado:</h5>
                 <p className={styles.abstract_text}>A continuación se muestra el modelo de clasificación usado para detectar el churn, así como su rendimiento, sus hiperparámetros y la matriz de confusión.</p>

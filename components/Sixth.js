@@ -14,7 +14,10 @@ import Perfilacion from '../components/Perfilacion';
 
 import ButtonWithIcon from '../components/ButtonWithIcon';
 
-const Sixth = ({groups,  currentGp,ui, setGp, goBack, fileName_size, fileRows, loadingFetch, setLoadingFetch}) => {
+// import toast object and toast container from react-nextjs-toast
+import {toast, ToastContainer} from 'react-nextjs-toast'
+
+const Sixth = ({groups,  currentGp,ui, setGp, goBack, fileName_size, fileRows, loadingFetch, setLoadingFetch, clustering, Allclusts, generalInfoChurnData}) => {
 
     
     const [currentGroup, setCurrentGroup] = useState(currentGp);
@@ -25,10 +28,9 @@ const Sixth = ({groups,  currentGp,ui, setGp, goBack, fileName_size, fileRows, l
     const [start, setStart] = useState(true);
     const [clusters, setClusters] = useState([]);
     const [status, setStatus] = useState(groups[currentGroup].state)
-    const [textDifferences, setTextDifferences] = useState(groups[currentGroup].differences)
 
     const fetchGraficas = async () => {
-        await axios.get("http://localhost:5000/getgraphs", { params: { ui: ui, i:currentGp} }  )
+        await axios.get("http://localhost:5000/getgraphs", { params: { ui: ui, i:currentGp+1} }  )
         .then((res) => {
             setPlots(res.data)
             setStart(false)
@@ -45,36 +47,42 @@ const Sixth = ({groups,  currentGp,ui, setGp, goBack, fileName_size, fileRows, l
     }
 
     useEffect( () => {
-        console.log("funca")
         const getDifferencesTextImages = async () => {
-        if (status === 'both'){
-            let differencesImagesLocal = []
-            for (let i = 1; i<4; i++ ){
-                let data = await axios.get("http://localhost:5000/getdifferences", { params: { ui: ui, i:i} } )
-                let dummyArr = {"imgs":data.data}
-                differencesImagesLocal = [...differencesImagesLocal, dummyArr]
+        let differencesImagesLocal = []
+        console.log("groups", groups)
+        for (let i = 0; i<groups.length; i++ ){
+            let dummyArr
+            if(groups[i].state !== "both"){
+                dummyArr = {"imgs": null}
             }
-            console.log("differenceslocal", differencesImagesLocal)
-            setDifferencesImages(differencesImagesLocal)
-         
-            const objArray = []
-     
-            for (let i = 0; i<3; i++ ){
-     
-                 const obj = []
-                 fileRows.map((col) => {
-                    console.log(i, differencesImagesLocal[i].imgs[col])
-                    console.log(col.split(' ').join(''))
-                    obj.push({  'text':groups[i].differences[col], 'url':differencesImagesLocal[i].imgs[col.split(' ').join('')] })
-                 })
-     
-
-                 objArray.push(obj)
-                 
+            else{
+                let data = await axios.get("http://localhost:5000/getdifferences", { params: { ui: ui, i:i+1} } )
+                dummyArr = {"imgs":data.data}
             }
-         
-            setNewDifferencesImages(objArray)
+            differencesImagesLocal = [...differencesImagesLocal, dummyArr]
         }
+        setDifferencesImages(differencesImagesLocal)
+        console.log(differencesImagesLocal)
+
+        const objArray = []
+    
+        for (let i = 0; i<differencesImagesLocal.length; i++ ){
+            console.log(groups[i])
+            if(differencesImagesLocal[i].imgs === null){
+                objArray.push(null)
+            }
+            else{
+                const obj = []
+                fileRows.map((col) => {
+                    obj.push({  'text':groups[i].differences[col], 'url':differencesImagesLocal[i].imgs[col.split(' ').join('')] })
+                    })
+                objArray.push(obj)
+            }  
+        }
+
+        console.log(objArray)
+        
+        setNewDifferencesImages(objArray)
         fetchGraficas();
         fetchClusters()
         }
@@ -89,20 +97,30 @@ const Sixth = ({groups,  currentGp,ui, setGp, goBack, fileName_size, fileRows, l
 
 
     const  downloadCSV = () => {
+        toast.notify(`Desglose generado correctamente !`, {
+            duration: 2.4,
+            type: "success",
+            title: 'Success.'
+          })  
         window.open('http://localhost:5000/retrievecsv?ui='+ui, '_blank', 'noopener,noreferrer');
     } 
 
     const  downloadReporte = async () => {
-            setLoadingFetch(true)
+
+            window.scrollTo(0, 0);
+            //setLoadingFetch(true)
+            document.body.style.cursor='wait';
             const datas = document.querySelector('#reporte');
-            const pdf = new JsPDF("portrait", "pt", "a4"); 
             const canvas = await html2canvas(datas, {
                 allowTaint:true,
                 useCORS:true
             });
+
+            console.log("canvas hei: ", canvas.height, canvas.width)
+
             const img = canvas.toDataURL("image/png");  
             var imgWidth = 210; 
-            var pageHeight = 295;  
+            var pageHeight = 297;  
             var imgHeight = canvas.height * imgWidth / canvas.width;
             var heightLeft = imgHeight;
       
@@ -141,13 +159,21 @@ const Sixth = ({groups,  currentGp,ui, setGp, goBack, fileName_size, fileRows, l
               doc.addImage(img, 'PNG', 0, position, imgWidth, imgHeight);
               heightLeft -= pageHeight;
             }
+        
             doc.save( 'reporte.pdf');
-            //void(0);
-            setLoadingFetch(false)
-            
+            //setLoadingFetch(false)
+
+            toast.notify(`Reporte generado correctamente !`, {
+                duration: 2.4,
+                type: "success",
+                title: 'Success.'
+              })  
+            document.body.style.cursor='default';
     } 
 
-
+useEffect(() => {
+    setStatus(groups[currentGroup].state)
+}, [currentGroup])
  
 
 
@@ -169,7 +195,7 @@ const Sixth = ({groups,  currentGp,ui, setGp, goBack, fileName_size, fileRows, l
 
     const infoPerfilacion = (group) => {
         return (
-            <Perfilacion clusting={groups[currentGroup].clusting} />
+            <Perfilacion clusting={groups[currentGroup].clusting}  />
         )
     }
 
@@ -219,7 +245,7 @@ const Sixth = ({groups,  currentGp,ui, setGp, goBack, fileName_size, fileRows, l
         if ( !start ){
             return (
                 <div className={styles.reporte} id="reporte">
-                    <Reporte fileRows={fileRows} i={currentGroup} differencesImages={newDifferencesImages}   plots={plots}  status={status} fileName_size={fileName_size}  />
+                    <Reporte generalInfoChurnData={generalInfoChurnData} Allclusts={Allclusts} fileRows={fileRows} i={currentGroup} differencesImages={newDifferencesImages}   plots={plots}  status={status} fileName_size={fileName_size}  />
                 </div> 
             )
         } else {
@@ -230,10 +256,13 @@ const Sixth = ({groups,  currentGp,ui, setGp, goBack, fileName_size, fileRows, l
 
     return ( 
         <div className={styles.wrapper}>
+             { <ToastContainer />}
              <select name='birth-date'id='birth-date'className={styles.select} onChange={handleGroup}>
-                <option value="0">Grupo 1</option>
-                <option value="1">Grupo 2</option>
-                <option value="2">Grupo 3</option>
+                { 
+                    groups.map((col, index) =>  (
+                        <option value={index}    selected = {currentGroup == index ? true : false} >Grupo {index+1}</option>
+                    ))
+                }
             </select>
 
             <div className={styles.content}>

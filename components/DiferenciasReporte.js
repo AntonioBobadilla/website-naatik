@@ -9,23 +9,23 @@ const DiferenciasReporte = ({differencesImages, status, i}) => {
             return<></>
         else return(
             <div>
-                {differencesImages.map((item,index) => {
+                {differencesImages ? differencesImages.map((item,index) => {
                     return (
                         <>
                             <h4 key={index}>Grupo # {index+1}</h4>
-                            {differencesImages[index].map((obj, key) => {
+                            {differencesImages[index] ? differencesImages[index].map((obj, key) => {
                                 return (
-                                <div key={key}>
+                                <div key={key} className={styles.flex}>
                                     <li  className={styles.text_plot}> {obj.text}</li>
                                     <img src={"http://localhost:5000"+obj.url} alt={"http://localhost:5000"+obj.url} className={styles.plot_img} />
                                 </div>
                             );
-                            })
+                            }) : null
                             }
                         </>
 
                     )
-                })}
+                }) : null}
             </div>
         )}
 

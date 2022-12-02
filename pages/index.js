@@ -37,6 +37,8 @@ export default function Home() {
   const [groups, setGroups] = React.useState([])
   const [modelName, setModelName] = React.useState('')
   const [clustering, setClustering] = React.useState({})
+  const [Allclusts, setAllClusts] = React.useState([])
+  const [generalInfoChurnData, setGeneralInfoChurnData] = React.useState({})
 
   // selected custom model to predict
   const [customModel, setCustomModel] = React.useState('')
@@ -117,6 +119,8 @@ export default function Home() {
       setFileRows(resp.data.fileRows) // pasar esto a componente sixth
       setLoadingFetch(false)
       setClustering(resp.data.clustering)
+      setAllClusts(resp.data.all_clusts)
+      setGeneralInfoChurnData( resp.data.general_info_churn_data)
       console.log("ALL INFO: ", resp.data)
     }
      
@@ -144,6 +148,9 @@ export default function Home() {
         console.log("cambio en custom model: ", customModel)
     }
   },[customModel])
+
+
+
 
 //return(re ? <First click={click} setfile={setFile} file={file} /> : <Second setnums={setNums} send={send} />)
 if (loadingFetch) {
@@ -180,7 +187,7 @@ if (loadingFetch) {
   else if (re === 4 && action === 'train')
     return <Fifth goToGroup={goToGroup} setCurrentGroup={setCurrentGroup} goBack={previousRender} groups={groups} clustering={clustering}/>
   else if (re === 5 && action === 'train')
-    return <Sixth  groups={groups} ui={ui} currentGp={currentGroup} setGp={setCurrentGroup} goBack={previousRender} fileName_size={fileName_size} fileRows={fileRows} loadingFetch={loadingFetch} setLoadingFetch={setLoadingFetch} />
+    return <Sixth generalInfoChurnData={generalInfoChurnData} Allclusts={Allclusts}  groups={groups} ui={ui} currentGp={currentGroup} setGp={setCurrentGroup} goBack={previousRender} clustering={clustering} fileName_size={fileName_size} fileRows={fileRows} loadingFetch={loadingFetch} setLoadingFetch={setLoadingFetch} />
   // conditions for predict
   else if (re === 1 && action === 'predict')
     return <FirstPredict fileError={fileError} setFileError={setFileError} click={click} setfile={setFile} setFileName_size={setFileName_size} file={file} />
@@ -191,7 +198,7 @@ if (loadingFetch) {
   else if (re === 4 && action === 'predict')
     return <Fifth goToGroup={goToGroup} setCurrentGroup={setCurrentGroup} goBack={previousRender} groups={groups} clustering={clustering} />
   else if (re === 5 && action === 'predict')
-    return <Sixth groups={groups} ui={ui} currentGp={currentGroup} setGp={setCurrentGroup} goBack={previousRender} fileName_size={fileName_size} fileRows={fileRows} loadingFetch={loadingFetch} setLoadingFetch={setLoadingFetch} />
+    return <Sixth generalInfoChurnData={generalInfoChurnData} Allclusts={Allclusts} groups={groups} ui={ui} currentGp={currentGroup} setGp={setCurrentGroup} goBack={previousRender} clustering={clustering} fileName_size={fileName_size} fileRows={fileRows} loadingFetch={loadingFetch} setLoadingFetch={setLoadingFetch} />
 
   /*switch (re) {
     case 0: // uploading file

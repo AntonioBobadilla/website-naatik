@@ -23,8 +23,7 @@
     display: flex;
     flex-direction: column;
     border-radius: 20px;
-    background:#0f1322;
-    color:white;
+    color:black;
     padding: 30px;
 }
 

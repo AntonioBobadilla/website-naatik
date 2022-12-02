@@ -7,7 +7,8 @@ const Fifth = ({goToGroup, setCurrentGroup, goBack, groups, clustering}) => {
     console.log("groups from fifth component: ", groups)
 
     const handleClick = (group) => {
-        setCurrentGroup(group)
+        console.log("REDIRECT TO GROUP: ", group)
+        setCurrentGroup(group-1)
         goToGroup()
     }
 

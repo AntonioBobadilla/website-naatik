@@ -1,5 +1,6 @@
 .text {
     font-size: 16px;
+    text-align: center;
 }
 
 .wrapper_boxes {
@@ -42,4 +43,34 @@
     padding-top: 7px;
     padding-bottom: 5px;
     border-radius: 13px;
+}
+
+.churn_info {
+    display: flex;
+    margin-top: 45px;
+}
+
+.churn_box {
+    width: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin-left: 16px;
+    margin-right: 16px;
+}
+
+.text_churn {
+    font-size: 16px;
+    text-align: center;
+}
+
+.data_churn {
+    border:2px solid #28A745;
+    padding-right: 40px;
+    padding-left: 40px;
+    padding-top: 7px;
+    padding-bottom: 5px;
+    border-radius: 13px;   
+    font-size: 16px;
 }

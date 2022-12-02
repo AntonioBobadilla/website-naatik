@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;500;600;700&display=swap');
+
+
 .wrapper {
     width: 100%;
     height: auto;
@@ -22,7 +25,7 @@
 
 .title_models {
     font-weight: 400;
-    font-size: 22px;
+    font-size: 17px;
 }
 
 .models {
@@ -33,20 +36,32 @@
 }
 
 .model {
-    width: 180px;
-    height: 34px;
-    background:#D9D9D9;
-    border-radius: 8px;
-    margin-top: 25px;
+    width: 40%;
+    height: auto;
+    background:#dee6f5;
+    color:#3e5ca3;
+    border-radius: 3px;
+    margin-top: 26px;
     border:none;
-    transition: 0.2s ease;
+    transition: 0.35s ease;
+    word-break: break-all;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    padding-right: 25px;
+    padding-left: 25px;
+    font-family: 'Comfortaa', cursive;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 0.2px;
+    line-height: 18px;
 }
 
 .model:hover {
     cursor: pointer;
-    background:#c0bfbf;
+    background:#c1d0ec;
 }
 
 .button {
-    margin-top: 20px;
+    margin-top: 30px;
+    margin-bottom: 30px;
 }
