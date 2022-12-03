@@ -1,0 +1,101 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+.wrapper {
+    width: 90%;
+    height: 80vh;
+    padding:60px;
+    margin:0 auto;
+    font-family: 'Inter', sans-serif;
+    overflow: hidden;
+}
+
+.content {
+    width: 100%;
+    height: 100%;
+    margin:0 auto;
+}
+
+.content nav {
+    width: 100%;
+    height: 30px;
+    margin-top: 30px;
+}
+
+.content nav ul {
+    display: flex;
+    width: 100%;
+} 
+
+.content nav ul li {
+    list-style: none;
+    margin-left: 20px;
+}
+
+.content nav ul li button {
+    border:none;
+    background:white;
+    font-family: 'Inter', sans-serif;
+    transition: .2s ease;
+    padding-bottom: 6px;
+    border-bottom:1px solid transparent;
+}
+
+.content nav ul li button:hover {
+    cursor: pointer;
+    border-bottom:1px solid black;
+}
+
+.content .tab_content {
+    width: 90%;
+    height: 80%;
+    border:1px solid #c6c6c6;
+    padding:0px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    margin:0 auto;
+}
+
+
+.select {
+    width: auto;
+    padding:3px 5px;
+    border: none;
+    color: black;
+    background-color: white; 
+    font-size: 16px;
+}
+
+.select:hover {
+    cursor: pointer;
+}
+
+
+.buttons {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.image_difference {
+    margin-bottom: 20px;
+    padding:20px;
+
+}
+
+.reporte {
+    width: 297mm;
+    height: auto;
+}
+
+.html2canvas-container { width: 3000px !important; height: auto !important; }
+
+.desglose {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+}

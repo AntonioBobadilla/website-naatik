@@ -1,0 +1,90 @@
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&display=swap'); 
+    
+.wrapper { 
+    width: 100%;
+    height: auto;
+    font-family: 'Comfortaa', cursive;
+}
+
+.wrapper h1 {
+    text-transform: uppercase;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    text-align: center;
+}
+
+.wrapper .groups {
+    width: 50%;
+    height: 400px;
+    margin:0 auto;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    overflow-y: scroll;
+
+}
+
+.wrapper .groups .group {
+    width: 90%;
+    height: 180px;
+    border:1px solid #7A7A7A;
+    border-radius: 9px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding:20px;
+    box-shadow: 4px 3px 3px 0px rgba(155,155,155,0.75);
+    -webkit-box-shadow: 4px 3px 3px 0px rgba(155,155,155,0.75);
+    -moz-box-shadow: 4px 3px 3px 0px rgba(155,155,155,0.75);
+    margin-bottom: 20px;
+    max-height: 180px;
+}
+
+.wrapper .groups .group h3  {
+    color: #00AEEF;
+}
+.wrapper .groups .group p {
+    margin-top: 0px;
+    margin-bottom: 10px;
+    font-weight: 300;
+}
+
+.link {
+    color:#52678E;
+    font-family: 'Comfortaa', cursive;
+    font-weight: 700;
+    background: none;
+    border:none;
+    transition: .2s ease;
+}
+
+.link:hover {
+    cursor: pointer;
+    color:#3c4b68;
+}
+
+.buttons {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.general_clusting {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.general_clusting_img  {
+    width: 900px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.groups_title {
+    margin-top: 50px;
+    margin-bottom: 50px;
+}

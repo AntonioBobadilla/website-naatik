@@ -1,0 +1,68 @@
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;500;600;700&display=swap');
+
+
+.wrapper {
+    width: 100%;
+    height: auto;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.title {
+    margin-top: 30px;
+    text-transform: uppercase;
+    font-weight: 400;
+}
+.box {
+    margin-top: 30px;
+    width: 85%;
+    height: 60%;
+    border:1px solid #A7A7A7;
+    border-radius: 8px;
+    padding:35px;
+}
+
+.title_models {
+    font-weight: 400;
+    font-size: 17px;
+    color:#3d4147;
+}
+
+.models {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.model {
+    width: 40%;
+    height: auto;
+    background:#dee6f5;
+    color:#3e5ca3;
+    border-radius: 3px;
+    margin-top: 26px;
+    border:none;
+    transition: 0.35s ease;
+    word-break: break-all;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    padding-right: 25px;
+    padding-left: 25px;
+    font-family: 'Comfortaa', cursive;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 0.2px;
+    line-height: 18px;
+}
+
+.model:hover {
+    cursor: pointer;
+    background:#c1d0ec;
+}
+
+.button {
+    margin-top: 30px;
+    margin-bottom: 30px;
+}

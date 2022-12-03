@@ -1,0 +1,30 @@
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;500;600;700&display=swap');
+
+.container {
+  padding:30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.container h1 {
+  font-family: 'Comfortaa', cursive;
+  text-transform: uppercase;
+}
+
+.container p {
+  font-family: 'Comfortaa', cursive;
+}
+
+.file_container {
+  width: 70%;
+  height: 50vh;
+  padding:50px;
+  margin: 0 auto;
+  }
+
+.error {
+  opacity: 0;
+  font-size: 100;
+}

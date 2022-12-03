@@ -1,0 +1,35 @@
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;500;600;700&display=swap');
+
+.reporte {
+    width: 297mm;
+    height: 100%;
+    font-family: 'Comfortaa', cursive;
+    font-size: 22px;
+    margin-top: 300px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    overflow-x: hidden;
+}
+
+.container_titles {
+    text-align: center;
+    margin:40px;
+}
+
+.reporte .title {
+    text-align: center;
+    margin:0;
+    margin-bottom: 10px;
+} 
+
+.abstract_text {
+    font-size: 15px;
+    color:#4e5773;
+}
+
+.section {
+    height: auto;
+    margin:40px;
+    border-top: 1px solid black;
+}

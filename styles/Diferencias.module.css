@@ -1,0 +1,32 @@
+ .imageswrapper {
+    width: 70%;
+    margin:0 auto;
+    margin-top: 40px;
+}
+
+ .text_plot {
+    font-size: 20px;
+}
+
+.plot_img {
+    width: 100%;
+}
+
+
+.center_wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-family: 'Comfortaa', cursive;
+
+}
+
+
+.text_wrapper {
+    margin-top: 20px;
+    color:#2e2c2c;
+}
+
