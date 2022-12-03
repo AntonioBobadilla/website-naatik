@@ -18,6 +18,8 @@ import SaveModel from '../components/SaveModel'
 import SelectModel from '../components/SelectModel'
 import FirstPredict from '../components/FirstPredict'
 
+import Hiperparametros from '../components/Hiperparametros';
+
 export default function Home() {
 
   const [file, setFile] = React.useState('');
@@ -51,6 +53,17 @@ export default function Home() {
 
   const [probabilities, setProbabilities] = React.useState({})
   const [targetText, setTargetText] = React.useState('')
+
+
+
+  // hyperparameters
+
+  const [epochs, setEpochs] = React.useState(10);
+  const [algorithm, setAlgorithm] = React.useState('Adam');
+  const [learningRate, setLearningRate] = React.useState('0.0001');
+  const [activation, setActivation] = React.useState('ReLu');
+
+  const [allHyperparams, setAllHyperparams] = React.useState({})
 
   const previousRender = (e, numRenders = 1) => {
     setRe(re-numRenders)
@@ -93,6 +106,13 @@ export default function Home() {
 
   const send = async (obj) => {
 
+    const hyperparametersObj = {
+      'learning_rate': learningRate,
+      'epochs': epochs,
+      'optimization_algorithm': algorithm,
+      'activation_function': activation
+    }
+
     setLoadingFetch(true)
     const UPLOAD_ENDPOINT = "http://localhost:5000/";
     const formData = new FormData();
@@ -102,6 +122,9 @@ export default function Home() {
     formData.append("target", JSON.stringify(targetText));
     formData.append("model_name", JSON.stringify(modelName));
     formData.append("action", JSON.stringify(action));
+    formData.append("hyperparameters", JSON.stringify(hyperparametersObj))
+    
+
 
     if (customModel !== "") 
       formData.append("custom_model", JSON.stringify(customModel))
@@ -125,6 +148,7 @@ export default function Home() {
       setGeneralInfoChurnData( resp.data.general_info_churn_data)
       setConfussionMatrix(resp.data.confussion_matrix)
       setModelAccuracy(resp.data.model_accuracy)
+      setAllHyperparams(resp.data.hyperparams_model)
       console.log("ALL INFO: ", resp.data)
     }
      
@@ -187,11 +211,13 @@ if (loadingFetch) {
   else if (re === 2 && action === 'train' )
     return <SaveModel setModelName={setModelName}  />
   else if (re === 3 && action === 'train')
-    return <Second slides={nums} setnums={setNums} send={send} goBack={previousRender}  />
+    return <Hiperparametros  goToGroup={goToGroup} setEpochs={setEpochs}  setAlgorithm={setAlgorithm} setLearningRate={setLearningRate} setActivation={setActivation} epochs={epochs} learningRate={learningRate}/>
   else if (re === 4 && action === 'train')
-    return <Fifth goToGroup={goToGroup} setCurrentGroup={setCurrentGroup} goBack={previousRender} groups={groups} clustering={clustering}/>
+    return <Second slides={nums} setnums={setNums} send={send} goBack={previousRender}  />
   else if (re === 5 && action === 'train')
-    return <Sixth modelAccuracy={modelAccuracy} confussionMatrix={confussionMatrix} generalInfoChurnData={generalInfoChurnData} Allclusts={Allclusts}  groups={groups} ui={ui} currentGp={currentGroup} setGp={setCurrentGroup} goBack={previousRender} clustering={clustering} fileName_size={fileName_size} fileRows={fileRows} loadingFetch={loadingFetch} setLoadingFetch={setLoadingFetch} />
+    return <Fifth goToGroup={goToGroup} setCurrentGroup={setCurrentGroup} goBack={previousRender} groups={groups} clustering={clustering}/>
+  else if (re === 6 && action === 'train')
+    return <Sixth allHyperparams={allHyperparams} modelAccuracy={modelAccuracy} confussionMatrix={confussionMatrix} generalInfoChurnData={generalInfoChurnData} Allclusts={Allclusts}  groups={groups} ui={ui} currentGp={currentGroup} setGp={setCurrentGroup} goBack={previousRender} clustering={clustering} fileName_size={fileName_size} fileRows={fileRows} loadingFetch={loadingFetch} setLoadingFetch={setLoadingFetch} />
   // conditions for predict
   else if (re === 1 && action === 'predict')
     return <FirstPredict fileError={fileError} setFileError={setFileError} click={click} setfile={setFile} setFileName_size={setFileName_size} file={file} />
@@ -202,7 +228,7 @@ if (loadingFetch) {
   else if (re === 4 && action === 'predict')
     return <Fifth goToGroup={goToGroup} setCurrentGroup={setCurrentGroup} goBack={previousRender} groups={groups} clustering={clustering} />
   else if (re === 5 && action === 'predict')
-    return <Sixth modelAccuracy={modelAccuracy} confussionMatrix={confussionMatrix} generalInfoChurnData={generalInfoChurnData} Allclusts={Allclusts} groups={groups} ui={ui} currentGp={currentGroup} setGp={setCurrentGroup} goBack={previousRender} clustering={clustering} fileName_size={fileName_size} fileRows={fileRows} loadingFetch={loadingFetch} setLoadingFetch={setLoadingFetch} />
+    return <Sixth allHyperparams={allHyperparams} modelAccuracy={modelAccuracy} confussionMatrix={confussionMatrix} generalInfoChurnData={generalInfoChurnData} Allclusts={Allclusts} groups={groups} ui={ui} currentGp={currentGroup} setGp={setCurrentGroup} goBack={previousRender} clustering={clustering} fileName_size={fileName_size} fileRows={fileRows} loadingFetch={loadingFetch} setLoadingFetch={setLoadingFetch} />
 
   /*switch (re) {
     case 0: // uploading file
